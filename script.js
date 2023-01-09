@@ -2,7 +2,12 @@ alert("coming soon!");
 
 const game_canvas = document.getElementById("game_canvas");
 const gl = game_canvas.getContext("webgl");
+var fov = .75;
 var aspect_ratio = 1.1;
+var min_distance = .1;
+var max_distance = 100;
+
+
 var vs_source = //V  S  A  U  C  E
 `
   attribute vec4 position;
@@ -37,7 +42,11 @@ var faces = [
 
 var position_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+gl.bufferData(
+  gl.ARRAY_BUFFER,
+  new Float32Array(positions),
+  gl.STATIC_DRAW
+);
 
 var face_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, face_buffer);
@@ -51,10 +60,21 @@ function init_shader_program(gl, vs_source, fs_source) {
   let vertex_shader = load_shader(gl, gl.VERTEX_SHADER, vs_source);
   let fragment_shader = load_shader(gl, gl.FRAGMENT_SHADER, fs_source);
   let shader_program = gl.createProgram();
-  gl.attachShader(shader_program, vertexShader);
-  gl.attachShader(shader_program, fragmentShader);
-  gl.linkProgram(shaderProgram);
+  gl.attachShader(shader_program, vertex_shader);
+  gl.attachShader(shader_program, fragment_shader);
+  gl.linkProgram(shader_program);
+  if (!gl.getProgramParameter(shader_program, gl.LINK_STATUS)) {
+    alert(
+      `📠📠📠💩📠📠📠📠💩📠📠💩📠 ${gl.getProgramInfoLog(
+        shader_program
+      )} 📠📠💩📠💩📠📠💩📠📠`
+    );
+    return null;
+  }
+  return shader_program;
 }
+
+
 function load_shader (gl, type, source) {
   let shader = gl.createShader(type);
   gl.shaderSource(shader, source);
@@ -70,7 +90,25 @@ function load_shader (gl, type, source) {
 }
 
 function draw_scene() {
-  
+  gl.clearColor(0.0, 0.0, 0.0, 1.0);
+  gl.clearDepth(1.0);
+  gl.enable(gl.DEPTH_TEST);
+  gl.depthFunc(gl.LEQUAL);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  var camera_matrix = mat4.create();
+  mat4.perspective(camera_matrix, fov, aspect_ratio, min_distance, max_distance);
+  mat4.translate(camera_matrix, camera_matrix, [0, 0, -6]);
+  var scene_matrix = mat4.create();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
+  gl.vertexAttribPointer(
+    programInfo.attribLocations.vertexPosition,
+    numComponents,
+    type,
+    normalize,
+    stride,
+    offset
+  );
+  gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
 }
 
 function resizeHandler () {
