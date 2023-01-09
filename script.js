@@ -40,7 +40,7 @@ var fs_source = `
 var aspect_ratio = 1;
 
 function loadShader(gl, type, source) {
-  const shader = gl.createShader(type);
+  let shader = gl.createShader(type);
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
@@ -53,7 +53,10 @@ function loadShader(gl, type, source) {
   return shader;
 }
 
-var vertexShader = loadShader(gl, gl.VERTEX_SHADER, vs_source);
+var vertex_shader = loadShader(gl, gl.VERTEX_SHADER, vs_source);
+var fragment_shader = loadShader(gl, gl.FRAGMENT_SHADER, fs_source);
+var shader_program = gl.createProgram();
+gl.attachShader(shaderProgram, vertex_shader)
 
 var program_info = {
   
