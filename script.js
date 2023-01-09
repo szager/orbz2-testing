@@ -56,7 +56,20 @@ function loadShader(gl, type, source) {
 var vertex_shader = loadShader(gl, gl.VERTEX_SHADER, vs_source);
 var fragment_shader = loadShader(gl, gl.FRAGMENT_SHADER, fs_source);
 var shader_program = gl.createProgram();
-gl.attachShader(shaderProgram, vertex_shader)
+gl.attachShader(shader_program, vertex_shader);
+gl.attachShader(shader_program, fragment_shader);
+gl.linkProgram(shader_program);
+var program_info = {
+    program: shader_program,
+    attribLocations: {
+      position: gl.getAttribLocation(shaderProgram, "position"),
+    },
+    uniformLocations: {
+      projectionMatrix: gl.getUniformLocation(shaderProgram, "uProjectionMatrix"),
+      modelViewMatrix: gl.getUniformLocation(shaderProgram, "uModelViewMatrix"),
+      normalMatrix: gl.getUniformLocation(shaderProgram, "uNormalMatrix")
+    },
+  };
 
 var program_info = {
   
