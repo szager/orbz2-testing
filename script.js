@@ -28,12 +28,12 @@ var vs_source = `
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   void main(void) {
-    gl_position = position * scene_matrix * camera_matrix;
+    gl_Position = position * scene_matrix * camera_matrix;
   }
 `;
 var fs_source = `
   void main(void) {
-    gl_fragColor = vec4(1.0, 0.0, 1.0, 1.0);
+    gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
   }
 `;
 
@@ -64,10 +64,10 @@ gl.attachShader(shader_program, fragment_shader);
 gl.linkProgram(shader_program);
 var program_info = {
   program: shader_program,
-  attribLocations: {
+  attribute_locations: {
     position: gl.getAttribLocation(shader_program, "position"),
   },
-  uniformLocations: {
+  uniform_locations: {
     camera_matrix: gl.getUniformLocation(shader_program, "camera_matrix"),
     scene_matrix: gl.getUniformLocation(shader_program, "scene_matrix")
   },
@@ -99,8 +99,23 @@ function draw_scene() {
     0,
     0
   );
-  gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+  gl.enableVertexAttribArray(program_info.attribute_locations.position);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, face_buffer);
+  gl.useProgram(program_info.program);
+  gl.uniformMatrix4fv(
+    program_info.uniform_locations.camera_matrix,
+    false,
+    camera_matrix
+  );
+  gl.uniformMatrix4fv(
+    program_info.uniform_locations.scene_matrix,
+    false,
+    scene_matrix
+  );
+  gl.drawElements(gl.TRIANGLES, faces.length, gl.UNSIGNED_SHORT, 0);
 }
+
+
 
 function resizeHandler () {
   game_canvas.width = window.innerWidth;
@@ -108,5 +123,8 @@ function resizeHandler () {
   aspect_ratio = window.innerWidth / window.innerHeight;
 }
 
+
+
 window.onresize = resizeHandler;
 window.onload = resizeHandler;
+window.onclick = draw_scene;
