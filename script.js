@@ -2,21 +2,41 @@ alert("coming soon!");
 
 const game_canvas = document.getElementById("game_canvas");
 const gl = game_canvas.getContext("webgl");
+
+class orbee {
+  constructor(x, y, z) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
+}
+
+var orbeez = [];
+
+for(let i = 0; i < 14; i++) {
+  orbeez.push(new orbee(Math.random() * 8 - 4,Math.random() * 8 - 4,Math.random() * 4 - 2));
+}
+var positions = [
+];
+var faces = [
+];
+orbeez.forEach(orbie => {
+  positions = positions.concat([
+    orbie.x + 0.2, orbie.y - 0.2, orbie.z,
+    orbie.x - 0.2, orbie.y - 0.2, orbie.z,
+    orbie.x, orbie.y + 0.2, orbie.z
+  ]);
+})
+for(let i = 0; i < orbeez.length * 3; i++) {
+  faces.push(i);
+}
+
+
 var position_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
-var positions = [
-  0.5, 0.5, 0.0,
-  0.5, -0.5, 0.0,
-  -0.5, 0.5, 0.0,
-  -0.5, -0.5, 0.0
-];
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 var face_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, face_buffer);
-var faces = [
-  0, 1, 2,
-  1, 2, 3
-];
 gl.bufferData(
   gl.ELEMENT_ARRAY_BUFFER,
   new Uint16Array(faces),
@@ -84,7 +104,7 @@ function draw_scene() {
   mat4.translate(camera_matrix, camera_matrix, [
     0.0,
     0.0,
-    -2.0
+    -8.0
   ]);
   let scene_matrix = mat4.create();
   mat4.rotate(scene_matrix, scene_matrix,
