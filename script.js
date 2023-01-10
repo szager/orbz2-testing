@@ -28,7 +28,7 @@ var vs_source = `
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   void main(void) {
-    gl_Position = position * scene_matrix * camera_matrix;
+    gl_Position = scene_matrix * camera_matrix * position;
   }
 `;
 var fs_source = `
@@ -92,7 +92,7 @@ function draw_scene() {
   let scene_matrix = mat4.create();
   gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
   gl.vertexAttribPointer(
-    program_info.attribLocations.vertexPosition,
+    program_info.attribute_locations.position,
     3,
     gl.FLOAT,
     false,
@@ -121,10 +121,11 @@ function resizeHandler () {
   game_canvas.width = window.innerWidth;
   game_canvas.height = window.innerHeight;
   aspect_ratio = window.innerWidth / window.innerHeight;
+  draw_scene();
 }
 
 
 
 window.onresize = resizeHandler;
 window.onload = resizeHandler;
-window.onclick = draw_scene;
+//window.onclick = draw_scene;
