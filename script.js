@@ -84,14 +84,14 @@ function draw_scene() {
   mat4.translate(camera_matrix, camera_matrix, [
     0.0,
     0.0,
-    -6.0
+    -2.0
   ]);
   let scene_matrix = mat4.create();
   mat4.rotate(scene_matrix, scene_matrix,
     time * .03,
     [
      1,
-     0,
+     1,
      0
     ]
   );
