@@ -13,8 +13,8 @@ class orbee {
 
 var orbeez = [];
 
-for(let i = 0; i < 14; i++) {
-  orbeez.push(new orbee(Math.random() * 8 - 4,Math.random() * 8 - 4,Math.random() * 4 - 2));
+for(let i = 0; i < 99; i++) {
+  orbeez.push(new orbee(Math.random() * 8 - 4,Math.random() * 8 - 4,Math.random() * 8 - 4));
 }
 var positions = [
 ];
@@ -52,7 +52,7 @@ var vs_source = `
 `;
 var fs_source = `
   void main(void) {
-    gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
+    gl_FragColor = vec4(1.0, 0.5, 0.75, 1.0);
   }
 `;
 var aspect_ratio = game_canvas.width / game_canvas.height;
