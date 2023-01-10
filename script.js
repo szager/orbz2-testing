@@ -2,33 +2,32 @@ alert("coming soon!");
 
 const game_canvas = document.getElementById("game_canvas");
 const gl = game_canvas.getContext("webgl");
-
 var position_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
 var positions = [
-  1.0, 1.0, 1.0,
-  1.0, -1.0, 1.0,
-  -1.0, 1.0, 1.0
+  0.5, 0.5, 0.0,
+  0.5, -0.5, 0.0,
+  -0.5, 0.5, 0.0,
+  -0.5, -0.5, 0.0
 ];
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
-
 var face_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, face_buffer);
 var faces = [
-  0, 1, 2
+  0, 1, 2,
+  1, 2, 3
 ];
 gl.bufferData(
   gl.ELEMENT_ARRAY_BUFFER,
   new Uint16Array(faces),
   gl.STATIC_DRAW
 );
-
 var vs_source = `
   attribute vec4 position;
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   void main(void) {
-    gl_Position = scene_matrix * camera_matrix * position;
+    gl_Position = camera_matrix * scene_matrix * position;
   }
 `;
 var fs_source = `
@@ -36,8 +35,7 @@ var fs_source = `
     gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
   }
 `;
-
-var aspect_ratio = game_canvas.clientWidth / game_canvas.clientHeight;
+var aspect_ratio = game_canvas.width / game_canvas.height;
 var fov = .7;
 var min_distance = 0.1;
 var max_distance = 100;
@@ -55,7 +53,6 @@ function loadShader(gl, type, source) {
   }
   return shader;
 }
-
 var vertex_shader = loadShader(gl, gl.VERTEX_SHADER, vs_source);
 var fragment_shader = loadShader(gl, gl.FRAGMENT_SHADER, fs_source);
 var shader_program = gl.createProgram();
@@ -90,6 +87,14 @@ function draw_scene() {
     -6.0
   ]);
   let scene_matrix = mat4.create();
+  mat4.rotate(scene_matrix, scene_matrix,
+    time * .03,
+    [
+     1,
+     0,
+     0
+    ]
+  );
   gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
   gl.vertexAttribPointer(
     program_info.attribute_locations.position,
@@ -124,8 +129,15 @@ function resizeHandler () {
   //draw_scene();
 }
 
+var time = 0;
+
+function tick() {
+  time++;
+  draw_scene();
+  requestAnimationFrame(tick);
+}
 
 
 window.onresize = resizeHandler;
-window.onload = draw_scene;
+window.onload = tick;
 //window.onclick = draw_scene;
