@@ -38,6 +38,9 @@ var fs_source = `
 `;
 
 var aspect_ratio = 1;
+var fov = .7;
+var min_distance = 0.1;
+var max_distance = 100;
 
 function loadShader(gl, type, source) {
   let shader = gl.createShader(type);
@@ -60,23 +63,44 @@ gl.attachShader(shader_program, vertex_shader);
 gl.attachShader(shader_program, fragment_shader);
 gl.linkProgram(shader_program);
 var program_info = {
-    program: shader_program,
-    attribLocations: {
-      position: gl.getAttribLocation(shaderProgram, "position"),
-    },
-    uniformLocations: {
-      projectionMatrix: gl.getUniformLocation(shaderProgram, "uProjectionMatrix"),
-      modelViewMatrix: gl.getUniformLocation(shaderProgram, "uModelViewMatrix"),
-      normalMatrix: gl.getUniformLocation(shaderProgram, "uNormalMatrix")
-    },
-  };
-
-var program_info = {
-  
-}
+  program: shader_program,
+  attribLocations: {
+    position: gl.getAttribLocation(shader_program, "position"),
+  },
+  uniformLocations: {
+    camera_matrix: gl.getUniformLocation(shader_program, "camera_matrix"),
+    scene_matrix: gl.getUniformLocation(shader_program, "scene_matrix")
+  },
+};
 
 gl.clearColor(0.0, 0.0, 0.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
+
+function draw_scene() {
+  gl.clearColor(0.0, 0.0, 0.0, 1.0);
+  gl.clearDepth(1.0);
+  gl.enable(gl.DEPTH_TEST);
+  gl.depthFunc(gl.LEQUAL);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  let camera_matrix = mat4.create();
+  mat4.perspective(camera_matrix, fov, aspect_ratio, min_distance, max_distance);
+  mat4.translate(camera_matrix, camera_matrix, [
+    0.0,
+    0.0,
+    -6.0
+  ]);
+  let scene_matrix = mat4.create();
+  gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
+  gl.vertexAttribPointer(
+    program_info.attribLocations.vertexPosition,
+    3,
+    gl.FLOAT,
+    false,
+    0,
+    0
+  );
+  gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+}
 
 function resizeHandler () {
   game_canvas.width = window.innerWidth;
