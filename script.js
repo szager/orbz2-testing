@@ -13,39 +13,23 @@ class orbee {
 
 var orbeez = [];
 
-for(let i = 0; i < 17; i++) {
+for(let i = 0; i < 1000; i++) {
   orbeez.push(new orbee(Math.random() * 8 - 4,Math.random() * 8 - 4,Math.random() * 8 - 4));
 }
 var positions = [
 ];
 var faces = [
 ];
-//orbeez.forEach(orbie => {
-  //positions = positions.concat([
-    //orbie.x + Math.random() * .2 - .1, orbie.y + Math.random() * .2 - .1, orbie.z + Math.random() * .2 - .1,
-    //orbie.x + Math.random() * .2 - .1, orbie.y + Math.random() * .2 - .1, orbie.z + Math.random() * .2 - .1,
-    //orbie.x + Math.random() * .2 - .1, orbie.y + Math.random() * .2 - .1, orbie.z + Math.random() * .2 - .1
-  //]);
-//})
-for(let i = 0; i < 21778; i++) {
-  let x = Math.random() * 8 - 4;
-  let y = Math.random() * 8 - 4;
-  let z = Math.random() * 8 - 4;
-  
-  positions.push(x + Math.random() * .2 - .1);
-  positions.push(y + Math.random() * .2 - .1);
-  positions.push(z + Math.random() * .2 - .1);
-  
-  positions.push(x + Math.random() * .2 - .1);
-  positions.push(y + Math.random() * .2 - .1);
-  positions.push(z + Math.random() * .2 - .1);
-  
-  positions.push(x + Math.random() * .2 - .1);
-  positions.push(y + Math.random() * .2 - .1);
-  positions.push(z + Math.random() * .2 - .1);
-}
+orbeez.forEach(orbie => {
+  positions = positions.concat([
+    orbie.x + Math.random() * .2 - .1, orbie.y + Math.random() * .2 - .1, orbie.z + Math.random() * .2 - .1,
+    orbie.x + Math.random() * .2 - .1, orbie.y + Math.random() * .2 - .1, orbie.z + Math.random() * .2 - .1,
+    orbie.x + Math.random() * .2 - .1, orbie.y + Math.random() * .2 - .1, orbie.z + Math.random() * .2 - .1
+  ]);
+})
 
-for(let i = 0; i < 65334; i++) {
+
+for(let i = 0; i < orbeez.length * 3; i++) {
   faces.push(i);
 }
 
@@ -122,33 +106,8 @@ function draw_scene() {
   mat4.translate(camera_matrix, camera_matrix, [
     0.0,
     0.0,
-    0.0
+    -8.0
   ]);
-  mat4.rotate(camera_matrix, camera_matrix,
-    time * .009307398,
-    [
-     0,
-     1,
-     0
-    ]
-  );
-  mat4.rotate(camera_matrix, camera_matrix,
-    time * -.00853096734,
-    [
-     1,
-     0,
-     0
-    ]
-  );
-  mat4.rotate(camera_matrix, camera_matrix,
-    time * .003684092987,
-    [
-     0,
-     0,
-     1
-    ]
-  );
-  gl
   let scene_matrix = mat4.create();
   gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
   gl.vertexAttribPointer(
