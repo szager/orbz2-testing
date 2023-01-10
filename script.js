@@ -13,7 +13,7 @@ class orbee {
 
 var orbeez = [];
 
-for(let i = 0; i < 10; i++) {
+for(let i = 0; i < 17; i++) {
   orbeez.push(new orbee(Math.random() * 8 - 4,Math.random() * 8 - 4,Math.random() * 8 - 4));
 }
 var positions = [
@@ -27,17 +27,25 @@ var faces = [
     //orbie.x + Math.random() * .2 - .1, orbie.y + Math.random() * .2 - .1, orbie.z + Math.random() * .2 - .1
   //]);
 //})
-for(let i = 0; i < 100; i++) {
+for(let i = 0; i < 500; i++) {
   let x = Math.random() * 8 - 4;
   let y = Math.random() * 8 - 4;
-  let z = Math.random() * 8 - 4
-  for(let i = 0; i < 3; i++) {
-    positions.push(x + Math.random() * .2 - .1);
-    positions.push(y + Math.random() * .2 - .1);
-    positions.push(z + Math.random() * .2 - .1);
-  }
+  let z = Math.random() * 8 - 4;
+  
+  positions.push(x + Math.random() * .2 - .1);
+  positions.push(y + Math.random() * .2 - .1);
+  positions.push(z + Math.random() * .2 - .1);
+  
+  positions.push(x + Math.random() * .2 - .1);
+  positions.push(y + Math.random() * .2 - .1);
+  positions.push(z + Math.random() * .2 - .1);
+  
+  positions.push(x + Math.random() * .2 - .1);
+  positions.push(y + Math.random() * .2 - .1);
+  positions.push(z + Math.random() * .2 - .1);
 }
-for(let i = 0; i < 300; i++) {
+
+for(let i = 0; i < 1500; i++) {
   faces.push(i);
 }
 
@@ -49,7 +57,7 @@ var face_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, face_buffer);
 gl.bufferData(
   gl.ELEMENT_ARRAY_BUFFER,
-  new Uint32Array(faces),
+  new Uint16Array(faces),
   gl.STATIC_DRAW
 );
 var vs_source = `
