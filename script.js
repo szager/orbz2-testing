@@ -118,14 +118,14 @@ function draw_scene() {
 
 
 function resizeHandler () {
-  game_canvas.width = window.innerWidth;
-  game_canvas.height = window.innerHeight;
-  aspect_ratio = window.innerWidth / window.innerHeight;
-  draw_scene();
+  //game_canvas.width = window.innerWidth;
+  //game_canvas.height = window.innerHeight;
+  //aspect_ratio = window.innerWidth / window.innerHeight;
+  //draw_scene();
 }
 
 
 
 window.onresize = resizeHandler;
-window.onload = resizeHandler;
+window.onload = draw_scene;
 //window.onclick = draw_scene;
