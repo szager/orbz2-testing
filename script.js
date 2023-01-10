@@ -37,7 +37,7 @@ var fs_source = `
   }
 `;
 
-var aspect_ratio = 1;
+var aspect_ratio = game_canvas.clientWidth / game_canvas.clientHeight;
 var fov = .7;
 var min_distance = 0.1;
 var max_distance = 100;
@@ -77,7 +77,7 @@ gl.clearColor(0.0, 0.0, 0.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 
 function draw_scene() {
-  gl.clearColor(0.0, 0.0, 0.0, 1.0);
+  gl.clearColor(0.5, 0.5, 0.5, 1.0);
   gl.clearDepth(1.0);
   gl.enable(gl.DEPTH_TEST);
   gl.depthFunc(gl.LEQUAL);
