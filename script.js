@@ -27,7 +27,7 @@ var faces = [
     //orbie.x + Math.random() * .2 - .1, orbie.y + Math.random() * .2 - .1, orbie.z + Math.random() * .2 - .1
   //]);
 //})
-for(let i = 0; i < 500; i++) {
+for(let i = 0; i < 8000; i++) {
   let x = Math.random() * 8 - 4;
   let y = Math.random() * 8 - 4;
   let z = Math.random() * 8 - 4;
@@ -45,7 +45,7 @@ for(let i = 0; i < 500; i++) {
   positions.push(z + Math.random() * .2 - .1);
 }
 
-for(let i = 0; i < 1500; i++) {
+for(let i = 0; i < 24000; i++) {
   faces.push(i);
 }
 
@@ -122,15 +122,15 @@ function draw_scene() {
   mat4.translate(camera_matrix, camera_matrix, [
     0.0,
     0.0,
-    -8.0
+    -16.0
   ]);
   let scene_matrix = mat4.create();
   mat4.rotate(scene_matrix, scene_matrix,
     time * .03,
     [
+     0,
      1,
-     1,
-     0
+     1
     ]
   );
   gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
