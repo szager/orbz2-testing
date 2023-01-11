@@ -8,29 +8,46 @@ class orbee {
     this.x = x;
     this.y = y;
     this.z = z;
+    orbee_positions.push(x);
+    orbee_positions.push(y);
+    orbee_positions.push(z);
   }
 }
 
 var orbeez = [];
+var orbee_positions = [];
 
 for(let i = 0; i < 1000; i++) {
   orbeez.push(new orbee(Math.random() * 8 - 4,Math.random() * 8 - 4,Math.random() * 8 - 4));
 }
 var positions = [
-  -1.0, 0.0, 0.5,
-  1.0, 0.0, 0.5,
-  1.0, 0.0, -0.5,
-  -1.0, 0.0, -0.5
+  -0.9, 0.0, 0.5,
+  0.9, 0.0, 0.5,
+  1.0, 0.0, 0.4,
+  1.0, 0.0, -0.4,
+  0.9, 0.0, -0.5,
+  -0.9, 0.0, -0.5,
+  -1.0, 0.0, -0.4,
+  -1.0, 0.0, 0.4
 ];
 var faces = [
   0, 1, 2,
-  2, 3, 0,
+  0, 2, 3,
+  0, 3, 4,
+  0, 4, 5,
+  0, 5, 6,
+  0, 6, 7,
+  0, 7, 1,
 ];
 var normals = [
-  -0.1, -0.1, 1.0,
-  0.1, -0.1, 1.0,
-  0.1, 0.1, 1.0,
-  -0.1, 0.1, 1.0,
+  0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0,
 ];
 
 var vertex_count = positions.length / 3;
@@ -111,6 +128,9 @@ var program_info = {
 gl.clearColor(0.0, 0.0, 0.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 
+
+
+
 function draw_scene() {
   gl.clearColor(0.96, 0.96, 0.96, 1.0);
   gl.clearDepth(1.0);
@@ -121,8 +141,8 @@ function draw_scene() {
   mat4.perspective(camera_matrix, fov, aspect_ratio, min_distance, max_distance);
   mat4.translate(camera_matrix, camera_matrix, [
     0.0,
-    0.0,
-    -8.0
+    -0.5,
+    -4.0
   ]);
   mat4.rotate(camera_matrix, camera_matrix, Math.PI * .25, [
     1.0,
@@ -178,6 +198,11 @@ var time = 0;
 
 function tick() {
   time++;
+  
+  for(let i = 0; i < orbeez.length; i++ ) {
+    orbee_positions[i * 3] = orbee
+  }
+  
   draw_scene();
   requestAnimationFrame(tick);
 }
