@@ -27,10 +27,10 @@ var faces = [
   2, 3, 0,
 ];
 var normals = [
-  0.1, 0.1, -1.0,
-  -0.1, 0.1, -1.0,
-  -0.1, -0.1, -1.0,
-  0.1, -0.1, -1.0,
+  -0.1, -0.1, 1.0,
+  0.1, -0.1, 1.0,
+  0.1, 0.1, 1.0,
+  -0.1, 0.1, 1.0,
 ];
 
 var vertex_count = positions.length / 3;
@@ -59,13 +59,17 @@ var vs_source = `
   attribute vec3 normal;
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
+  varying highp vec3 transformed_normal;
   void main(void) {
+    transformed_normal = (vec4(normal, 0.0) * scene_matrix).xyz;
     gl_Position = camera_matrix * scene_matrix * position;
   }
 `;
 var fs_source = `
+  varying highp vec3 transformed_normal;
   void main(void) {
-    gl_FragColor = vec4(1.0, 0.5, 0.75, 1.0);
+    highp vec3 normal = normalize(transformed_normal);
+    gl_FragColor = vec4((vec3(1.0, 1.0, 1.0) - normal) * 0.5, 1.0);
   }
 `;
 var aspect_ratio = game_canvas.width / game_canvas.height;
@@ -96,6 +100,7 @@ var program_info = {
   program: shader_program,
   attribute_locations: {
     position: gl.getAttribLocation(shader_program, "position"),
+    normal: gl.getAttribLocation(shader_program, "normal")
   },
   uniform_locations: {
     camera_matrix: gl.getUniformLocation(shader_program, "camera_matrix"),
@@ -129,7 +134,16 @@ function draw_scene() {
     0,
     0
   );
+  gl.vertexAttribPointer(
+    program_info.attribute_locations.normal,
+    3,
+    gl.FLOAT,
+    false,
+    0,
+    0
+  );
   gl.enableVertexAttribArray(program_info.attribute_locations.position);
+  gl.enableVertexAttribArray(program_info.attribute_locations.normal);
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, face_buffer);
   gl.useProgram(program_info.program);
   gl.uniformMatrix4fv(
