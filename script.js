@@ -91,6 +91,7 @@ var vs_source = `
   attribute vec4 position;
   attribute vec3 normal;
   attribute float object_index; //i would use an integer, but the gpu doesn't like integers
+  uniform vec3 object_positions[1002];
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   varying highp vec3 transformed_normal;
@@ -140,7 +141,8 @@ var program_info = {
   },
   uniform_locations: {
     camera_matrix: gl.getUniformLocation(shader_program, "camera_matrix"),
-    scene_matrix: gl.getUniformLocation(shader_program, "scene_matrix")
+    scene_matrix: gl.getUniformLocation(shader_program, "scene_matrix"),
+    object_positions: gl.getUniformLocation(shader_program, "object_positions")
   },
 };
 
@@ -196,6 +198,13 @@ function draw_scene() {
     0,
     0
   );
+  
+  gl.uniform3fv(
+    program_info.uniform_locations.object_positions,
+    false,
+    new Float32Array(object_positions)
+  );
+  
   
   gl.enableVertexAttribArray(program_info.attribute_locations.position);
   gl.enableVertexAttribArray(program_info.attribute_locations.normal);
