@@ -17,35 +17,46 @@ for(let i = 0; i < 1000; i++) {
   orbeez.push(new orbee(Math.random() * 8 - 4,Math.random() * 8 - 4,Math.random() * 8 - 4));
 }
 var positions = [
+  1.0, 1.0, 1.0,
+  -1.0, 1.0, 1.0,
+  -1.0, -1.0, 1.0,
+  1.0, -1.0, 1.0,
 ];
 var faces = [
+  0, 1, 2,
+  2, 3, 0,
 ];
-orbeez.forEach(orbie => {
-  positions = positions.concat([
-    orbie.x + Math.random() * .2 - .1, orbie.y + Math.random() * .2 - .1, orbie.z + Math.random() * .2 - .1,
-    orbie.x + Math.random() * .2 - .1, orbie.y + Math.random() * .2 - .1, orbie.z + Math.random() * .2 - .1,
-    orbie.x + Math.random() * .2 - .1, orbie.y + Math.random() * .2 - .1, orbie.z + Math.random() * .2 - .1
-  ]);
-})
+var normals = [
+  0.1, 0.1, -1.0,
+  -0.1, 0.1, -1.0,
+  -0.1, -0.1, -1.0,
+  0.1, -0.1, -1.0,
+];
 
+var vertex_count = positions.length / 3;
 
-for(let i = 0; i < orbeez.length * 3; i++) {
-  faces.push(i);
+for(let i = 0; i < vertex_count; i++)  {
+  let normal_length = (normals[i]**2 + normals[i+1]**2 + normals[i+2]**2)**0.5;
+  normals[i] /= normal_length;
+  normals[i + 1] /= normal_length;
+  normals[i + 2] /= normal_length;
 }
-
 
 var position_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+
 var face_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, face_buffer);
-gl.bufferData(
-  gl.ELEMENT_ARRAY_BUFFER,
-  new Uint16Array(faces),
-  gl.STATIC_DRAW
-);
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(faces), gl.STATIC_DRAW);
+
+var normal_buffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, normal_buffer);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
+
 var vs_source = `
   attribute vec4 position;
+  attribute vec3 normal;
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   void main(void) {
