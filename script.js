@@ -8,14 +8,14 @@ class orbee {
     this.x = x;
     this.y = y;
     this.z = z;
-    orbee_positions.push(x);
-    orbee_positions.push(y);
-    orbee_positions.push(z);
+    object_positions.push(x);
+    object_positions.push(y);
+    object_positions.push(z);
   }
 }
 
 var orbeez = [];
-var orbee_positions = [];
+var object_positions = [0, 0, 0, 0, 0, 0];
 
 for(let i = 0; i < 1000; i++) {
   orbeez.push(new orbee(Math.random() * 8 - 4,Math.random() * 8 - 4,Math.random() * 8 - 4));
@@ -30,6 +30,16 @@ var positions = [
   -1.0, 0.0, -0.4,
   -1.0, 0.0, 0.4
 ];
+var object_indices = [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+]
 var faces = [
   0, 1, 2,
   0, 2, 3,
@@ -62,6 +72,10 @@ for(let i = 0; i < vertex_count; i++)  {
 var position_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+
+var object_index_buffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, object_index_buffer);
+gl.bufferData(gl.ARRAY_BUFFER, new Uint16Array(object_indices), gl.STATIC_DRAW);
 
 var face_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, face_buffer);
@@ -117,7 +131,8 @@ var program_info = {
   program: shader_program,
   attribute_locations: {
     position: gl.getAttribLocation(shader_program, "position"),
-    normal: gl.getAttribLocation(shader_program, "normal")
+    normal: gl.getAttribLocation(shader_program, "normal"),
+    object_index: gl.getAttribLocation(shader_program, "object_index")
   },
   uniform_locations: {
     camera_matrix: gl.getUniformLocation(shader_program, "camera_matrix"),
@@ -168,6 +183,15 @@ function draw_scene() {
     0,
     0
   );
+  gl.bindBuffer(gl.ARRAY_BUFFER, object_index_buffer);
+  gl.vertexAttribPointer(
+    program_info.attribute_locations.object_index,
+    1,
+    gl.UNSIGNED_SHORT,
+    false,
+    0,
+    0
+  );
   gl.enableVertexAttribArray(program_info.attribute_locations.position);
   gl.enableVertexAttribArray(program_info.attribute_locations.normal);
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, face_buffer);
@@ -200,7 +224,9 @@ function tick() {
   time++;
   
   for(let i = 0; i < orbeez.length; i++ ) {
-    orbee_positions[i * 3] = orbee
+    orbee_positions[i * 3] = orbeez[i].x;
+    orbee_positions[i * 3 + 1] = orbeez[i].y;
+    orbee_positions[i * 3 + 2] = orbeez[i].z;
   }
   
   draw_scene();
