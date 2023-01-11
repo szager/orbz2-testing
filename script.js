@@ -17,58 +17,48 @@ class orbee {
 var orbeez = [];
 var object_positions = [0, 0, 0, 0, 0, 0];
 
-for(let i = 0; i < 1000; i++) {
-  orbeez.push(new orbee(Math.random() * 8 - 4,Math.random() * 8 - 4,Math.random() * 8 - 4));
+var orbee_model = {
+  positions: [
+    -1, -1, -1,
+    1, -1, 1, -1, 1, 1, 1, 1, -1],
+  normals: [-1, -1, -1, 1, -1, 1, -1, 1, 1, 1, 1, -1],
+  faces: [0, 1, 2, 0, 1, 3, 0, 2, 3, 1, 2, 3],
+};
+
+function normalize(abnormals) {
+  for (let i = 0; i < abnormals.length / 3; i++) {
+    let normal_length =
+      (abnormals[i * 3] ** 2 +
+        abnormals[i * 3 + 1] ** 2 +
+        abnormals[i * 3 + 2] ** 2) **
+      0.5;
+    abnormals[i * 3] /= normal_length;
+    abnormals[i * 3 + 1] /= normal_length;
+    abnormals[i * 3 + 2] /= normal_length;
+  }
+}
+
+for (let i = 0; i < 1000; i++) {
+  orbeez.push(
+    new orbee(
+      Math.random() * 8 - 4,
+      Math.random() * 8 - 4,
+      Math.random() * 8 - 4
+    )
+  );
 }
 var positions = [
-  -0.9, 0.0, 0.5,
-  0.9, 0.0, 0.5,
-  1.0, 0.0, 0.4,
-  1.0, 0.0, -0.4,
-  0.9, 0.0, -0.5,
-  -0.9, 0.0, -0.5,
-  -1.0, 0.0, -0.4,
-  -1.0, 0.0, 0.4
+  -0.9, 0.0, 0.5, 0.9, 0.0, 0.5, 1.0, 0.0, 0.4, 1.0, 0.0, -0.4, 0.9, 0.0, -0.5,
+  -0.9, 0.0, -0.5, -1.0, 0.0, -0.4, -1.0, 0.0, 0.4,
 ];
-var object_indices = [
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-]
-var faces = [
-  0, 1, 2,
-  0, 2, 3,
-  0, 3, 4,
-  0, 4, 5,
-  0, 5, 6,
-  0, 6, 7,
-  0, 7, 1,
-];
+var object_indices = [0, 0, 0, 0, 0, 0, 0, 0];
+var faces = [0, 1, 2, 0, 2, 3, 0, 3, 4, 0, 4, 5, 0, 5, 6, 0, 6, 7, 0, 7, 1];
 var normals = [
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
 ];
 
 var vertex_count = positions.length / 3;
-
-for(let i = 0; i < vertex_count; i++)  {
-  let normal_length = (normals[i * 3]**2 + normals[i * 3 + 1]**2 + normals[i * 3 + 2]**2)**0.5;
-  normals[i * 3] /= normal_length;
-  normals[i * 3 + 1] /= normal_length;
-  normals[i * 3 + 2] /= normal_length;
-}
-
 
 var object_position_buffer = gl.createBuffer();
 var position_buffer = gl.createBuffer();
@@ -77,7 +67,11 @@ gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
 var object_index_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, object_index_buffer);
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(object_indices), gl.STATIC_DRAW);
+gl.bufferData(
+  gl.ARRAY_BUFFER,
+  new Float32Array(object_indices),
+  gl.STATIC_DRAW
+);
 
 var face_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, face_buffer);
@@ -109,7 +103,7 @@ var fs_source = `
 `;
 
 var aspect_ratio = game_canvas.width / game_canvas.height;
-var fov = .7;
+var fov = 0.7;
 var min_distance = 0.1;
 var max_distance = 100;
 
@@ -118,9 +112,7 @@ function loadShader(gl, type, source) {
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-    alert(
-      `💩💩💩💩💩 ${gl.getShaderInfoLog(shader)}💩💩💩💩💩💩💩💩💩`
-    );
+    alert(`💩💩💩💩💩 ${gl.getShaderInfoLog(shader)}💩💩💩💩💩💩💩💩💩`);
     gl.deleteShader(shader);
     return null;
   }
@@ -137,20 +129,17 @@ var program_info = {
   attribute_locations: {
     position: gl.getAttribLocation(shader_program, "position"),
     normal: gl.getAttribLocation(shader_program, "normal"),
-    object_index: gl.getAttribLocation(shader_program, "object_index")
+    object_index: gl.getAttribLocation(shader_program, "object_index"),
   },
   uniform_locations: {
     camera_matrix: gl.getUniformLocation(shader_program, "camera_matrix"),
     scene_matrix: gl.getUniformLocation(shader_program, "scene_matrix"),
-    object_positions: gl.getUniformLocation(shader_program, "object_positions")
+    object_positions: gl.getUniformLocation(shader_program, "object_positions"),
   },
 };
 
 gl.clearColor(0.0, 0.0, 0.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
-
-
-
 
 function draw_scene() {
   gl.clearColor(0.96, 0.96, 0.96, 1.0);
@@ -159,17 +148,15 @@ function draw_scene() {
   gl.depthFunc(gl.LEQUAL);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   let camera_matrix = mat4.create();
-  mat4.perspective(camera_matrix, fov, aspect_ratio, min_distance, max_distance);
-  mat4.translate(camera_matrix, camera_matrix, [
-    0.0,
-    -0.5,
-    -4.0
-  ]);
-  mat4.rotate(camera_matrix, camera_matrix, Math.PI * .25, [
-    1.0,
-    1.0,
-    0.0
-  ]);
+  mat4.perspective(
+    camera_matrix,
+    fov,
+    aspect_ratio,
+    min_distance,
+    max_distance
+  );
+  mat4.translate(camera_matrix, camera_matrix, [0.0, -0.5, -4.0]);
+  mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.25, [1.0, 1.0, 0.0]);
   let scene_matrix = mat4.create();
   gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
   gl.vertexAttribPointer(
@@ -198,19 +185,18 @@ function draw_scene() {
     0,
     0
   );
-  
-  gl.uniform3fv(
-    program_info.uniform_locations.object_positions,
-    false,
-    new Float32Array(object_positions)
-  );
-  
-  
+
   gl.enableVertexAttribArray(program_info.attribute_locations.position);
   gl.enableVertexAttribArray(program_info.attribute_locations.normal);
   gl.enableVertexAttribArray(program_info.attribute_locations.object_index);
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, face_buffer);
   gl.useProgram(program_info.program);
+
+  gl.uniform3fv(
+    program_info.uniform_locations.object_positions,
+    new Float32Array(object_positions)
+  );
+
   gl.uniformMatrix4fv(
     program_info.uniform_locations.camera_matrix,
     false,
@@ -224,9 +210,7 @@ function draw_scene() {
   gl.drawElements(gl.TRIANGLES, faces.length, gl.UNSIGNED_SHORT, 0);
 }
 
-
-
-function resizeHandler () {
+function resizeHandler() {
   //game_canvas.width = window.innerWidth;
   //game_canvas.height = window.innerHeight;
   //aspect_ratio = window.innerWidth / window.innerHeight;
@@ -237,17 +221,16 @@ var time = 0;
 
 function tick() {
   time++;
-  
-  for(let i = 0; i < orbeez.length; i++ ) {
+
+  for (let i = 0; i < orbeez.length; i++) {
     object_positions[i * 3 + 6] = orbeez[i].x;
     object_positions[i * 3 + 7] = orbeez[i].y;
     object_positions[i * 3 + 8] = orbeez[i].z;
   }
-  
+
   draw_scene();
   requestAnimationFrame(tick);
 }
-
 
 window.onresize = resizeHandler;
 window.onload = tick;
