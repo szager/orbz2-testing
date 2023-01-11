@@ -194,6 +194,7 @@ function draw_scene() {
   );
   gl.enableVertexAttribArray(program_info.attribute_locations.position);
   gl.enableVertexAttribArray(program_info.attribute_locations.normal);
+  gl.enableVertexAttribArray(program_info.attribute_locations.object_index);
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, face_buffer);
   gl.useProgram(program_info.program);
   gl.uniformMatrix4fv(
