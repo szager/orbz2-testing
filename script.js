@@ -75,7 +75,7 @@ gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
 var object_index_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, object_index_buffer);
-gl.bufferData(gl.ARRAY_BUFFER, new Uint16Array(object_indices), gl.STATIC_DRAW);
+gl.bufferData(gl.ARRAY_BUFFER, new FloatArray(object_indices), gl.STATIC_DRAW);
 
 var face_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, face_buffer);
@@ -187,7 +187,7 @@ function draw_scene() {
   gl.vertexAttribPointer(
     program_info.attribute_locations.object_index,
     1,
-    gl.UNSIGNED_SHORT,
+    gl.UNSIGNED_INT,
     false,
     0,
     0
