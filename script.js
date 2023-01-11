@@ -75,7 +75,7 @@ gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
 var object_index_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, object_index_buffer);
-gl.bufferData(gl.ARRAY_BUFFER, new FloatArray(object_indices), gl.STATIC_DRAW);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(object_indices), gl.STATIC_DRAW);
 
 var face_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, face_buffer);
@@ -103,6 +103,7 @@ var fs_source = `
     gl_FragColor = vec4((normal_normal + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
   }
 `;
+
 var aspect_ratio = game_canvas.width / game_canvas.height;
 var fov = .7;
 var min_distance = 0.1;
@@ -187,7 +188,7 @@ function draw_scene() {
   gl.vertexAttribPointer(
     program_info.attribute_locations.object_index,
     1,
-    gl.UNSIGNED_INT,
+    gl.FLOAT,
     false,
     0,
     0
@@ -225,9 +226,9 @@ function tick() {
   time++;
   
   for(let i = 0; i < orbeez.length; i++ ) {
-    orbee_positions[i * 3] = orbeez[i].x;
-    orbee_positions[i * 3 + 1] = orbeez[i].y;
-    orbee_positions[i * 3 + 2] = orbeez[i].z;
+    object_positions[i * 3 + 6] = orbeez[i].x;
+    object_positions[i * 3 + 7] = orbeez[i].y;
+    object_positions[i * 3 + 8] = orbeez[i].z;
   }
   
   draw_scene();
