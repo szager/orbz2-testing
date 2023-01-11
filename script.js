@@ -17,10 +17,10 @@ for(let i = 0; i < 1000; i++) {
   orbeez.push(new orbee(Math.random() * 8 - 4,Math.random() * 8 - 4,Math.random() * 8 - 4));
 }
 var positions = [
-  1.0, 1.0, 1.0,
-  -1.0, 1.0, 1.0,
-  -1.0, -1.0, 1.0,
-  1.0, -1.0, 1.0,
+  -1.0, 0.0, 0.5,
+  1.0, 0.0, 0.5,
+  1.0, 0.0, -0.5,
+  -1.0, 0.0, -0.5
 ];
 var faces = [
   0, 1, 2,
@@ -123,6 +123,11 @@ function draw_scene() {
     0.0,
     0.0,
     -8.0
+  ]);
+  mat4.rotate(camera_matrix, camera_matrix, Math.PI * .25, [
+    1.0,
+    1.0,
+    0.0
   ]);
   let scene_matrix = mat4.create();
   gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
