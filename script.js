@@ -69,6 +69,8 @@ for(let i = 0; i < vertex_count; i++)  {
   normals[i * 3 + 2] /= normal_length;
 }
 
+
+var object_position_buffer = gl.createBuffer();
 var position_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
@@ -88,6 +90,7 @@ gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
 var vs_source = `
   attribute vec4 position;
   attribute vec3 normal;
+  attribute float object_index; //i would use an integer, but the gpu doesn't like integers
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   varying highp vec3 transformed_normal;
@@ -193,6 +196,7 @@ function draw_scene() {
     0,
     0
   );
+  
   gl.enableVertexAttribArray(program_info.attribute_locations.position);
   gl.enableVertexAttribArray(program_info.attribute_locations.normal);
   gl.enableVertexAttribArray(program_info.attribute_locations.object_index);
