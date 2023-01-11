@@ -36,10 +36,10 @@ var normals = [
 var vertex_count = positions.length / 3;
 
 for(let i = 0; i < vertex_count; i++)  {
-  let normal_length = (normals[i]**2 + normals[i+1]**2 + normals[i+2]**2)**0.5;
-  normals[i] /= normal_length;
-  normals[i + 1] /= normal_length;
-  normals[i + 2] /= normal_length;
+  let normal_length = (normals[i * 3]**2 + normals[i * 3 + 1]**2 + normals[i * 3 + 2]**2)**0.5;
+  normals[i * 3] /= normal_length;
+  normals[i * 3 + 1] /= normal_length;
+  normals[i * 3 + 2] /= normal_length;
 }
 
 var position_buffer = gl.createBuffer();
@@ -61,15 +61,15 @@ var vs_source = `
   uniform mat4 camera_matrix;
   varying highp vec3 transformed_normal;
   void main(void) {
-    transformed_normal = (vec4(normal, 0.0) * scene_matrix).xyz;
+    transformed_normal = normalize(vec4(normal, 0.0) * scene_matrix).xyz;
     gl_Position = camera_matrix * scene_matrix * position;
   }
 `;
 var fs_source = `
   varying highp vec3 transformed_normal;
   void main(void) {
-    highp vec3 normal = normalize(transformed_normal);
-    gl_FragColor = vec4((vec3(1.0, 1.0, 1.0) - normal) * 0.5, 1.0);
+    highp vec3 normal_normal = normalize(transformed_normal);
+    gl_FragColor = vec4((normal_normal + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
   }
 `;
 var aspect_ratio = game_canvas.width / game_canvas.height;
@@ -134,6 +134,7 @@ function draw_scene() {
     0,
     0
   );
+  gl.bindBuffer(gl.ARRAY_BUFFER, normal_buffer);
   gl.vertexAttribPointer(
     program_info.attribute_locations.normal,
     3,
