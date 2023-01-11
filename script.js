@@ -20,9 +20,22 @@ var object_positions = [0, 0, 0, 0, 0, 0];
 var orbee_model = {
   positions: [
     -1, -1, -1,
-    1, -1, 1, -1, 1, 1, 1, 1, -1],
-  normals: [-1, -1, -1, 1, -1, 1, -1, 1, 1, 1, 1, -1],
-  faces: [0, 1, 2, 0, 1, 3, 0, 2, 3, 1, 2, 3],
+    1, -1, 1,
+    -1, 1, 1,
+    1, 1, -1
+  ],
+  normals: [
+    -1, -1, -1,
+    1, -1, 1,
+    -1, 1, 1,
+    1, 1, -1
+  ],
+  faces: [
+    0, 1, 2,
+    0, 1, 3,
+    0, 2, 3,
+    1, 2, 3
+  ],
 };
 
 function normalize(abnormals) {
@@ -37,6 +50,8 @@ function normalize(abnormals) {
     abnormals[i * 3 + 2] /= normal_length;
   }
 }
+
+normalize(orbee_model.normals);
 
 for (let i = 0; i < 1000; i++) {
   orbeez.push(
@@ -57,6 +72,18 @@ var normals = [
   0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
   0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
 ];
+
+function add_to_scene(model, object_index) {
+  let vertex_count = positions.length / 3;
+  let new_vertex_count = model.positions.length / 3;
+  
+  positions = positions.concat(model.positions);
+  normals = normals.concat(model.normals);
+  model.faces.forEach(corner => {
+    faces.push(corner + vertex_count);
+  });
+  
+}
 
 var vertex_count = positions.length / 3;
 
