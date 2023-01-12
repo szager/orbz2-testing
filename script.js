@@ -135,7 +135,7 @@ var fs_source = `
   varying highp vec3 transformed_normal;
   void main(void) {
     highp vec3 normal_normal = normalize(transformed_normal);
-    gl_FragColor = vec4((normal_normal.zyx + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
+    gl_FragColor = vec4((normal_normal.zxy + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
   }
 `;
 
