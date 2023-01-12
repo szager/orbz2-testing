@@ -117,7 +117,7 @@ var vs_source = `
   varying highp vec3 transformed_normal;
   void main(void) {
     transformed_normal = normalize(vec4(normal, 0.0) * scene_matrix).xyz;
-    gl_Position = camera_matrix * scene_matrix * vec4(position + object_positions[14], 1.0);
+    gl_Position = camera_matrix * scene_matrix * vec4(position + object_positions[int(object_index)], 1.0);
   }
 `;
 var fs_source = `
