@@ -39,7 +39,7 @@ function normalize(abnormals) {
 
 normalize(orbee_model.normals);
 
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < 100; i++) {
   orbeez.push(
     new orbee(
       Math.random() * 3.5 - 1.75,
@@ -248,8 +248,30 @@ var time = 0;
 
 function tick() {
   time++;
-
-  orbeez.forEach((orbie) => {
+  
+  for(let i = 0; i < orbeez.length; i++) {
+    let orbie = orbeez[i];
+    for(let j = i + 1; j < orbeez.length; j++) {
+      let other_orbie = orbeez[j];
+      let dx = orbie.x - other_orbie.x;
+      let dy = orbie.y - other_orbie.y;
+      let dz = orbie.z - other_orbie.z;
+      if(dx < .1 && dy < .1 && dz < .1) {
+        let distance = (dx**2 + dy**2 + dz**2)**.5;
+        if(distance < .1) {
+          orbie.dx -= dx / distance * (distance - .1) * .2;
+          orbie.dy -= dy / distance * (distance - .1) * .2;
+          orbie.dz -= dz / distance * (distance - .1) * .2;
+          other_orbie.dx += dx / distance * (distance - .1) * .2;
+          other_orbie.dy += dy / distance * (distance - .1) * .2;
+          other_orbie.dz += dz / distance * (distance - .1) * .2;
+        }
+      }
+    }
+  }
+  
+  
+  orbeez.forEach(orbie => {
     orbie.dy -= 19.6 / 60;
     orbie.x += orbie.dx / 24;
     orbie.y += orbie.dy / 24; //speed in m/s
@@ -257,7 +279,7 @@ function tick() {
 
     if (orbie.y < 0.05) {
       orbie.y = 0.05;
-      orbie.dy = 0;
+      orbie.dy *= -0.6;
     }
   });
 
