@@ -19,7 +19,7 @@ class orbee {
 }
 
 function get_distance(dx, dy, dz) {
-  return (dx**2 + dy**2 + dz**2)**0.5
+  return (dx**2 + dy**2 + dz**2)**0.5;
 }
 
 var orbeez = [];
@@ -49,7 +49,7 @@ function normalize(abnormals) {
 
 normalize(orbee_model.normals);
 
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < 10; i++) {
   orbeez.push(
     new orbee(
       Math.random() * 3.5 - 1.75,
@@ -290,9 +290,18 @@ function tick() {
   
   orbeez.forEach(orbie => {
     orbie.dy -= .01;
-    orbie.dx *= .99;
-    orbie.dy *= .99;
-    orbie.dz *= .99;
+    orbie.dx *= .98;
+    orbie.dy *= .98;
+    orbie.dz *= .98;
+    
+    let distance = get_distance(orbie.x + orbie.dx, orbie.y + orbie.dy, orbie.z + orbie.dz);
+    if(distance + orbie_radius > 1) {
+      orbie.dx -= (orbie.x + orbie.dx) / distance * (distance + orbie_radius - 1) / 9;
+      orbie.dy -= (orbie.y + orbie.dy) / distance * (distance + orbie_radius - 1) / 9;
+      orbie.dz -= (orbie.z + orbie.dz) / distance * (distance + orbie_radius - 1) / 9;
+    }
+    
+    
     orbie.x += orbie.dx;
     orbie.y += orbie.dy; //speed in hexametres per second?
     orbie.z += orbie.dz;
@@ -306,10 +315,6 @@ function tick() {
       //orbie.dz *= speed_multiplier;
      // orbie.dy *= -restitution;
     //}
-    let distance = get_distance(orbie.x, orbie.y, orbie.z);
-    if(distance - orbie_radius < 1) {
-      orbie.x 
-    }
   });
 
   for (let i = 0; i < orbeez.length; i++) {
