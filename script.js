@@ -19,24 +19,9 @@ var orbeez = [];
 var object_positions = [0, 0, 0, 0, 0, 0];
 
 var orbee_model = {
-  positions: [
-    -.05, -.05, -.05,
-    .05, -.05, .05,
-    -.05, .05, .05,
-    .05, .05, -.05
-  ],
-  normals: [
-    -1, -1, -1,
-    1, -1, 1,
-    -1, 1, 1,
-    1, 1, -1
-  ],
-  faces: [
-    0, 1, 2,
-    0, 1, 3,
-    0, 2, 3,
-    1, 2, 3
-  ],
+  positions: [-0.1, -0.1, -0.1, 0.1, -0.1, 0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1],
+  normals: [-1, -1, -1, 1, -1, 1, -1, 1, 1, 1, 1, -1],
+  faces: [0, 1, 2, 0, 1, 3, 0, 2, 3, 1, 2, 3],
 };
 
 function normalize(abnormals) {
@@ -57,15 +42,22 @@ normalize(orbee_model.normals);
 for (let i = 0; i < 1000; i++) {
   orbeez.push(
     new orbee(
-      Math.random() * 1 - .5,
-      Math.random() * 1 - .25 + .25,
-      Math.random() * 1 - .25
+      Math.random() * 4 - 2,
+      Math.random() * 1 - 0.25 + 0.25,
+      Math.random() * 1 - 0.25
     )
   );
 }
 var positions = [
-  -0.9, 0.0, 0.5, 0.9, 0.0, 0.5, 1.0, 0.0, 0.4, 1.0, 0.0, -0.4, 0.9, 0.0, -0.5,
-  -0.9, 0.0, -0.5, -1.0, 0.0, -0.4, -1.0, 0.0, 0.4,
+  //length is in decimetres
+  -1.9, 0.0, 1.0,
+  1.9, 0.0, 1.0,
+  2.0, 0.0, 0.9,
+  2.0, 0.0, -0.9,
+  1.9, 0.0, -1.0,
+  -1.9, 0.0, -1.0,
+  -2.0, 0.0, -0.9,
+  -2.0, 0.0, 0.9,
 ];
 var object_indices = [0, 0, 0, 0, 0, 0, 0, 0];
 var faces = [0, 1, 2, 0, 2, 3, 0, 3, 4, 0, 4, 5, 0, 5, 6, 0, 6, 7, 0, 7, 1];
@@ -77,16 +69,16 @@ var normals = [
 function add_to_scene(model, object_index) {
   let vertex_count = positions.length / 3;
   let new_vertex_count = model.positions.length / 3;
-  for(let i = 0; i < new_vertex_count; i++) {
+  for (let i = 0; i < new_vertex_count; i++) {
     object_indices.push(object_index);
   }
   positions = positions.concat(model.positions);
   normals = normals.concat(model.normals);
-  model.faces.forEach(corner => {
+  model.faces.forEach((corner) => {
     faces.push(corner + vertex_count);
   });
 }
-for(let i = 0; i < orbeez.length; i++) {
+for (let i = 0; i < orbeez.length; i++) {
   add_to_scene(orbee_model, i + 2);
 }
 
@@ -162,13 +154,13 @@ var program_info = {
   attribute_locations: {
     position: gl.getAttribLocation(shader_program, "position"),
     normal: gl.getAttribLocation(shader_program, "normal"),
-    object_index: gl.getAttribLocation(shader_program, "object_index")
+    object_index: gl.getAttribLocation(shader_program, "object_index"),
   },
   uniform_locations: {
     camera_matrix: gl.getUniformLocation(shader_program, "camera_matrix"),
     scene_matrix: gl.getUniformLocation(shader_program, "scene_matrix"),
-    object_positions: gl.getUniformLocation(shader_program, "object_positions")
-  }
+    object_positions: gl.getUniformLocation(shader_program, "object_positions"),
+  },
 };
 
 gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -188,7 +180,7 @@ function draw_scene() {
     min_distance,
     max_distance
   );
-  mat4.translate(camera_matrix, camera_matrix, [0.0, -0.5, -4.0]);
+  mat4.translate(camera_matrix, camera_matrix, [0.0, -1.5, -12.0]);
   mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.25, [1.0, 1.0, 0.0]);
   //mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -4.0]);
   //mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.5, [1.0, 0.0, 0.0]);
@@ -256,19 +248,19 @@ var time = 0;
 
 function tick() {
   time++;
-  
-  orbeez.forEach(orbie => {
+
+  orbeez.forEach((orbie) => {
     orbie.dy -= 19.6 / 60;
     orbie.x += orbie.dx / 24;
     orbie.y += orbie.dy / 24; //speed in m/s
     orbie.z += orbie.dz / 24;
-    
-    if(orbie.y < .05) {
-      orbie.y = .05;
+
+    if (orbie.y < 0.05) {
+      orbie.y = 0.05;
       orbie.dy = 0;
     }
   });
-  
+
   for (let i = 0; i < orbeez.length; i++) {
     object_positions[i * 3 + 6] = orbeez[i].x;
     object_positions[i * 3 + 7] = orbeez[i].y;
