@@ -192,10 +192,10 @@ function draw_scene() {
     min_distance,
     max_distance
   );
-  //mat4.translate(camera_matrix, camera_matrix, [0.0, -1.5, -12.0]);
-  //mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.25, [1.0, 1.0, 0.0]);
-  mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -10.0]);
-  mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.5, [1.0, 0.0, 0.0]);
+  mat4.translate(camera_matrix, camera_matrix, [0.0, -1.5, -12.0]);
+  mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.25, [1.0, 1.0, 0.0]);
+  //mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -10.0]);
+  //mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.5, [1.0, 0.0, 0.0]);
   let scene_matrix = mat4.create();
   gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
   gl.vertexAttribPointer(
