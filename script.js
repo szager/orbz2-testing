@@ -9,6 +9,9 @@ class orbee {
     this.dx = 0;
     this.dy = 0;
     this.dz = 0;
+    this.ax = 0;
+    this.ay = 0;
+    this.az = 0;
     object_positions.push(x);
     object_positions.push(y);
     object_positions.push(z);
@@ -65,8 +68,14 @@ var positions = [
 var object_indices = [0, 0, 0, 0, 0, 0, 0, 0];
 var faces = [0, 1, 2, 0, 2, 3, 0, 3, 4, 0, 4, 5, 0, 5, 6, 0, 6, 7, 0, 7, 1];
 var normals = [
-  0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
+  0.0, 1.0, 0.0,
+  0.0, 1.0, 0.0,
+  0.0, 1.0, 0.0,
+  0.0, 1.0, 0.0,
+  0.0, 1.0, 0.0,
+  0.0, 1.0, 0.0,
+  0.0, 1.0, 0.0,
+  0.0, 1.0, 0.0,
 ];
 
 function add_to_scene(model, object_index) {
@@ -126,7 +135,7 @@ var fs_source = `
   varying highp vec3 transformed_normal;
   void main(void) {
     highp vec3 normal_normal = normalize(transformed_normal);
-    gl_FragColor = vec4((normal_normal + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
+    gl_FragColor = vec4((normal_normal.zyx + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
   }
 `;
 
@@ -183,10 +192,10 @@ function draw_scene() {
     min_distance,
     max_distance
   );
-  mat4.translate(camera_matrix, camera_matrix, [0.0, -1.5, -12.0]);
-  mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.25, [1.0, 1.0, 0.0]);
-  //mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -4.0]);
-  //mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.5, [1.0, 0.0, 0.0]);
+  //mat4.translate(camera_matrix, camera_matrix, [0.0, -1.5, -12.0]);
+  //mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.25, [1.0, 1.0, 0.0]);
+  mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -10.0]);
+  mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.5, [1.0, 0.0, 0.0]);
   let scene_matrix = mat4.create();
   gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
   gl.vertexAttribPointer(
@@ -261,14 +270,14 @@ function tick() {
       let dz = orbie.z - other_orbie.z;
       if(dx < orbie_radius * 2 && dy < orbie_radius * 2 && dz < orbie_radius * 2) {
         let distance = (dx**2 + dy**2 + dz**2)**.5;
-        if(distance < .1) {
-          let force_multiplier = (distance - orbie_radius) * .2 / distance;
+        if(distance < orbie_radius * 2) {
+          let force_multiplier = (distance - orbie_radius * 2) * .2 / distance;
           orbie.dx -= dx * force_multiplier;
           orbie.dy -= dy * force_multiplier;
           orbie.dz -= dz * force_multiplier;
-          other_orbie.dx += * force_multiplier;
-          other_orbie.dy += * force_multiplier;
-          other_orbie.dz += * force_multiplier;
+          other_orbie.dx += dx * force_multiplier;
+          other_orbie.dy += dy * force_multiplier;
+          other_orbie.dz += dz * force_multiplier;
         }
       }
     }
@@ -284,14 +293,14 @@ function tick() {
     orbie.y += orbie.dy; //speed in hexametres per second?
     orbie.z += orbie.dz;
 
-    if (orbie.y < 0.1) {
-      orbie.y = 0.1;
+    if (orbie.y < orbie_radius) {
+      orbie.y = orbie_radius;
       let speed = Math.hypot(orbie.dx, orbie.dz);
-      let speed_next = Math.max(0, speed + orbie.dy * .2);
+      let speed_next = Math.max(0, speed + orbie.dy * traction);
       let speed_multiplier = (speed_next / speed) || 0;
       orbie.dx *= speed_multiplier;
       orbie.dz *= speed_multiplier;
-      orbie.dy *= -0.6;
+      orbie.dy *= -restitution;
     }
   });
 
