@@ -18,6 +18,10 @@ class orbee {
   }
 }
 
+function get_distance(dx, dy, dz) {
+  return (dx**2 + dy**2 + dz**2)**0.5
+}
+
 var orbeez = [];
 var object_positions = [0, 0, 0, 0, 0, 0];
 var traction = 0.2;
@@ -293,14 +297,18 @@ function tick() {
     orbie.y += orbie.dy; //speed in hexametres per second?
     orbie.z += orbie.dz;
 
-    if (orbie.y < orbie_radius) {
-      orbie.y = orbie_radius;
-      let speed = Math.hypot(orbie.dx, orbie.dz);
-      let speed_next = Math.max(0, speed + orbie.dy * traction);
-      let speed_multiplier = (speed_next / speed) || 0;
-      orbie.dx *= speed_multiplier;
-      orbie.dz *= speed_multiplier;
-      orbie.dy *= -restitution;
+    //if (orbie.y < orbie_radius) {
+      //orbie.y = orbie_radius;
+      //let speed = Math.hypot(orbie.dx, orbie.dz);
+      //let speed_next = Math.max(0, speed + orbie.dy * traction);
+      //let speed_multiplier = (speed_next / speed) || 0;
+      //orbie.dx *= speed_multiplier;
+      //orbie.dz *= speed_multiplier;
+     // orbie.dy *= -restitution;
+    //}
+    let distance = get_distance(orbie.x, orbie.y, orbie.z);
+    if(distance - orbie_radius < 1) {
+      orbie.x 
     }
   });
 
