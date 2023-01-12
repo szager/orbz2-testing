@@ -258,10 +258,15 @@ function tick() {
   time++;
   
   orbeez.forEach(orbie => {
-    orbie.dy -= 1;
-    orbie.x += orbie.dx / 12;
-    orbie.y += orbie.dy / 12; //speed in m/s
-    orbie.z += orbie.dz / 12;
+    orbie.dy -= 19.6 / 60;
+    orbie.x += orbie.dx / 24;
+    orbie.y += orbie.dy / 24; //speed in m/s
+    orbie.z += orbie.dz / 24;
+    
+    if(orbie.y < .05) {
+      orbie.y = .05;
+      orbie.dy = 0;
+    }
   });
   
   for (let i = 0; i < orbeez.length; i++) {
