@@ -1,5 +1,3 @@
-alert("coming soon!");
-
 const game_canvas = document.getElementById("game_canvas");
 const gl = game_canvas.getContext("webgl");
 
@@ -19,10 +17,10 @@ var object_positions = [0, 0, 0, 0, 0, 0];
 
 var orbee_model = {
   positions: [
-    -1, -1, -1,
-    1, -1, 1,
-    -1, 1, 1,
-    1, 1, -1
+    -.1, -.1, -.1,
+    .1, -.1, .1,
+    -.1, .1, .1,
+    .1, .1, -.1
   ],
   normals: [
     -1, -1, -1,
@@ -76,13 +74,14 @@ var normals = [
 function add_to_scene(model, object_index) {
   let vertex_count = positions.length / 3;
   let new_vertex_count = model.positions.length / 3;
-  
   positions = positions.concat(model.positions);
   normals = normals.concat(model.normals);
   model.faces.forEach(corner => {
     faces.push(corner + vertex_count);
   });
-  
+}
+for(let i = 0; i < orbeez.length; i++) {
+  add_to_scene(orbee_model, i + 2);
 }
 
 var vertex_count = positions.length / 3;
@@ -109,7 +108,7 @@ gl.bindBuffer(gl.ARRAY_BUFFER, normal_buffer);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
 
 var vs_source = `
-  attribute vec4 position;
+  attribute vec3 position;
   attribute vec3 normal;
   attribute float object_index; //i would use an integer, but the gpu doesn't like integers
   uniform vec3 object_positions[1002];
@@ -118,7 +117,7 @@ var vs_source = `
   varying highp vec3 transformed_normal;
   void main(void) {
     transformed_normal = normalize(vec4(normal, 0.0) * scene_matrix).xyz;
-    gl_Position = camera_matrix * scene_matrix * position;
+    gl_Position = camera_matrix * scene_matrix * vec4(position + object_positions[int(object_index)], 1.0);
   }
 `;
 var fs_source = `
