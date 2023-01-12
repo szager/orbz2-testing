@@ -6,6 +6,9 @@ class orbee {
     this.x = x;
     this.y = y;
     this.z = z;
+    this.dx = 0;
+    this.dy = 0;
+    this.dz = 0;
     object_positions.push(x);
     object_positions.push(y);
     object_positions.push(z);
@@ -17,10 +20,10 @@ var object_positions = [0, 0, 0, 0, 0, 0];
 
 var orbee_model = {
   positions: [
-    -.1, -.1, -.1,
-    .1, -.1, .1,
-    -.1, .1, .1,
-    .1, .1, -.1
+    -.05, -.05, -.05,
+    .05, -.05, .05,
+    -.05, .05, .05,
+    .05, .05, -.05
   ],
   normals: [
     -1, -1, -1,
@@ -74,6 +77,9 @@ var normals = [
 function add_to_scene(model, object_index) {
   let vertex_count = positions.length / 3;
   let new_vertex_count = model.positions.length / 3;
+  for(let i = 0; i < new_vertex_count; i++) {
+    object_indices.push(object_index);
+  }
   positions = positions.concat(model.positions);
   normals = normals.concat(model.normals);
   model.faces.forEach(corner => {
@@ -117,7 +123,8 @@ var vs_source = `
   varying highp vec3 transformed_normal;
   void main(void) {
     transformed_normal = normalize(vec4(normal, 0.0) * scene_matrix).xyz;
-    gl_Position = camera_matrix * scene_matrix * vec4(position + object_positions[int(object_index)], 1.0);
+    mediump int int_object_index = int(object_index);
+    gl_Position = camera_matrix * scene_matrix * vec4(position + object_positions[int_object_index], 1.0);
   }
 `;
 var fs_source = `
@@ -181,10 +188,10 @@ function draw_scene() {
     min_distance,
     max_distance
   );
-  //mat4.translate(camera_matrix, camera_matrix, [0.0, -0.5, -4.0]);
-  //mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.25, [1.0, 1.0, 0.0]);
-  mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -4.0]);
-  mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.5, [1.0, 0.0, 0.0]);
+  mat4.translate(camera_matrix, camera_matrix, [0.0, -0.5, -4.0]);
+  mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.25, [1.0, 1.0, 0.0]);
+  //mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -4.0]);
+  //mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.5, [1.0, 0.0, 0.0]);
   let scene_matrix = mat4.create();
   gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
   gl.vertexAttribPointer(
@@ -249,7 +256,14 @@ var time = 0;
 
 function tick() {
   time++;
-
+  
+  orbeez.forEach(orbie => {
+    orbie.dy -= 1;
+    orbie.x += orbie.dx / 12;
+    orbie.y += orbie.dy / 12; //speed in m/s
+    orbie.z += orbie.dz / 12;
+  });
+  
   for (let i = 0; i < orbeez.length; i++) {
     object_positions[i * 3 + 6] = orbeez[i].x;
     object_positions[i * 3 + 7] = orbeez[i].y;
