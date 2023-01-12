@@ -54,9 +54,9 @@ normalize(orbee_model.normals);
 for (let i = 0; i < 1000; i++) {
   orbeez.push(
     new orbee(
-      Math.random() * 8 - 4,
-      Math.random() * 8 - 4,
-      Math.random() * 8 - 4
+      Math.random() * 1 - .5,
+      Math.random() * 1 - .25 + .25,
+      Math.random() * 1 - .25
     )
   );
 }
@@ -110,14 +110,14 @@ gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
 var vs_source = `
   attribute vec3 position;
   attribute vec3 normal;
-  attribute float object_index; //i would use an integer, but the gpu doesn't like integers
+  attribute float object_index;
   uniform vec3 object_positions[1002];
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   varying highp vec3 transformed_normal;
   void main(void) {
     transformed_normal = normalize(vec4(normal, 0.0) * scene_matrix).xyz;
-    gl_Position = camera_matrix * scene_matrix * vec4(position + object_positions[int(object_index)], 1.0);
+    gl_Position = camera_matrix * scene_matrix * vec4(position + object_positions[0], 1.0);
   }
 `;
 var fs_source = `
@@ -155,13 +155,13 @@ var program_info = {
   attribute_locations: {
     position: gl.getAttribLocation(shader_program, "position"),
     normal: gl.getAttribLocation(shader_program, "normal"),
-    object_index: gl.getAttribLocation(shader_program, "object_index"),
+    object_index: gl.getAttribLocation(shader_program, "object_index")
   },
   uniform_locations: {
     camera_matrix: gl.getUniformLocation(shader_program, "camera_matrix"),
     scene_matrix: gl.getUniformLocation(shader_program, "scene_matrix"),
-    object_positions: gl.getUniformLocation(shader_program, "object_positions"),
-  },
+    object_positions: gl.getUniformLocation(shader_program, "object_positions")
+  }
 };
 
 gl.clearColor(0.0, 0.0, 0.0, 1.0);
