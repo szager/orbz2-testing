@@ -117,7 +117,7 @@ var vs_source = `
   varying highp vec3 transformed_normal;
   void main(void) {
     transformed_normal = normalize(vec4(normal, 0.0) * scene_matrix).xyz;
-    gl_Position = camera_matrix * scene_matrix * vec4(position + object_positions[0], 1.0);
+    gl_Position = camera_matrix * scene_matrix * vec4(position + object_positions[14], 1.0);
   }
 `;
 var fs_source = `
@@ -183,8 +183,8 @@ function draw_scene() {
   );
   //mat4.translate(camera_matrix, camera_matrix, [0.0, -0.5, -4.0]);
   //mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.25, [1.0, 1.0, 0.0]);
-  mat4.translate(camera_matrix, camera_matrix, [0.0, -4, 0.0]);
-  mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.25, [1.0, 1.0, 0.0]);
+  mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -4.0]);
+  mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.5, [1.0, 0.0, 0.0]);
   let scene_matrix = mat4.create();
   gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
   gl.vertexAttribPointer(
