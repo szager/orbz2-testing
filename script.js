@@ -42,9 +42,9 @@ normalize(orbee_model.normals);
 for (let i = 0; i < 1000; i++) {
   orbeez.push(
     new orbee(
-      Math.random() * 4 - 2,
-      Math.random() * 1 - 0.25 + 0.25,
-      Math.random() * 1 - 0.25
+      Math.random() * 3.5 - 1.75,
+      Math.random() * 12 - .75,
+      Math.random() * 1.5 - .75
     )
   );
 }
