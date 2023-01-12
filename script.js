@@ -17,6 +17,9 @@ class orbee {
 
 var orbeez = [];
 var object_positions = [0, 0, 0, 0, 0, 0];
+var traction = 0.2;
+var restitution = 0.4;
+var orbie_radius = 0.1;
 
 var orbee_model = {
   positions: [-0.1, -0.1, -0.1, 0.1, -0.1, 0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1],
@@ -39,7 +42,7 @@ function normalize(abnormals) {
 
 normalize(orbee_model.normals);
 
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 1000; i++) {
   orbeez.push(
     new orbee(
       Math.random() * 3.5 - 1.75,
@@ -256,15 +259,16 @@ function tick() {
       let dx = orbie.x - other_orbie.x;
       let dy = orbie.y - other_orbie.y;
       let dz = orbie.z - other_orbie.z;
-      if(dx < .1 && dy < .1 && dz < .1) {
+      if(dx < orbie_radius * 2 && dy < orbie_radius * 2 && dz < orbie_radius * 2) {
         let distance = (dx**2 + dy**2 + dz**2)**.5;
         if(distance < .1) {
-          orbie.dx -= dx / distance * (distance - .1) * .2;
-          orbie.dy -= dy / distance * (distance - .1) * .2;
-          orbie.dz -= dz / distance * (distance - .1) * .2;
-          other_orbie.dx += dx / distance * (distance - .1) * .2;
-          other_orbie.dy += dy / distance * (distance - .1) * .2;
-          other_orbie.dz += dz / distance * (distance - .1) * .2;
+          let force_multiplier = (distance - orbie_radius) * .2 / distance;
+          orbie.dx -= dx * force_multiplier;
+          orbie.dy -= dy * force_multiplier;
+          orbie.dz -= dz * force_multiplier;
+          other_orbie.dx += * force_multiplier;
+          other_orbie.dy += * force_multiplier;
+          other_orbie.dz += * force_multiplier;
         }
       }
     }
@@ -272,13 +276,21 @@ function tick() {
   
   
   orbeez.forEach(orbie => {
-    orbie.dy -= 19.6 / 60;
-    orbie.x += orbie.dx / 24;
-    orbie.y += orbie.dy / 24; //speed in m/s
-    orbie.z += orbie.dz / 24;
+    orbie.dy -= .01;
+    orbie.dx *= .99;
+    orbie.dy *= .99;
+    orbie.dz *= .99;
+    orbie.x += orbie.dx;
+    orbie.y += orbie.dy; //speed in hexametres per second?
+    orbie.z += orbie.dz;
 
-    if (orbie.y < 0.05) {
-      orbie.y = 0.05;
+    if (orbie.y < 0.1) {
+      orbie.y = 0.1;
+      let speed = Math.hypot(orbie.dx, orbie.dz);
+      let speed_next = Math.max(0, speed + orbie.dy * .2);
+      let speed_multiplier = (speed_next / speed) || 0;
+      orbie.dx *= speed_multiplier;
+      orbie.dz *= speed_multiplier;
       orbie.dy *= -0.6;
     }
   });
