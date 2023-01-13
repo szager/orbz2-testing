@@ -103,9 +103,9 @@ normalize(orbee_model.normals);
 for (let i = 0; i < 1000; i++) {
   orbeez.push(
     new orbee(
-      Math.random() * 3.5 - 1.75,
-      Math.random() * 12 - .75,
-      Math.random() * 1.5 - .75
+      Math.random() * 20 - 10,
+      Math.random() * 20 - 10,
+      Math.random() * 20 - 10
     )
   );
 }
@@ -249,11 +249,9 @@ function draw_scene() {
     min_distance,
     max_distance
   );
-  //mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -1.0]);
   mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -8.0]);
   mat4.rotate(camera_matrix, camera_matrix, Math.PI * -0.25, [1.0, 0.0, 0.0]);
   mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, 0.5]);
-  //mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.5, [1.0, 0.0, 0.0]);
   let scene_matrix = mat4.create();
   //mat4.rotate(scene_matrix, scene_matrix, time * 0.018403, [1.0, 0.0, 0.0]);
   //mat4.rotate(scene_matrix, scene_matrix, time * 0.023485, [0.0, 1.0, 0.0]);
@@ -362,7 +360,7 @@ function orbee_interactions() {
 function tick() {
   time++;
   
-  for(let i = 0; i < 2; i++) {
+  for(let i = 0; i < 6; i++) {
     orbee_interactions();
   }
   
