@@ -1,5 +1,6 @@
 const game_canvas = document.getElementById("game_canvas");
 const gl = game_canvas.getContext("webgl");
+const golden_ratio = 0.5 + Math.sqrt(1.25);
 
 class orbee {
   constructor(x, y, z) {
@@ -29,9 +30,24 @@ var restitution = 0.4;
 var orbie_radius = 0.1;
 
 var orbee_model = {
-  positions: [-0.1, -0.1, -0.1, 0.1, -0.1, 0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1],
-  normals: [-1, -1, -1, 1, -1, 1, -1, 1, 1, 1, 1, -1],
-  faces: [0, 1, 2, 0, 1, 3, 0, 2, 3, 1, 2, 3],
+  positions: [
+    0, golden_ratio * 0.1, 0.1,
+    0.1, -0.1, 0.1,
+    -0.1, 0.1, 0.1,
+    0.1, 0.1, -0.1
+  ],
+  normals: [
+    -1, -1, -1,
+    1, -1, 1,
+    -1, 1, 1,
+    1, 1, -1
+  ],
+  faces: [
+    0, 1, 2,
+    0, 1, 3,
+    0, 2, 3,
+    1, 2, 3
+  ],
 };
 
 function normalize(abnormals) {
@@ -139,7 +155,7 @@ var fs_source = `
   varying highp vec3 transformed_normal;
   void main(void) {
     highp vec3 normal_normal = normalize(transformed_normal);
-    gl_FragColor = vec4((normal_normal.zxy + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
+    gl_FragColor = vec4((normal_normal + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
   }
 `;
 
@@ -197,7 +213,7 @@ function draw_scene() {
     max_distance
   );
   mat4.translate(camera_matrix, camera_matrix, [0.0, -1.5, -12.0]);
-  mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.25, [1.0, 1.0, 0.0]);
+  mat4.rotate(camera_matrix, camera_matrix, Math.PI * -0.25, [1.0, 0.0, 0.0]);
   //mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -10.0]);
   //mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.5, [1.0, 0.0, 0.0]);
   let scene_matrix = mat4.create();
@@ -289,7 +305,7 @@ function tick() {
   
   
   orbeez.forEach(orbie => {
-    orbie.dy -= .01;
+    orbie.dz -= .01;
     orbie.dx *= .98;
     orbie.dy *= .98;
     orbie.dz *= .98;
