@@ -49,7 +49,7 @@ function normalize(abnormals) {
 
 normalize(orbee_model.normals);
 
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < 2000; i++) {
   orbeez.push(
     new orbee(
       Math.random() * 3.5 - 1.75,
@@ -125,7 +125,7 @@ var vs_source = `
   attribute vec3 position;
   attribute vec3 normal;
   attribute float object_index;
-  uniform vec3 object_positions[1002];
+  uniform vec3 object_positions[2002];
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   varying highp vec3 transformed_normal;
@@ -275,7 +275,7 @@ function tick() {
       if(dx < orbie_radius * 2 && dy < orbie_radius * 2 && dz < orbie_radius * 2) {
         let distance = (dx**2 + dy**2 + dz**2)**.5;
         if(distance < orbie_radius * 2) {
-          let force_multiplier = (distance - orbie_radius * 2) * .2 / distance;
+          let force_multiplier = (distance - orbie_radius * 2) * .05 / distance;
           orbie.dx_next -= dx * force_multiplier;
           orbie.dy_next -= dy * force_multiplier;
           orbie.dz_next -= dz * force_multiplier;
