@@ -34,6 +34,7 @@ var orbie_radius = 0.1;
 
 var cursor_screen_pos = [0, 0, 0];
 var cursor_scene_pos = [0, 0, 0];
+var mouse_down = false;
 
 var orbee_model = {
   positions: [
@@ -363,7 +364,7 @@ function orbee_interactions() {
 function tick() {
   time++;
   
-  for(let i = 0; i < 16; i++) { //the speed of sound in orbeez is 9.6 m/s
+  for(let i = 0; i < 8; i++) { //the speed of sound in orbeez is 9.6 m/s
     orbee_interactions();
   }
   
@@ -373,6 +374,10 @@ function tick() {
     orbie.dx *= .98;
     orbie.dy *= .98;
     orbie.dz *= .98;
+    
+    if(mouse_down) {
+      orbie.dz += .1;
+    }
     
     let distance = get_distance(orbie.x + orbie.dx, orbie.y + orbie.dy, orbie.z + orbie.dz);
     if(distance + orbie_radius > 2) {
@@ -405,6 +410,22 @@ function tick() {
   requestAnimationFrame(tick);
 }
 
+function mousemove_handler(e) {
+  cursor_screen_pos[0] = e.clientX;
+  cursor_screen_pos[1] = e.clientY;
+}
+
+function mousedown_handler() {
+  mouse_down = true;
+}
+
+function mouseup_handler() {
+  mouse_down = false;
+}
+
+
 window.onresize = resizeHandler;
 window.onload = tick;
+window.onmousedown = mousedown_handler;
+window.onmouseup = mouseup_handler;
 //window.onclick = draw_scene;
