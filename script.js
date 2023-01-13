@@ -103,9 +103,9 @@ normalize(orbee_model.normals);
 for (let i = 0; i < 1000; i++) {
   orbeez.push(
     new orbee(
-      Math.random() * 20 - 10,
-      Math.random() * 20 - 10,
-      Math.random() * 20 - 10
+      Math.random() * 1 - .5,
+      Math.random() * 1 - .5,
+      Math.random() * 10 - 5
     )
   );
 }
@@ -249,7 +249,7 @@ function draw_scene() {
     min_distance,
     max_distance
   );
-  mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -8.0]);
+  mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -6.0]);
   mat4.rotate(camera_matrix, camera_matrix, Math.PI * -0.25, [1.0, 0.0, 0.0]);
   mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, 0.5]);
   let scene_matrix = mat4.create();
@@ -336,7 +336,7 @@ function orbee_interactions() {
       if(dx < orbie_radius * 2 && dy < orbie_radius * 2 && dz < orbie_radius * 2) {
         let distance = (dx**2 + dy**2 + dz**2)**.5;
         if(distance < orbie_radius * 2) {
-          let force_multiplier = (distance - orbie_radius * 2) * .05 / distance;
+          let force_multiplier = (distance - orbie_radius * 2) * .02 / distance;
           orbie.dx_next -= dx * force_multiplier;
           orbie.dy_next -= dy * force_multiplier;
           orbie.dz_next -= dz * force_multiplier;
@@ -360,7 +360,7 @@ function orbee_interactions() {
 function tick() {
   time++;
   
-  for(let i = 0; i < 6; i++) {
+  for(let i = 0; i < 8; i++) { //the speed of sound in orbeez is 9.6 m/s
     orbee_interactions();
   }
   
