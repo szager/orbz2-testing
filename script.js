@@ -38,58 +38,50 @@ var orbee_model = {
     0, ico_coord_a * -0.1, ico_coord_b * +0.1,
     0, ico_coord_a * -0.1, ico_coord_b * -0.1,
     0, ico_coord_a * +0.1, ico_coord_b * -0.1,
-    
     ico_coord_a * +0.1, ico_coord_b * +0.1, 0,
     ico_coord_a * -0.1, ico_coord_b * +0.1, 0,
     ico_coord_a * -0.1, ico_coord_b * -0.1, 0,
     ico_coord_a * +0.1, ico_coord_b * -0.1, 0,
-    
     ico_coord_b * +0.1, 0, ico_coord_a * +0.1,
     ico_coord_b * +0.1, 0, ico_coord_a * -0.1,
     ico_coord_b * -0.1, 0, ico_coord_a * -0.1,
     ico_coord_b * -0.1, 0, ico_coord_a * +0.1,
-    
-    
   ],
   normals: [
-    0, +ico_coord_a, +ico_coord_b, //0
-    0, -ico_coord_a, +ico_coord_b, //1
-    0, -ico_coord_a, -ico_coord_b, //2
-    0, +ico_coord_a, -ico_coord_b, //3
-    
-    +ico_coord_a, +ico_coord_b, 0, //4
-    -ico_coord_a, +ico_coord_b, 0, //5
-    -ico_coord_a, -ico_coord_b, 0, //6
-    +ico_coord_a, -ico_coord_b, 0, //7
-    
-    +ico_coord_b, 0, +ico_coord_a, //8
-    +ico_coord_b, 0, -ico_coord_a, //9
-    -ico_coord_b, 0, -ico_coord_a, //10
-    -ico_coord_b, 0, +ico_coord_a, //11
+    0, +ico_coord_a, +ico_coord_b,
+    0, -ico_coord_a, +ico_coord_b,
+    0, -ico_coord_a, -ico_coord_b,
+    0, +ico_coord_a, -ico_coord_b,
+    +ico_coord_a, +ico_coord_b, 0,
+    -ico_coord_a, +ico_coord_b, 0,
+    -ico_coord_a, -ico_coord_b, 0,
+    +ico_coord_a, -ico_coord_b, 0,
+    +ico_coord_b, 0, +ico_coord_a,
+    +ico_coord_b, 0, -ico_coord_a,
+    -ico_coord_b, 0, -ico_coord_a,
+    -ico_coord_b, 0, +ico_coord_a,
   ],
   faces: [
     0, 3, 4,
     0, 3, 5,
-    
     1, 2, 6,
     1, 2, 7,
-    
     4, 7, 8,
     4, 7, 9,
-    
     5, 6, 10,
     5, 6, 11,
-    
     8, 11, 0,
     8, 11, 1,
-    
     9, 10, 2,
     9, 10, 3,
-    
     0, 4, 8,
     3, 4, 9,
     1, 7, 8,
     2, 7, 9,
+    0, 5, 11,
+    3, 5, 10,
+    1, 6, 11,
+    2, 6, 10,
   ],
 };
 
@@ -187,9 +179,10 @@ var vs_source = `
   uniform vec3 object_positions[3];
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
+  uniform mat3 normal_matrix;
   varying highp vec3 transformed_normal;
   void main(void) {
-    transformed_normal = normalize(vec4(normal, 1.0) * scene_matrix).xyz;
+    transformed_normal = normalize(normal * normal_matrix);
     mediump int int_object_index = int(object_index);
     gl_Position = camera_matrix * scene_matrix * vec4(position + object_positions[int_object_index], 1.0);
   }
@@ -234,6 +227,7 @@ var program_info = {
   uniform_locations: {
     camera_matrix: gl.getUniformLocation(shader_program, "camera_matrix"),
     scene_matrix: gl.getUniformLocation(shader_program, "scene_matrix"),
+    normal_matrix: gl.getUniformLocation(shader_program, "normal_matrix"),
     object_positions: gl.getUniformLocation(shader_program, "object_positions"),
   },
 };
@@ -263,6 +257,9 @@ function draw_scene() {
   mat4.rotate(scene_matrix, scene_matrix, time * 0.018403, [1.0, 0.0, 0.0]);
   mat4.rotate(scene_matrix, scene_matrix, time * 0.023485, [0.0, 1.0, 0.0]);
   mat4.rotate(scene_matrix, scene_matrix, time * 0.047634, [0.0, 0.0, 1.0]);
+  let normal_matrix = mat3.create();
+  mat3.normalFromMat4(normal_matrix, scene_matrix);
+  
   gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
   gl.vertexAttribPointer(
     program_info.attribute_locations.position,
@@ -306,6 +303,11 @@ function draw_scene() {
     program_info.uniform_locations.camera_matrix,
     false,
     camera_matrix
+  );
+  gl.uniformMatrix3fv(
+    program_info.uniform_locations.normal_matrix,
+    false,
+    normal_matrix
   );
   gl.uniformMatrix4fv(
     program_info.uniform_locations.scene_matrix,
