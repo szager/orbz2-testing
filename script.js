@@ -2,6 +2,9 @@ const game_canvas = document.getElementById("game_canvas");
 const gl = game_canvas.getContext("webgl");
 const golden_ratio = 0.5 + Math.sqrt(1.25);
 
+const ico_coord_a = golden_ratio / Math.sqrt(golden_ratio**2 + 1);
+const ico_coord_b = 1 / Math.sqrt(golden_ratio**2 + 1);
+
 class orbee {
   constructor(x, y, z) {
     this.x = x;
@@ -31,10 +34,22 @@ var orbie_radius = 0.1;
 
 var orbee_model = {
   positions: [
-    0, golden_ratio * 0.1, 0.1,
-    0.1, -0.1, 0.1,
-    -0.1, 0.1, 0.1,
-    0.1, 0.1, -0.1
+    0, ico_coord_a * +0.1, ico_coord_b * +0.1,
+    0, ico_coord_a * -0.1, ico_coord_b * +0.1,
+    0, ico_coord_a * -0.1, ico_coord_b * -0.1,
+    0, ico_coord_a * +0.1, ico_coord_b * -0.1,
+    
+    ico_coord_a * +0.1, ico_coord_b * +0.1,
+    ico_coord_a * -0.1, ico_coord_b * +0.1,
+    ico_coord_a * -0.1, ico_coord_b * -0.1,
+    ico_coord_a * +0.1, ico_coord_b * -0.1,
+    
+    ico_coord_a * +0.1, 0, ico_coord_b * +0.1,
+    ico_coord_a * -0.1, 0, ico_coord_b * +0.1,
+    ico_coord_a * -0.1, 0, ico_coord_b * -0.1,
+    ico_coord_a * +0.1, 0, ico_coord_b * -0.1,
+    
+    
   ],
   normals: [
     -1, -1, -1,
