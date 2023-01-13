@@ -100,7 +100,7 @@ function normalize(abnormals) {
 
 normalize(orbee_model.normals);
 
-for (let i = 0; i < 1; i++) {
+for (let i = 0; i < 1000; i++) {
   orbeez.push(
     new orbee(
       Math.random() * 3.5 - 1.75,
@@ -146,7 +146,7 @@ function add_to_scene(model, object_index) {
   });
 }
 for (let i = 0; i < orbeez.length; i++) {
-  add_to_scene(orbee_model, 0);
+  add_to_scene(orbee_model, i + 2);
 }
 
 var vertex_count = positions.length / 3;
@@ -176,7 +176,7 @@ var vs_source = `
   attribute vec3 position;
   attribute vec3 normal;
   attribute float object_index;
-  uniform vec3 object_positions[3];
+  uniform vec3 object_positions[1002];
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   uniform mat3 normal_matrix;
@@ -249,14 +249,15 @@ function draw_scene() {
     min_distance,
     max_distance
   );
-  mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -1.0]);
-  //mat4.rotate(camera_matrix, camera_matrix, Math.PI * -0.25, [1.0, 0.0, 0.0]);
-  //mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -10.0]);
+  //mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -1.0]);
+  mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -8.0]);
+  mat4.rotate(camera_matrix, camera_matrix, Math.PI * -0.25, [1.0, 0.0, 0.0]);
+  mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, 0.5]);
   //mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.5, [1.0, 0.0, 0.0]);
   let scene_matrix = mat4.create();
-  mat4.rotate(scene_matrix, scene_matrix, time * 0.018403, [1.0, 0.0, 0.0]);
-  mat4.rotate(scene_matrix, scene_matrix, time * 0.023485, [0.0, 1.0, 0.0]);
-  mat4.rotate(scene_matrix, scene_matrix, time * 0.047634, [0.0, 0.0, 1.0]);
+  //mat4.rotate(scene_matrix, scene_matrix, time * 0.018403, [1.0, 0.0, 0.0]);
+  //mat4.rotate(scene_matrix, scene_matrix, time * 0.023485, [0.0, 1.0, 0.0]);
+  //mat4.rotate(scene_matrix, scene_matrix, time * 0.047634, [0.0, 0.0, 1.0]);
   let normal_matrix = mat3.create();
   mat3.normalFromMat4(normal_matrix, scene_matrix);
   
@@ -326,9 +327,7 @@ function resizeHandler() {
 
 var time = 0;
 
-function tick() {
-  time++;
-  
+function orbee_interactions() {
   for(let i = 0; i < orbeez.length; i++) {
     let orbie = orbeez[i];
     for(let j = i + 1; j < orbeez.length; j++) {
@@ -350,6 +349,22 @@ function tick() {
       }
     }
   }
+  orbeez.forEach(orbie => {
+    orbie.dx += orbie.dx_next;
+    orbie.dy += orbie.dy_next;
+    orbie.dz += orbie.dz_next;
+    orbie.dx_next = 0;
+    orbie.dy_next = 0;
+    orbie.dz_next = 0;
+  });
+}
+
+function tick() {
+  time++;
+  
+  for(let i = 0; i < 2; i++) {
+    orbee_interactions();
+  }
   
   
   orbeez.forEach(orbie => {
@@ -364,12 +379,6 @@ function tick() {
       orbie.dy -= (orbie.y + orbie.dy) / distance * (distance + orbie_radius - 2);
       orbie.dz -= (orbie.z + orbie.dz) / distance * (distance + orbie_radius - 2);
     }
-    orbie.dx += orbie.dx_next;
-    orbie.dy += orbie.dy_next;
-    orbie.dz += orbie.dz_next;
-    orbie.dx_next = 0;
-    orbie.dy_next = 0;
-    orbie.dz_next = 0;
     orbie.x += orbie.dx;
     orbie.y += orbie.dy; //speed in hexametres per second?
     orbie.z += orbie.dz;
