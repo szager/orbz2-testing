@@ -49,7 +49,7 @@ function normalize(abnormals) {
 
 normalize(orbee_model.normals);
 
-for (let i = 0; i < 2000; i++) {
+for (let i = 0; i < 1000; i++) {
   orbeez.push(
     new orbee(
       Math.random() * 3.5 - 1.75,
@@ -125,7 +125,7 @@ var vs_source = `
   attribute vec3 position;
   attribute vec3 normal;
   attribute float object_index;
-  uniform vec3 object_positions[2002];
+  uniform vec3 object_positions[1002];
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   varying highp vec3 transformed_normal;
