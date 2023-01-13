@@ -39,10 +39,10 @@ var orbee_model = {
     0, ico_coord_a * -0.1, ico_coord_b * -0.1,
     0, ico_coord_a * +0.1, ico_coord_b * -0.1,
     
-    ico_coord_a * +0.1, ico_coord_b * +0.1,
-    ico_coord_a * -0.1, ico_coord_b * +0.1,
-    ico_coord_a * -0.1, ico_coord_b * -0.1,
-    ico_coord_a * +0.1, ico_coord_b * -0.1,
+    ico_coord_a * +0.1, ico_coord_b * +0.1, 0,
+    ico_coord_a * -0.1, ico_coord_b * +0.1, 0,
+    ico_coord_a * -0.1, ico_coord_b * -0.1, 0,
+    ico_coord_a * +0.1, ico_coord_b * -0.1, 0,
     
     ico_coord_a * +0.1, 0, ico_coord_b * +0.1,
     ico_coord_a * -0.1, 0, ico_coord_b * +0.1,
@@ -52,16 +52,30 @@ var orbee_model = {
     
   ],
   normals: [
-    -1, -1, -1,
-    1, -1, 1,
-    -1, 1, 1,
-    1, 1, -1
+    0, +ico_coord_a, +ico_coord_b, //0
+    0, -ico_coord_a, +ico_coord_b, //1
+    0, -ico_coord_a, -ico_coord_b, //2
+    0, +ico_coord_a, -ico_coord_b, //3
+    
+    +ico_coord_a, +ico_coord_b, 0, //4
+    -ico_coord_a, +ico_coord_b, 0, //5
+    -ico_coord_a, -ico_coord_b, 0, //6
+    +ico_coord_a, -ico_coord_b, 0, //7
+    
+    +ico_coord_a, 0, +ico_coord_b, //8
+    -ico_coord_a, 0, +ico_coord_b, //9
+    -ico_coord_a, 0, -ico_coord_b, //10
+    +ico_coord_a, 0, -ico_coord_b, //11
   ],
   faces: [
-    0, 1, 2,
-    0, 1, 3,
-    0, 2, 3,
-    1, 2, 3
+    0, 1, 4,
+    0, 1, 5,
+    0, 4, 5,
+    1, 4, 5,
+    0, 1, 4,
+    0, 1, 5,
+    0, 4, 5,
+    1, 4, 5,
   ],
 };
 
@@ -80,7 +94,7 @@ function normalize(abnormals) {
 
 normalize(orbee_model.normals);
 
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < 1; i++) {
   orbeez.push(
     new orbee(
       Math.random() * 3.5 - 1.75,
@@ -156,7 +170,7 @@ var vs_source = `
   attribute vec3 position;
   attribute vec3 normal;
   attribute float object_index;
-  uniform vec3 object_positions[1002];
+  uniform vec3 object_positions[3];
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   varying highp vec3 transformed_normal;
@@ -227,8 +241,8 @@ function draw_scene() {
     min_distance,
     max_distance
   );
-  mat4.translate(camera_matrix, camera_matrix, [0.0, -1.5, -12.0]);
-  mat4.rotate(camera_matrix, camera_matrix, Math.PI * -0.25, [1.0, 0.0, 0.0]);
+  mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -1.0]);
+  //mat4.rotate(camera_matrix, camera_matrix, Math.PI * -0.25, [1.0, 0.0, 0.0]);
   //mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -10.0]);
   //mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.5, [1.0, 0.0, 0.0]);
   let scene_matrix = mat4.create();
