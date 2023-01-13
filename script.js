@@ -44,10 +44,10 @@ var orbee_model = {
     ico_coord_a * -0.1, ico_coord_b * -0.1, 0,
     ico_coord_a * +0.1, ico_coord_b * -0.1, 0,
     
-    ico_coord_a * +0.1, 0, ico_coord_b * +0.1,
-    ico_coord_a * -0.1, 0, ico_coord_b * +0.1,
-    ico_coord_a * -0.1, 0, ico_coord_b * -0.1,
-    ico_coord_a * +0.1, 0, ico_coord_b * -0.1,
+    ico_coord_b * +0.1, 0, ico_coord_a * +0.1,
+    ico_coord_b * +0.1, 0, ico_coord_a * -0.1,
+    ico_coord_b * -0.1, 0, ico_coord_a * -0.1,
+    ico_coord_b * -0.1, 0, ico_coord_a * +0.1,
     
     
   ],
@@ -62,10 +62,10 @@ var orbee_model = {
     -ico_coord_a, -ico_coord_b, 0, //6
     +ico_coord_a, -ico_coord_b, 0, //7
     
-    +ico_coord_a, 0, +ico_coord_b, //8
-    -ico_coord_a, 0, +ico_coord_b, //9
-    -ico_coord_a, 0, -ico_coord_b, //10
-    +ico_coord_a, 0, -ico_coord_b, //11
+    +ico_coord_b, 0, +ico_coord_a, //8
+    +ico_coord_b, 0, -ico_coord_a, //9
+    -ico_coord_b, 0, -ico_coord_a, //10
+    -ico_coord_b, 0, +ico_coord_a, //11
   ],
   faces: [
     0, 3, 4,
@@ -74,11 +74,8 @@ var orbee_model = {
     1, 2, 6,
     1, 2, 7,
     
-    4, 6, 0,
-    4, 6, 1,
-    
-    5, 7, 2,
-    5, 7, 3,
+    4, 7, 8,
+    4, 7, 8,
   ],
 };
 
