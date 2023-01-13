@@ -32,6 +32,9 @@ var traction = 0.2;
 var restitution = 0.4;
 var orbie_radius = 0.1;
 
+var cursor_screen_pos = [0, 0, 0];
+var cursor_scene_pos = [0, 0, 0];
+
 var orbee_model = {
   positions: [
     0, ico_coord_a * +0.1, ico_coord_b * +0.1,
@@ -360,7 +363,7 @@ function orbee_interactions() {
 function tick() {
   time++;
   
-  for(let i = 0; i < 8; i++) { //the speed of sound in orbeez is 9.6 m/s
+  for(let i = 0; i < 16; i++) { //the speed of sound in orbeez is 9.6 m/s
     orbee_interactions();
   }
   
