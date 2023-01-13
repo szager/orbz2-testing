@@ -68,14 +68,17 @@ var orbee_model = {
     +ico_coord_a, 0, -ico_coord_b, //11
   ],
   faces: [
-    0, 1, 4,
-    0, 1, 5,
-    0, 4, 5,
-    1, 4, 5,
-    0, 1, 4,
-    0, 1, 5,
-    0, 4, 5,
-    1, 4, 5,
+    0, 3, 4,
+    0, 3, 5,
+    
+    1, 2, 6,
+    1, 2, 7,
+    
+    4, 6, 0,
+    4, 6, 1,
+    
+    5, 7, 2,
+    5, 7, 3,
   ],
 };
 
@@ -140,7 +143,7 @@ function add_to_scene(model, object_index) {
   });
 }
 for (let i = 0; i < orbeez.length; i++) {
-  add_to_scene(orbee_model, i + 2);
+  add_to_scene(orbee_model, 0);
 }
 
 var vertex_count = positions.length / 3;
@@ -246,6 +249,9 @@ function draw_scene() {
   //mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -10.0]);
   //mat4.rotate(camera_matrix, camera_matrix, Math.PI * 0.5, [1.0, 0.0, 0.0]);
   let scene_matrix = mat4.create();
+  mat4.rotate(scene_matrix, scene_matrix, time * 0.018403, [1.0, 0.0, 0.0]);
+  mat4.rotate(scene_matrix, scene_matrix, time * 0.023485, [0.0, 1.0, 0.0]);
+  mat4.rotate(scene_matrix, scene_matrix, time * 0.047634, [0.0, 0.0, 1.0]);
   gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
   gl.vertexAttribPointer(
     program_info.attribute_locations.position,
