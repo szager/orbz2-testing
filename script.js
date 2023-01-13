@@ -340,7 +340,7 @@ function orbee_interactions() {
       if(dx < orbie_radius * 2 && dy < orbie_radius * 2 && dz < orbie_radius * 2) {
         let distance = (dx**2 + dy**2 + dz**2)**.5;
         if(distance < orbie_radius * 2) {
-          let force_multiplier = (distance - orbie_radius * 2) * .02 / distance;
+          let force_multiplier = (distance - orbie_radius * 2) * .04 / distance;
           orbie.dx_next -= dx * force_multiplier;
           orbie.dy_next -= dy * force_multiplier;
           orbie.dz_next -= dz * force_multiplier;
