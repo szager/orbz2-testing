@@ -85,6 +85,11 @@ var orbee_model = {
     
     9, 10, 2,
     9, 10, 3,
+    
+    0, 4, 8,
+    3, 4, 9,
+    1, 7, 8,
+    2, 7, 9,
   ],
 };
 
@@ -184,7 +189,7 @@ var vs_source = `
   uniform mat4 camera_matrix;
   varying highp vec3 transformed_normal;
   void main(void) {
-    transformed_normal = normalize(vec4(normal, 0.0) * scene_matrix).xyz;
+    transformed_normal = normalize(vec4(normal, 1.0) * scene_matrix).xyz;
     mediump int int_object_index = int(object_index);
     gl_Position = camera_matrix * scene_matrix * vec4(position + object_positions[int_object_index], 1.0);
   }
