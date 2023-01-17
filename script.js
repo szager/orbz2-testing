@@ -433,8 +433,7 @@ function mousemove_handler(e) {
   let screen_y = e.clientY - canvas_rect.top;
   let gl_x = screen_x * 2 / game_canvas.width + game_canvas.width / 2;
   let gl_y = screen_y * 2 / game_canvas.height + game_canvas.height / 2;
-  
-  cursor_scene_pos[0] = Mat4.multiply();
+  cursor_scene_pos = [gl_x, gl_y, -1.5, 1];
   
   cursor_screen_pos[0] = e.clientX - canvas_rect.left;
   cursor_screen_pos[1] = e.clientY - canvas_rect.top;
