@@ -382,7 +382,10 @@ function tick() {
       let dz = orbie.z + orbie.dz - cursor_scene_pos[2];
       let distance = get_distance(dx, dy, dz);
       if(distance < cursor_radius + orbie_radius) {
-        let force_distance_ratio = (dis)
+        let force_distance_ratio = (distance - orbie_radius - cursor_radius) / distance;
+        orbie.dx -= dx * force_distance_ratio;
+        orbie.dy -= dy * force_distance_ratio;
+        orbie.dz -= dz * force_distance_ratio;
       }
     }
     
@@ -418,8 +421,15 @@ function tick() {
 }
 
 function mousemove_handler(e) {
-  cursor_screen_pos[0] = e.clientX;
-  cursor_screen_pos[1] = e.clientY;
+  let canvas_rect = game_canvas.getBoundingClientRect();
+  let screen_x = e.clientX - canvas_rect.left;
+  let screen_y = e.clientY - canvas_rect.top;
+  cursor_scene_pos[0] = screen_x * .0003125 - cursor_screen_pos[0] * .000625;
+  cursor_scene_pos[1] = screen_y * .0003125 - cursor_screen_pos[1] * .000625;
+  cursor_scene_pos[2] = -2;
+  
+  cursor_screen_pos[0] = e.clientX - canvas_rect.left;
+  cursor_screen_pos[1] = e.clientY - canvas_rect.top;
 }
 
 function mousedown_handler() {
