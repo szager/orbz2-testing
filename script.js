@@ -241,7 +241,7 @@ gl.clearColor(0.0, 0.0, 0.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 
 
-var cursor_matrix = mat4.create();
+//var cursor_matrix = mat4.create();
 
 function draw_scene() {
   gl.clearColor(0.96, 0.96, 0.96, 1.0);
@@ -267,8 +267,8 @@ function draw_scene() {
   let normal_matrix = mat3.create();
   mat3.normalFromMat4(normal_matrix, scene_matrix);
   
-  mat4.multiply(cursor_matrix, scene_matrix, camera_matrix);
-  mat4.invert(cursor_matrix, cursor_matrix);
+  //mat4.multiply(cursor_matrix, scene_matrix, camera_matrix);
+  //mat4.invert(cursor_matrix, cursor_matrix);
   
   
   gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
@@ -429,12 +429,12 @@ function tick() {
 
 function mousemove_handler(e) {
   let canvas_rect = game_canvas.getBoundingClientRect();
-  
   let screen_x = e.clientX - canvas_rect.left;
   let screen_y = e.clientY - canvas_rect.top;
+  let gl_x = screen_x * 2 / game_canvas.width + game_canvas.width / 2;
+  let gl_y = screen_y * 2 / game_canvas.height + game_canvas.height / 2;
   
-  
-  cursor_scene_pos = [screen_x * 2 - cursor_screen_pos[0], screen_y * 2 - cursor_screen_pos[0], 0.5, 1.0];
+  cursor_scene_pos[0] = Mat4.multiply();
   
   cursor_screen_pos[0] = e.clientX - canvas_rect.left;
   cursor_screen_pos[1] = e.clientY - canvas_rect.top;
