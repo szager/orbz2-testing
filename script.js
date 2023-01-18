@@ -240,8 +240,9 @@ var program_info = {
 gl.clearColor(0.0, 0.0, 0.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 
-
-
+function stupid_function_:((){
+  var cursor_matrix = mat4.create();
+}();
 
 function draw_scene() {
   gl.clearColor(0.96, 0.96, 0.96, 1.0);
