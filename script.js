@@ -33,8 +33,6 @@ var restitution = 0.4;
 var orbie_radius = 0.1;
 var cursor_radius = .75;
 
-var cursor_screen_pos = [0, 0, 0];
-var cursor_scene_pos = [0, 0, 0];
 var mouse_down = false;
 
 var orbee_model = {
@@ -240,9 +238,13 @@ var program_info = {
 gl.clearColor(0.0, 0.0, 0.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 
-function stupid_function_:((){
+function stupid_function(){
   var cursor_matrix = mat4.create();
-}();
+  var cursor_screen_pos = vec4.create();
+  var cursor_scene_pos = vec4.create();
+  alert(String(cursor_matrix));
+  tick();
+}
 
 function draw_scene() {
   gl.clearColor(0.96, 0.96, 0.96, 1.0);
@@ -385,9 +387,9 @@ function tick() {
     orbie.dz *= .98;
     
     if(mouse_down) {
-      let dx = orbie.x + orbie.dx - cursor_scene_pos[0];
-      let dy = orbie.y + orbie.dy - cursor_scene_pos[1];
-      let dz = orbie.z + orbie.dz - cursor_scene_pos[2];
+      let dx = orbie.x + orbie.dx - cursor_scene_pos.x;
+      let dy = orbie.y + orbie.dy - cursor_scene_pos.y;
+      let dz = orbie.z + orbie.dz - cursor_scene_pos.z;
       let distance = get_distance(dx, dy, dz);
       if(distance < cursor_radius + orbie_radius) {
         let force_distance_ratio = (distance - orbie_radius - cursor_radius) / distance;
@@ -432,12 +434,15 @@ function mousemove_handler(e) {
   let canvas_rect = game_canvas.getBoundingClientRect();
   let screen_x = e.clientX - canvas_rect.left;
   let screen_y = e.clientY - canvas_rect.top;
-  let gl_x = screen_x / game_canvas.width - 0.5;
-  let gl_y = screen_y / game_canvas.height - 0.5;
-  cursor_scene_pos = [gl_x, gl_y, -1.5, 1];
+  let gl_pos = vec4.create();
+  gl_pos[0] = screen_x / game_canvas.width - 0.5;
+  gl_pos[1] = screen_y / game_canvas.height - 0.5;
   
-  cursor_screen_pos[0] = screen_x;
-  cursor_screen_pos[1] = screen_y;
+  
+  vec4.transformmat4(cursor_scene_pos, gl_pos, cursor_matrix);
+  
+  cursor_screen_pos[0] = e.clientX - canvas_rect.left;
+  cursor_screen_pos[1] = e.clientY - canvas_rect.top;
 }
 
 function mousedown_handler() {
@@ -450,7 +455,7 @@ function mouseup_handler() {
 
 
 window.onresize = resizeHandler;
-window.onload = tick;
+window.onload = stupid_function;
 window.onmousedown = mousedown_handler;
 window.onmouseup = mouseup_handler;
 window.onmousemove = mousemove_handler;
