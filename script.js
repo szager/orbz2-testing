@@ -242,7 +242,6 @@ function stupid_function(){
   var cursor_matrix = mat4.create();
   var cursor_screen_pos = vec4.create();
   var cursor_scene_pos = vec4.create();
-  alert(String(cursor_matrix));
   tick();
 }
 
@@ -440,8 +439,7 @@ function mousemove_handler(e) {
   gl_pos[2] = 0.5;
   gl_pos[3] = 1.0;
   
-  vec4.transformmat4(cursor_scene_pos, gl_pos, cursor_matrix);
-  
+  vec4.transformMat4(cursor_scene_pos, gl_pos, cursor_matrix);
   
   cursor_screen_pos[0] = (e.clientX - canvas_rect.left);
   cursor_screen_pos[1] = (e.clientY - canvas_rect.top);
