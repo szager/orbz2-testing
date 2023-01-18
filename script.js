@@ -387,9 +387,9 @@ function tick() {
     orbie.dz *= .98;
     
     if(mouse_down) {
-      let dx = orbie.x + orbie.dx - cursor_scene_pos.x;
-      let dy = orbie.y + orbie.dy - cursor_scene_pos.y;
-      let dz = orbie.z + orbie.dz - cursor_scene_pos.z;
+      let dx = orbie.x + orbie.dx - cursor_scene_pos[0];
+      let dy = orbie.y + orbie.dy - cursor_scene_pos[1];
+      let dz = orbie.z + orbie.dz - cursor_scene_pos[2];
       let distance = get_distance(dx, dy, dz);
       if(distance < cursor_radius + orbie_radius) {
         let force_distance_ratio = (distance - orbie_radius - cursor_radius) / distance;
@@ -435,14 +435,16 @@ function mousemove_handler(e) {
   let screen_x = e.clientX - canvas_rect.left;
   let screen_y = e.clientY - canvas_rect.top;
   let gl_pos = vec4.create();
-  gl_pos[0] = screen_x / game_canvas.width - 0.5;
-  gl_pos[1] = screen_y / game_canvas.height - 0.5;
-  
+  gl_pos[0] = (screen_x / game_canvas.width - 0.5);
+  gl_pos[1] = (screen_y / game_canvas.height - 0.5);
+  gl_pos[2] = 0.5;
+  gl_pos[3] = 1.0;
   
   vec4.transformmat4(cursor_scene_pos, gl_pos, cursor_matrix);
   
-  cursor_screen_pos[0] = e.clientX - canvas_rect.left;
-  cursor_screen_pos[1] = e.clientY - canvas_rect.top;
+  
+  cursor_screen_pos[0] = (e.clientX - canvas_rect.left);
+  cursor_screen_pos[1] = (e.clientY - canvas_rect.top);
 }
 
 function mousedown_handler() {
