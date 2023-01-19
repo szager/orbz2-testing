@@ -32,7 +32,7 @@ var traction = 0.2;
 var restitution = 0.4;
 var orbie_radius = 0.1;
 var cursor_radius = .75;
-
+var cursor_screen_pos = [0, 0];
 var mouse_down = false;
 
 var orbee_model = {
@@ -238,12 +238,6 @@ var program_info = {
 gl.clearColor(0.0, 0.0, 0.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 
-function stupid_function(){
-  var cursor_matrix = mat4.create();
-  var cursor_screen_pos = vec4.create();
-  tick();
-}
-
 function draw_scene() {
   gl.clearColor(0.96, 0.96, 0.96, 1.0);
   gl.clearDepth(1.0);
@@ -267,9 +261,6 @@ function draw_scene() {
   //mat4.rotate(scene_matrix, scene_matrix, time * 0.047634, [0.0, 0.0, 1.0]);
   let normal_matrix = mat3.create();
   mat3.normalFromMat4(normal_matrix, scene_matrix);
-  
-  //mat4.multiply(cursor_matrix, scene_matrix, camera_matrix);
-  //mat4.invert(cursor_matrix, cursor_matrix);
   
   
   gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
@@ -349,13 +340,13 @@ function orbee_interactions() {
       if(dx < orbie_radius * 2 && dy < orbie_radius * 2 && dz < orbie_radius * 2) {
         let distance = (dx**2 + dy**2 + dz**2)**.5;
         if(distance < orbie_radius * 2) {
-          let force_multiplier = (distance - orbie_radius * 2) * .04 / distance;
-          orbie.dx_next -= dx * force_multiplier;
-          orbie.dy_next -= dy * force_multiplier;
-          orbie.dz_next -= dz * force_multiplier;
-          other_orbie.dx_next += dx * force_multiplier;
-          other_orbie.dy_next += dy * force_multiplier;
-          other_orbie.dz_next += dz * force_multiplier;
+          let force_distance_ratio = (distance - orbie_radius * 2) * .03 / distance;
+          orbie.dx_next -= dx * force_distance_ratio;
+          orbie.dy_next -= dy * force_distance_ratio;
+          orbie.dz_next -= dz * force_distance_ratio;
+          other_orbie.dx_next += dx * force_distance_ratio;
+          other_orbie.dy_next += dy * force_distance_ratio;
+          other_orbie.dz_next += dz * force_distance_ratio;
         }
       }
     }
@@ -385,9 +376,11 @@ function tick() {
     orbie.dz *= .98;
     
     if(mouse_down) {
-      let dx = orbie.x + orbie.dx - cursor_scene_pos[0];
-      let dy = orbie.y + orbie.dy - cursor_scene_pos[1];
-      let dz = orbie.z + orbie.dz - cursor_scene_pos[2];
+      
+      let dx = orbie.x + orbie.dx - cursor_screen_pos[0] * .01;
+      let dy = orbie.y + orbie.dy - cursor_screen_pos[1] * .01;
+      let dz = orbie.z + orbie.dz + 2;
+      
       let distance = get_distance(dx, dy, dz);
       if(distance < cursor_radius + orbie_radius) {
         let force_distance_ratio = (distance - orbie_radius - cursor_radius) / distance;
@@ -430,18 +423,8 @@ function tick() {
 
 function mousemove_handler(e) {
   let canvas_rect = game_canvas.getBoundingClientRect();
-  let screen_x = e.clientX - canvas_rect.left;
-  let screen_y = e.clientY - canvas_rect.top;
-  let gl_pos = vec4.create();
-  gl_pos[0] = (screen_x / game_canvas.width - 0.5);
-  gl_pos[1] = (screen_y / game_canvas.height - 0.5);
-  gl_pos[2] = 0.5;
-  gl_pos[3] = 1.0;
-  
-  vec4.transformMat4(cursor_scene_pos, gl_pos, cursor_matrix);
-  
-  cursor_screen_pos[0] = (e.clientX - canvas_rect.left);
-  cursor_screen_pos[1] = (e.clientY - canvas_rect.top);
+  cursor_screen_pos[0] = e.clientX - (canvas_rect.left + canvas_rect.right) * 0.5;
+  cursor_screen_pos[1] = e.clientY - (canvas_rect.top + canvas_rect.bottom) * 0.5; //multiplication is easier than division
 }
 
 function mousedown_handler() {
@@ -454,7 +437,7 @@ function mouseup_handler() {
 
 
 window.onresize = resizeHandler;
-window.onload = stupid_function;
+window.onload = tick;
 window.onmousedown = mousedown_handler;
 window.onmouseup = mouseup_handler;
 window.onmousemove = mousemove_handler;
