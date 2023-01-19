@@ -32,7 +32,7 @@ var traction = 0.2;
 var restitution = 0.4;
 var orbie_radius = 0.1;
 var cursor_radius = .75;
-var cursor_screen_pos = [0, 0];
+var cursor_screen_pos = [0, 0, 0.7];
 var mouse_down = false;
 
 var orbee_model = {
@@ -103,7 +103,7 @@ function normalize(abnormals) {
 
 normalize(orbee_model.normals);
 
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < 100; i++) {
   orbeez.push(
     new orbee(
       Math.random() * 1 - .5,
@@ -179,7 +179,7 @@ var vs_source = `
   attribute vec3 position;
   attribute vec3 normal;
   attribute float object_index;
-  uniform vec3 object_positions[1002];
+  uniform vec3 object_positions[102];
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   uniform mat3 normal_matrix;
@@ -371,15 +371,15 @@ function tick() {
   
   orbeez.forEach(orbie => {
     orbie.dz -= .01;
-    orbie.dx *= .98;
-    orbie.dy *= .98;
-    orbie.dz *= .98;
+    orbie.dx *= .99;
+    orbie.dy *= .99;
+    orbie.dz *= .99;
     
     if(mouse_down) {
       
       let dx = orbie.x + orbie.dx - cursor_screen_pos[0] * .01;
       let dy = orbie.y + orbie.dy - cursor_screen_pos[1] * .01;
-      let dz = orbie.z + orbie.dz + 2;
+      let dz = orbie.z + orbie.dz - cursor_screen_pos[2] * -2;
       
       let distance = get_distance(dx, dy, dz);
       if(distance < cursor_radius + orbie_radius) {
