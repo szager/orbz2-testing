@@ -241,7 +241,6 @@ gl.clear(gl.COLOR_BUFFER_BIT);
 function stupid_function(){
   var cursor_matrix = mat4.create();
   var cursor_screen_pos = vec4.create();
-  var cursor_scene_pos = vec4.create();
   tick();
 }
 
