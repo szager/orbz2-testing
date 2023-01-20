@@ -28,7 +28,7 @@ function get_distance(dx, dy, dz) {
 
 var orbeez = [];
 
-var camera_rotation = [-2, 0, -2];
+var camera_rotation = [0.3, -0.5, -5.0];
 var camera_translation = [-2, -2, -2];
 
 var object_positions = [0, 0, 0, 0, 0, 0];
@@ -204,7 +204,7 @@ var fs_source = `
 `;
 
 var aspect_ratio = game_canvas.width / game_canvas.height;
-var fov = 0.7;
+var fov = 0.8;
 var min_distance = 0.1;
 var max_distance = 100;
 
