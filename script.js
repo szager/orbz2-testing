@@ -28,8 +28,8 @@ function get_distance(dx, dy, dz) {
 
 var orbeez = [];
 
-var camera_rotation = [0.3, -0.5, -5.0];
-var camera_translation = [-2, -2, -2];
+var camera_rotation = [-1.0, 0, 3.1];//euler xyz
+var camera_translation = [0, -3, -1];
 
 var object_positions = [0, 0, 0, 0, 0, 0];
 var traction = 0.2;
@@ -257,7 +257,9 @@ function draw_scene() {
     min_distance,
     max_distance
   );
-  mat4.rotate(camera_matrix, camera_matrix, get_distance.apply(null,camera_rotation), camera_rotation);
+  mat4.rotate(camera_matrix, camera_matrix, camera_rotation[0], [1, 0, 0]);
+  mat4.rotate(camera_matrix, camera_matrix, camera_rotation[1], [0, 1, 0]);
+  mat4.rotate(camera_matrix, camera_matrix, camera_rotation[2], [0, 0, 1]);
   mat4.translate(camera_matrix, camera_matrix, camera_translation);
   let scene_matrix = mat4.create();
   //mat4.rotate(scene_matrix, scene_matrix, time * 0.018403, [1.0, 0.0, 0.0]);
