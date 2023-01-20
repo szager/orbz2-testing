@@ -431,11 +431,18 @@ function mousemove_handler(e) {
   let canvas_rect = game_canvas.getBoundingClientRect();
   cursor_screen_pos[0] = e.clientX - (canvas_rect.left + canvas_rect.right) * 0.5;
   cursor_screen_pos[1] = e.clientY - (canvas_rect.top + canvas_rect.bottom) * 0.5; //multiplication is easier than division
+  let sinx = Math.sin(camera_rotation[0]);
+  let siny = Math.sin(camera_rotation[0]);
+  let sinz = Math.sin(camera_rotation[0]);
+  let cosx = Math.cos(camera_rotation[0]);
+  let cosy = Math.cos(camera_rotation[0]);
+  let cosz = Math.cos(camera_rotation[0]);
+  
   let camera_matrix = [
-    [Math.sin(camera_rotation[0co])],
-    [],
-    []
-  ]
+    [cosy * cosz, sinx * sinz, sinx * siny],
+    [siny * sinz, cosx * cosz, sinx * siny],
+    [siny * sinz, sinx * sinz, cosx * cosy]
+  ]; //i hope this works
 }
 
 function mousedown_handler() {
