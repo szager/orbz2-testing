@@ -429,8 +429,13 @@ function tick() {
 
 function mousemove_handler(e) {
   let canvas_rect = game_canvas.getBoundingClientRect();
-  //cursor_screen_pos[0] = e.clientX - (canvas_rect.left + canvas_rect.right) * 0.5;
-  //cursor_screen_pos[1] = e.clientY - (canvas_rect.top + canvas_rect.bottom) * 0.5; //multiplication is easier than division
+  cursor_screen_pos[0] = e.clientX - (canvas_rect.left + canvas_rect.right) * 0.5;
+  cursor_screen_pos[1] = e.clientY - (canvas_rect.top + canvas_rect.bottom) * 0.5; //multiplication is easier than division
+  let camera_matrix = [
+    [Math.sin(camera_rotation[0co])],
+    [],
+    []
+  ]
 }
 
 function mousedown_handler() {
