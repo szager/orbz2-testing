@@ -27,12 +27,17 @@ function get_distance(dx, dy, dz) {
 }
 
 var orbeez = [];
+
+var camera_rotation = [-2, 0, -2];
+var camera_translation = [-2, -2, -2];
+
 var object_positions = [0, 0, 0, 0, 0, 0];
 var traction = 0.2;
 var restitution = 0.4;
 var orbie_radius = 0.1;
 var cursor_radius = .75;
-var cursor_screen_pos = [0, 0, 0.7];
+var cursor_screen_pos = [0, 0];
+var cursor_scene_pos = [0, 0, 0];
 var mouse_down = false;
 
 var orbee_model = {
@@ -252,9 +257,8 @@ function draw_scene() {
     min_distance,
     max_distance
   );
-  mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, -6.0]);
-  mat4.rotate(camera_matrix, camera_matrix, Math.PI * -0.25, [1.0, 0.0, 0.0]);
-  mat4.translate(camera_matrix, camera_matrix, [0.0, 0.0, 0.5]);
+  mat4.rotate(camera_matrix, camera_matrix, get_distance.apply(null,camera_rotation), camera_rotation);
+  mat4.translate(camera_matrix, camera_matrix, camera_translation);
   let scene_matrix = mat4.create();
   //mat4.rotate(scene_matrix, scene_matrix, time * 0.018403, [1.0, 0.0, 0.0]);
   //mat4.rotate(scene_matrix, scene_matrix, time * 0.023485, [0.0, 1.0, 0.0]);
@@ -423,8 +427,8 @@ function tick() {
 
 function mousemove_handler(e) {
   let canvas_rect = game_canvas.getBoundingClientRect();
-  cursor_screen_pos[0] = e.clientX - (canvas_rect.left + canvas_rect.right) * 0.5;
-  cursor_screen_pos[1] = e.clientY - (canvas_rect.top + canvas_rect.bottom) * 0.5; //multiplication is easier than division
+  //cursor_screen_pos[0] = e.clientX - (canvas_rect.left + canvas_rect.right) * 0.5;
+  //cursor_screen_pos[1] = e.clientY - (canvas_rect.top + canvas_rect.bottom) * 0.5; //multiplication is easier than division
 }
 
 function mousedown_handler() {
