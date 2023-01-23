@@ -445,11 +445,25 @@ function mousemove_handler(e) {
   ];
   
   let y_matrix = [
-    [1, 0, 0],
-    [],
-    []
-  ]
-  
+    [cosy, 0, siny],
+    [0, 1, 0],
+    [siny, 0, cosy]
+  ];
+  let xy_matrix = [
+    [cosy, 0, siny],
+    [sinx * siny, cosx, sinx * cosy],
+    [cosx * siny, sinx, cosx * cosy]
+  ];
+  let z_matrix = [
+    [cosz, sinz, 0],
+    [sinz, cosz, 0],
+    [0, 0, 1]
+  ];
+  let xyz_matrix = [
+    [cosy * cosz, cosy * sinz, siny],
+    [sinx * siny, cosx, sinx * cosy],
+    [cosx * siny, sinx, cosx * cosy]
+  ];
   
   let camera_matrix = [
     [cosy * cosz, sinx * sinz, sinx * siny],
