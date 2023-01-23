@@ -108,7 +108,7 @@ function normalize(abnormals) {
 
 normalize(orbee_model.normals);
 
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < 100; i++) {
   orbeez.push(
     new orbee(
       Math.random() * 1 - .5,
@@ -184,7 +184,7 @@ var vs_source = `
   attribute vec3 position;
   attribute vec3 normal;
   attribute float object_index;
-  uniform vec3 object_positions[1002];
+  uniform vec3 object_positions[102];
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   uniform mat3 normal_matrix;
@@ -429,8 +429,9 @@ function tick() {
 
 function mousemove_handler(e) {
   let canvas_rect = game_canvas.getBoundingClientRect();
-  cursor_screen_pos[0] = (e.clientX - canvas_rect.left - canvas_rect.width / 2) / canvas_rect.width;
-  cursor_screen_pos[1] = (e.clientY - canvas_rect.top - canvas_rect.height / 2) / canvas_rect.width;
+  cursor_screen_pos[0] = (e.clientX - canvas_rect.left - canvas_rect.width * 0.5) * Math.tan(fov) * 8 / canvas_rect.width;
+  cursor_screen_pos[1] = (e.clientY - canvas_rect.top - canvas_rect.height * 0.5) * Math.tan(fov) * -8 / canvas_rect.width;
+  cursor_screen_pos[2] = 4;
   let sinx = Math.sin(camera_rotation[0]);
   let siny = Math.sin(camera_rotation[1]);
   let sinz = Math.sin(camera_rotation[2]);
