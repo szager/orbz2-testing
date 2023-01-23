@@ -36,7 +36,7 @@ var traction = 0.2;
 var restitution = 0.4;
 var orbie_radius = 0.1;
 var cursor_radius = .75;
-var cursor_screen_pos = [0, 0];
+var cursor_screen_pos = [0, 0, 1];
 var cursor_scene_pos = [0, 0, 0];
 var mouse_down = false;
 
@@ -383,8 +383,8 @@ function tick() {
     
     if(mouse_down) {
       
-      let dx = orbie.x + orbie.dx - cursor_screen_pos[0] * .01;
-      let dy = orbie.y + orbie.dy - cursor_screen_pos[1] * .01;
+      let dx = orbie.x + orbie.dx - cursor_screen_pos[0];
+      let dy = orbie.y + orbie.dy - cursor_screen_pos[1];
       let dz = orbie.z + orbie.dz - cursor_screen_pos[2] * -2;
       
       let distance = get_distance(dx, dy, dz);
@@ -429,14 +429,27 @@ function tick() {
 
 function mousemove_handler(e) {
   let canvas_rect = game_canvas.getBoundingClientRect();
-  cursor_screen_pos[0] = e.clientX - (canvas_rect.left + canvas_rect.right) * 0.5;
-  cursor_screen_pos[1] = e.clientY - (canvas_rect.top + canvas_rect.bottom) * 0.5; //multiplication is easier than division
+  cursor_screen_pos[0] = (e.clientX - canvas_rect.left - canvas_rect.width / 2) / canvas_rect.width;
+  cursor_screen_pos[1] = (e.clientY - canvas_rect.top - canvas_rect.height / 2) / canvas_rect.width;
   let sinx = Math.sin(camera_rotation[0]);
   let siny = Math.sin(camera_rotation[0]);
   let sinz = Math.sin(camera_rotation[0]);
   let cosx = Math.cos(camera_rotation[0]);
   let cosy = Math.cos(camera_rotation[0]);
   let cosz = Math.cos(camera_rotation[0]);
+  
+  let x_matrix = [
+    [1, 0, 0],
+    [0, cosx, sinx],
+    [0, sinx, cosx]
+  ];
+  
+  let y_matrix = [
+    [1, 0, 0],
+    [],
+    []
+  ]
+  
   
   let camera_matrix = [
     [cosy * cosz, sinx * sinz, sinx * siny],
