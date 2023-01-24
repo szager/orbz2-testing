@@ -403,9 +403,9 @@ function tick() {
   
   orbeez.forEach(orbie => {
     orbie.dz -= .01;
-    orbie.dx *= .99;
-    orbie.dy *= .99;
-    orbie.dz *= .99;
+    orbie.dx *= .97;
+    orbie.dy *= .97;
+    orbie.dz *= .97;
     
     if(mouse_down) {
       
