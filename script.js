@@ -95,10 +95,10 @@ var orbee_model = {
 
 var cursor_model = {
   positions: [
-    -1, -1, -1,
-    -1, +1, +1,
-    +1, +1, -1,
-    +1, -1, +1,
+    -.5, -.5, -.5,
+    -.5, +.5, +.5,
+    +.5, +.5, -.5,
+    +.5, -.5, +.5,
   ],
   normals: [
     -1, -1, -1,
@@ -411,7 +411,7 @@ function tick() {
       
       let dx = orbie.x + orbie.dx - cursor_scene_pos[0];
       let dy = orbie.y + orbie.dy - cursor_scene_pos[1];
-      let dz = orbie.z + orbie.dz - cursor_scene_pos[2] * -2;
+      let dz = orbie.z + orbie.dz - cursor_scene_pos[2];
       
       let distance = get_distance(dx, dy, dz);
       if(distance < cursor_radius + orbie_radius) {
@@ -455,8 +455,8 @@ function tick() {
 function mousemove_handler(e) {
   let canvas_rect = game_canvas.getBoundingClientRect();
   cursor_screen_pos[0] = (e.clientX - canvas_rect.left - canvas_rect.width * 0.5) * Math.tan(fov) * 8 / canvas_rect.width;
-  cursor_screen_pos[1] = (e.clientY - canvas_rect.top - canvas_rect.height * 0.5) * Math.tan(fov) * -8 / canvas_rect.width;
-  cursor_screen_pos[2] = 4;
+  cursor_screen_pos[1] = (e.clientY - canvas_rect.top + canvas_rect.height) * Math.tan(fov) * -8 / canvas_rect.width;
+  cursor_screen_pos[2] = 8;
   let sinx = Math.sin(camera_rotation[0]);
   let siny = Math.sin(camera_rotation[1]);
   let sinz = Math.sin(camera_rotation[2]);
