@@ -222,10 +222,10 @@ var fs_source = `
   varying highp vec3 transformed_normal;
   void main(void) {
     highp vec3 normal_normal = normalize(transformed_normal);
-    highp vec3 light_direction = normalize(vec3(0.2, 0.5, 1.0));
-    lowp vec3 color = vec3(0.8, 0.9, 1.0);
-    //gl_FragColor = vec4((normal_normal + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
-    gl_FragColor = vec4(((abs(dot(normal_normal, light_direction)) + 0.5) - 0.5) * color, 1.0);
+    //highp vec3 light_direction = normalize(vec3(0.2, 0.5, 1.0));
+    //lowp vec3 color = vec3(0.8, 0.9, 1.0);
+    gl_FragColor = vec4((normal_normal + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
+    //gl_FragColor = vec4(((abs(dot(normal_normal, light_direction)) + 0.5) - 0.5) * color, 1.0);
   }
 `;
 
@@ -454,8 +454,8 @@ function tick() {
 
 function mousemove_handler(e) {
   let canvas_rect = game_canvas.getBoundingClientRect();
-  cursor_screen_pos[0] = (e.clientX - canvas_rect.left - canvas_rect.width * 0.5) * 10 * Math.tan(fov) / canvas_rect.width;
-  cursor_screen_pos[1] = (e.clientY - canvas_rect.top + canvas_rect.height) * -10 * Math.tan(fov) / canvas_rect.width;
+  cursor_screen_pos[0] = (e.clientX - canvas_rect.left - canvas_rect.width * 0.5) * 7.5 * Math.tan(fov) / canvas_rect.width;
+  cursor_screen_pos[1] = (e.clientY - canvas_rect.top + canvas_rect.height * 1.5) * -7.5 * Math.tan(fov) / canvas_rect.width;
   cursor_screen_pos[2] = 10;
   let sinx = Math.sin(camera_rotation[0]);
   let siny = Math.sin(camera_rotation[1]);
