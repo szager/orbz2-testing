@@ -28,8 +28,8 @@ function get_distance(dx, dy, dz) {
 
 var orbeez = [];
 
-var camera_rotation = [-1.0, 0, 3.1];//euler xyz
-var camera_translation = [0, -3, -1];
+var camera_rotation = [1.0, 0, -3.1];//euler xyz
+var camera_translation = [0, 3, 1];
 
 var object_positions = [0, 0, 0, 0, 0, 0];
 var traction = 0.2;
@@ -93,6 +93,27 @@ var orbee_model = {
   ],
 };
 
+var cursor_model = {
+  positions: [
+    -1, -1, -1,
+    -1, +1, +1,
+    +1, +1, -1,
+    +1, -1, +1,
+  ],
+  normals: [
+    -1, -1, -1,
+    -1, +1, +1,
+    +1, +1, -1,
+    +1, -1, +1,
+  ],
+  faces: [
+    1, 2, 3,
+    0, 2, 3,
+    0, 1, 3,
+    0, 1, 2,
+  ]
+};
+
 function normalize(abnormals) {
   for (let i = 0; i < abnormals.length / 3; i++) {
     let normal_length =
@@ -107,6 +128,7 @@ function normalize(abnormals) {
 }
 
 normalize(orbee_model.normals);
+normalize(cursor_model.normals);
 
 for (let i = 0; i < 100; i++) {
   orbeez.push(
@@ -156,6 +178,7 @@ function add_to_scene(model, object_index) {
 for (let i = 0; i < orbeez.length; i++) {
   add_to_scene(orbee_model, i + 2);
 }
+add_to_scene(cursor_model, 1);
 
 var vertex_count = positions.length / 3;
 
@@ -260,10 +283,10 @@ function draw_scene() {
     min_distance,
     max_distance
   );
-  mat4.rotate(camera_matrix, camera_matrix, camera_rotation[0], [1, 0, 0]);
-  mat4.rotate(camera_matrix, camera_matrix, camera_rotation[1], [0, 1, 0]);
-  mat4.rotate(camera_matrix, camera_matrix, camera_rotation[2], [0, 0, 1]);
-  mat4.translate(camera_matrix, camera_matrix, camera_translation);
+  mat4.rotate(camera_matrix, camera_matrix, camera_rotation[0], [-1, 0, 0]);
+  mat4.rotate(camera_matrix, camera_matrix, camera_rotation[1], [0, -1, 0]);
+  mat4.rotate(camera_matrix, camera_matrix, camera_rotation[2], [0, 0, -1]);
+  mat4.translate(camera_matrix, camera_matrix, camera_translation.map(n => -n));
   let scene_matrix = mat4.create();
   //mat4.rotate(scene_matrix, scene_matrix, time * 0.018403, [1.0, 0.0, 0.0]);
   //mat4.rotate(scene_matrix, scene_matrix, time * 0.023485, [0.0, 1.0, 0.0]);
@@ -425,7 +448,6 @@ function tick() {
     object_positions[i * 3 + 7] = orbeez[i].y;
     object_positions[i * 3 + 8] = orbeez[i].z;
   }
-
   draw_scene();
   requestAnimationFrame(tick);
 }
@@ -483,6 +505,10 @@ function mousemove_handler(e) {
     cursor_screen_pos[1] * inverse_camera_matrix[1][2] +
     cursor_screen_pos[2] * inverse_camera_matrix[2][2] +
     camera_translation[2];
+  
+  object_positions[3] = cursor_scene_pos[0];
+  object_positions[4] = cursor_scene_pos[1];
+  object_positions[5] = cursor_scene_pos[2];
 }
 
 function mousedown_handler() {
