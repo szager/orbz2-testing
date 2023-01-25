@@ -194,11 +194,16 @@ var vertex_count = positions.length / 3;
 var light_directions = [
   0.3, 0.1, 1.0
 ]
-var light_directions = [
-  0.3, 0.1, 1.0
+
+normalize(light_directions);
+
+var light_colors = [
+  1.0, 1.0, 1.0
 ]
 
 var float32_object_colors = new Float32Array(object_colors);
+var float32_light_colors = new Float32Array(light_colors);
+var float32_light_directions = new Float32Array(light_directions);
 
 var position_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
@@ -226,6 +231,8 @@ var vs_source = `
   attribute float object_index;
   uniform vec3 object_positions[1002];
   uniform vec3 object_colors[1002];
+  uniform mediump vec3 light_directions[1];
+  uniform mediump vec3 light_colors[1];
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   uniform mat3 normal_matrix;
@@ -239,10 +246,15 @@ var vs_source = `
   }
 `;
 var fs_source = `
+  uniform mediump vec3 light_directions[1];
+  uniform mediump vec3 light_colors[1];
   varying highp vec3 transformed_normal;
   varying lowp vec3 vertex_color;
   void main(void) {
     highp vec3 normal_normal = normalize(transformed_normal);
+    
+    
+    
     //highp vec3 light_direction = normalize(vec3(0.2, 0.5, 1.0));
     //lowp vec3 color = vec3(0.8, 0.9, 1.0);
     //gl_FragColor = vec4((normal_normal + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
@@ -286,6 +298,8 @@ var program_info = {
     normal_matrix: gl.getUniformLocation(shader_program, "normal_matrix"),
     object_positions: gl.getUniformLocation(shader_program, "object_positions"),
     object_colors: gl.getUniformLocation(shader_program, "object_colors"),
+    light_directions: gl.getUniformLocation(shader_program, "light_directions"),
+    light_colors: gl.getUniformLocation(shader_program, "light_colors")
   },
 };
 
@@ -360,7 +374,18 @@ function draw_scene() {
     program_info.uniform_locations.object_colors,
     float32_object_colors
   );
+  
+  
+  gl.uniform3fv(
+    program_info.uniform_locations.light_directions,
+    float32_light_directions
+  );
+  gl.uniform3fv(
+    program_info.uniform_locations.light_colors,
+    float32_light_colors
+  );
 
+  
   gl.uniformMatrix4fv(
     program_info.uniform_locations.camera_matrix,
     false,
