@@ -142,9 +142,9 @@ for (let i = 0; i < 1000; i++) {
 }
 
 for (let i = 0; i < orbeez.length; i++) {
-  object_colors.push(1);
-  object_colors.push(1);
-  object_colors.push(1);
+  object_colors.push(Math.random());
+  object_colors.push(Math.random());
+  object_colors.push(Math.random());
 }
 
 var positions = [
@@ -202,7 +202,7 @@ normalize(light_directions);
 
 var light_colors = [
   0.9, 0.9, 0.9,
-  0.4, 0.4, 0.4,
+  0.4, 0.5, 0.3,
   0.8, 0.0, 0.7,
   0.0, 0.6, 0.9,
 ]
