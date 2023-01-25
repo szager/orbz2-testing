@@ -192,13 +192,19 @@ var vertex_count = positions.length / 3;
 
 
 var light_directions = [
-  0.3, 0.1, 1.0
+  0.3, 0.1, 1.0,
+  0.4, 0.1, 1.0,
+  -0.3, -0.5, 2.0,
+  -0.4, -0.1, -1.0,
 ]
 
 normalize(light_directions);
 
 var light_colors = [
-  1.0, 1.0, 1.0
+  0.3, 0.3, 0.3,
+  0.9, 0.9, 0.9,
+  0.7, 0.7, 0.7,
+  0.3, 0.3, 0.3,
 ]
 
 var float32_object_colors = new Float32Array(object_colors);
@@ -231,8 +237,8 @@ var vs_source = `
   attribute float object_index;
   uniform vec3 object_positions[1002];
   uniform vec3 object_colors[1002];
-  uniform mediump vec3 light_directions[1];
-  uniform mediump vec3 light_colors[1];
+  uniform mediump vec3 light_directions[4];
+  uniform mediump vec3 light_colors[4];
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   uniform mat3 normal_matrix;
@@ -246,24 +252,24 @@ var vs_source = `
   }
 `;
 var fs_source = `
-  uniform mediump vec3 light_directions[1];
-  uniform mediump vec3 light_colors[1];
+  uniform mediump vec3 light_directions[4];
+  uniform mediump vec3 light_colors[4];
   uniform highp mat4 camera_matrix;
   varying highp vec3 transformed_normal;
   varying lowp vec3 vertex_color;
   void main(void) {
     highp vec3 normal_normal = normalize(transformed_normal);
     
-    mediump vec3 diffuse_illumination = vec3(0.0, 0.0, 0.0);
-    for(lowp int i = 0; i < 1; i++) {
-      diffuse_illumination += dot(light_directions[i],normal_normal) 
+    mediump vec3 diffuse_illumination = vec3(0.1, 0.1, 0.1);
+    for(lowp int i = 0; i < 4; i++) {
+      diffuse_illumination += max(dot(light_directions[i],normal_normal),0.0) * light_colors[i];
     }
     
     //highp vec3 light_direction = normalize(vec3(0.2, 0.5, 1.0));
     //lowp vec3 color = vec3(0.8, 0.9, 1.0);
     //gl_FragColor = vec4((normal_normal + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
     //gl_FragColor = vec4(((abs(dot(normal_normal, light_direction)) + 0.5) - 0.5) * color, 1.0);
-    gl_FragColor = vec4(vertex_color, 1.0);
+    gl_FragColor = vec4(vertex_color * diffuse_illumination, 1.0);
   }
 `;
 
