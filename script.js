@@ -192,8 +192,8 @@ var vertex_count = positions.length / 3;
 
 
 var light_directions = [
-  0.3, 0.1, 1.0,
-  0.4, 0.1, 1.0,
+  0.2, 0.5, 1.0,
+  -0.2, -0.5, -1.0,
   -0.3, -0.5, 2.0,
   -0.4, -0.1, -1.0,
 ]
@@ -201,10 +201,10 @@ var light_directions = [
 normalize(light_directions);
 
 var light_colors = [
-  0.3, 0.3, 0.3,
-  0.9, 0.9, 0.9,
-  0.7, 0.7, 0.7,
-  0.3, 0.3, 0.3,
+  0.8, 0.8, 0.8,
+  0.2, 0.2, 0.2,
+  0.05, 0.05, 0.05,
+  0.05, 0.05, 0.05,
 ]
 
 var float32_object_colors = new Float32Array(object_colors);
@@ -317,7 +317,7 @@ gl.clearColor(0.0, 0.0, 0.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 
 function draw_scene() {
-  gl.clearColor(0.96, 0.96, 0.96, 1.0);
+  gl.clearColor(0.0, 0.0, 0.0, 1.0);
   gl.clearDepth(1.0);
   gl.enable(gl.DEPTH_TEST);
   gl.depthFunc(gl.LEQUAL);
