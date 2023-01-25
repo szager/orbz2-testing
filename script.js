@@ -29,7 +29,7 @@ function get_distance(dx, dy, dz) {
 var orbeez = [];
 
 var camera_rotation = [1.0, 0, -3.1];//euler xyz
-var camera_translation = [0, 1, -1];
+var camera_translation = [0, 3, 1];
 
 var object_positions = [0, 0, 0, 0, 0, 0];
 var object_colors = [1, 0, 1, 0, 1, 0];
@@ -263,7 +263,7 @@ var fs_source = `
     highp vec3 normal_normal = normalize(transformed_normal);
     
     mediump vec3 diffuse_illumination = vec3(0.1, 0.1, 0.1);
-    for(lowp int i = 0; i < 4; i++) {
+    for(lowp int i = 0; i < 5; i++) {
       diffuse_illumination += max(dot(light_directions[i],normal_normal),0.0) * light_colors[i];
     }
     
