@@ -248,12 +248,16 @@ var vs_source = `
 var fs_source = `
   uniform mediump vec3 light_directions[1];
   uniform mediump vec3 light_colors[1];
+  uniform highp mat4 camera_matrix;
   varying highp vec3 transformed_normal;
   varying lowp vec3 vertex_color;
   void main(void) {
     highp vec3 normal_normal = normalize(transformed_normal);
     
-    
+    mediump vec3 diffuse_illumination = vec3(0.0, 0.0, 0.0);
+    for(lowp int i = 0; i < 1; i++) {
+      diffuse_illumination += dot(light_directions[i],normal_normal) 
+    }
     
     //highp vec3 light_direction = normalize(vec3(0.2, 0.5, 1.0));
     //lowp vec3 color = vec3(0.8, 0.9, 1.0);
