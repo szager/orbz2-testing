@@ -32,6 +32,7 @@ var camera_rotation = [1.0, 0, -3.1];//euler xyz
 var camera_translation = [0, 3, 1];
 
 var object_positions = [0, 0, 0, 0, 0, 0];
+var object_colors = [1, 0, 1, 0, 1, 0];
 var traction = 0.2;
 var restitution = 0.4;
 var orbie_radius = 0.1;
@@ -139,6 +140,13 @@ for (let i = 0; i < 1000; i++) {
     )
   );
 }
+
+for (let i = 0; i < orbeez.length; i++) {
+  object_colors[i * 3 + 6] = Math.random();
+  object_colors[i * 3 + 7] = Math.random();
+  object_colors[i * 3 + 8] = Math.random();
+}
+
 var positions = [
   //length is in decimetres
   -1.9, 9.0, 1.0,
@@ -183,6 +191,11 @@ add_to_scene(cursor_model, 1);
 var vertex_count = positions.length / 3;
 
 var object_position_buffer = gl.createBuffer();
+
+
+var object_color_buffer = gl.createBuffer();
+
+
 var position_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
@@ -263,6 +276,7 @@ var program_info = {
     scene_matrix: gl.getUniformLocation(shader_program, "scene_matrix"),
     normal_matrix: gl.getUniformLocation(shader_program, "normal_matrix"),
     object_positions: gl.getUniformLocation(shader_program, "object_positions"),
+    object_colors: gl.getUniformLocation(shader_program, "object_colors"),
   },
 };
 
