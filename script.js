@@ -29,7 +29,7 @@ function get_distance(dx, dy, dz) {
 var orbeez = [];
 
 var camera_rotation = [1.0, 0, -3.1];//euler xyz
-var camera_translation = [0, 3, 1];
+var camera_translation = [0, 1, -1];
 
 var object_positions = [0, 0, 0, 0, 0, 0];
 var object_colors = [1, 0, 1, 0, 1, 0];
@@ -142,9 +142,9 @@ for (let i = 0; i < 1000; i++) {
 }
 
 for (let i = 0; i < orbeez.length; i++) {
-  object_colors.push(Math.random());
-  object_colors.push(Math.random());
-  object_colors.push(Math.random());
+  object_colors.push(1);
+  object_colors.push(1);
+  object_colors.push(1);
 }
 
 var positions = [
@@ -192,10 +192,11 @@ var vertex_count = positions.length / 3;
 
 
 var light_directions = [
-  -0.2, -0.5, 1.0,
-  0.2, 0.5, -1.0,
+  0.1, 0.2, 2.0,
+  -0.1, -0.2, -2.0,
   -0.2, -0.1, -0.2,
   0.4, -0.1, -0.1,
+  -0.5, -0.5, -1.0,
 ]
 
 normalize(light_directions);
@@ -205,6 +206,7 @@ var light_colors = [
   0.15, 0.15, 0.15,
   0.3, 0.5, 0.0,
   0.2, 0.0, 0.5,
+  0.9, 0.4, 0.5,
 ]
 
 var float32_object_colors = new Float32Array(object_colors);
@@ -237,8 +239,8 @@ var vs_source = `
   attribute float object_index;
   uniform vec3 object_positions[1002];
   uniform vec3 object_colors[1002];
-  uniform mediump vec3 light_directions[4];
-  uniform mediump vec3 light_colors[4];
+  uniform mediump vec3 light_directions[5];
+  uniform mediump vec3 light_colors[5];
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   uniform mat3 normal_matrix;
@@ -252,8 +254,8 @@ var vs_source = `
   }
 `;
 var fs_source = `
-  uniform mediump vec3 light_directions[4];
-  uniform mediump vec3 light_colors[4];
+  uniform mediump vec3 light_directions[5];
+  uniform mediump vec3 light_colors[5];
   uniform highp mat4 camera_matrix;
   varying highp vec3 transformed_normal;
   varying lowp vec3 vertex_color;
