@@ -142,9 +142,9 @@ for (let i = 0; i < 1000; i++) {
 }
 
 for (let i = 0; i < orbeez.length; i++) {
-  object_colors[i * 3 + 6] = Math.random();
-  object_colors[i * 3 + 7] = Math.random();
-  object_colors[i * 3 + 8] = Math.random();
+  object_colors.push(Math.random());
+  object_colors.push(Math.random());
+  object_colors.push(Math.random());
 }
 
 var positions = [
@@ -190,11 +190,15 @@ add_to_scene(cursor_model, 1);
 
 var vertex_count = positions.length / 3;
 
-var object_position_buffer = gl.createBuffer();
 
+var light_directions = [
+  0.3, 0.1, 1.0
+]
+var light_directions = [
+  0.3, 0.1, 1.0
+]
 
-var object_color_buffer = gl.createBuffer();
-
+var float32_object_colors = new Float32Array(object_colors);
 
 var position_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
@@ -221,24 +225,29 @@ var vs_source = `
   attribute vec3 normal;
   attribute float object_index;
   uniform vec3 object_positions[1002];
+  uniform vec3 object_colors[1002];
   uniform mat4 scene_matrix;
   uniform mat4 camera_matrix;
   uniform mat3 normal_matrix;
   varying highp vec3 transformed_normal;
+  varying lowp vec3 vertex_color;
   void main(void) {
     transformed_normal = normalize(normal * normal_matrix);
     mediump int int_object_index = int(object_index);
+    vertex_color = object_colors[int_object_index];
     gl_Position = camera_matrix * scene_matrix * vec4(position + object_positions[int_object_index], 1.0);
   }
 `;
 var fs_source = `
   varying highp vec3 transformed_normal;
+  varying lowp vec3 vertex_color;
   void main(void) {
     highp vec3 normal_normal = normalize(transformed_normal);
     //highp vec3 light_direction = normalize(vec3(0.2, 0.5, 1.0));
     //lowp vec3 color = vec3(0.8, 0.9, 1.0);
-    gl_FragColor = vec4((normal_normal + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
+    //gl_FragColor = vec4((normal_normal + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
     //gl_FragColor = vec4(((abs(dot(normal_normal, light_direction)) + 0.5) - 0.5) * color, 1.0);
+    gl_FragColor = vec4(vertex_color, 1.0);
   }
 `;
 
@@ -346,6 +355,10 @@ function draw_scene() {
   gl.uniform3fv(
     program_info.uniform_locations.object_positions,
     new Float32Array(object_positions)
+  );
+  gl.uniform3fv(
+    program_info.uniform_locations.object_colors,
+    float32_object_colors
   );
 
   gl.uniformMatrix4fv(
