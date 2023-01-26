@@ -268,7 +268,7 @@ var fs_source = `
     mediump vec3 specular_illumination = vec3(0.0, 0.0, 0.0);
     for(lowp int i = 0; i < 4; i++) {
       diffuse_illumination += max(dot(light_directions[i],normal_normal),0.0) * light_colors[i];
-      specular_illumination += max(pow(dot(light_directions[i],specular_ray),128.0),0.0) * light_colors[i];
+      specular_illumination += max(pow(dot(light_directions[i],specular_ray),64.0),0.0) * light_colors[i];
     }
     
     //highp vec3 light_direction = normalize(vec3(0.2, 0.5, 1.0));
