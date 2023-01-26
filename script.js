@@ -244,6 +244,7 @@ var vs_source = `
   uniform mat3 normal_matrix;
   varying highp vec3 transformed_normal;
   varying lowp vec3 vertex_color;
+  varying highp vec3 camera_direction;
   void main(void) {
     transformed_normal = normalize(normal * normal_matrix);
     mediump int int_object_index = int(object_index);
