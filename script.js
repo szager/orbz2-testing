@@ -142,9 +142,9 @@ for (let i = 0; i < 1000; i++) {
 }
 
 for (let i = 0; i < orbeez.length; i++) {
-  object_colors.push(Math.random());
-  object_colors.push(Math.random());
-  object_colors.push(Math.random());
+  object_colors.push(0.9);
+  object_colors.push(0.8);
+  object_colors.push(0.7);
 }
 
 var positions = [
@@ -464,7 +464,7 @@ function orbee_interactions() {
 function tick() {
   time++;
   
-  for(let i = 0; i < 12; i++) { //the speed of sound in orbeez is 9.6 m/s
+  for(let i = 0; i < 1; i++) { //the speed of sound in orbeez is 9.6 m/s
     orbee_interactions();
   }
   
