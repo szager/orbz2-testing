@@ -249,6 +249,7 @@ var vs_source = `
     transformed_normal = normalize(normal * normal_matrix);
     mediump int int_object_index = int(object_index);
     vertex_color = object_colors[int_object_index];
+    camera_direction = position + object_positions[int_object_index] + vec3(0.0, 3.0, 1.0);
     gl_Position = camera_matrix * scene_matrix * vec4(position + object_positions[int_object_index], 1.0);
   }
 `;
@@ -257,20 +258,24 @@ var fs_source = `
   uniform mediump vec3 light_colors[4];
   uniform highp mat4 camera_matrix;
   varying highp vec3 transformed_normal;
+  varying highp vec3 camera_direction;
   varying lowp vec3 vertex_color;
   void main(void) {
     highp vec3 normal_normal = normalize(transformed_normal);
-    
+    highp vec3 normal_camera = normalize(camera_direction);
+    highp vec3 specular_ray = reflect(normal_camera, normal_normal);
     mediump vec3 diffuse_illumination = vec3(0.1, 0.1, 0.1);
+    mediump vec3 specular_illumination = vec3(0.0, 0.0, 0.0);
     for(lowp int i = 0; i < 4; i++) {
       diffuse_illumination += max(dot(light_directions[i],normal_normal),0.0) * light_colors[i];
+      specular_illumination += max(pow(dot(light_directions[i],specular_ray),128.0),0.0) * light_colors[i];
     }
     
     //highp vec3 light_direction = normalize(vec3(0.2, 0.5, 1.0));
     //lowp vec3 color = vec3(0.8, 0.9, 1.0);
     //gl_FragColor = vec4((normal_normal + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
     //gl_FragColor = vec4(((abs(dot(normal_normal, light_direction)) + 0.5) - 0.5) * color, 1.0);
-    gl_FragColor = vec4(vertex_color * diffuse_illumination, 1.0);
+    gl_FragColor = vec4(vertex_color * diffuse_illumination + specular_illumination, 1.0);
   }
 `;
 
