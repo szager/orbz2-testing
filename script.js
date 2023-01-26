@@ -32,7 +32,7 @@ var camera_rotation = [1.0, 0, -3.1];//euler xyz
 var camera_translation = [0, 3, 1];
 
 var object_positions = [0, 0, 0, 0, 0, 0];
-var object_colors = [1, 0, 1, 0, 1, 0];
+var object_colors = [1, 0, 1, 1, 1, 1];
 var traction = 0.2;
 var restitution = 0.4;
 var orbie_radius = 0.1;
@@ -192,19 +192,19 @@ var vertex_count = positions.length / 3;
 
 
 var light_directions = [
-  0.1, 0.5, 0.5,
-  -0.1, -0.5, -0.5,
-  0.8, -0.3, -0.2,
-  -0.4, -0.1, -1.0,
+  -1.0, 1.0, 1.0,
+  1.0, 1.0, 1.0,
+  1.0, -1.0, -1.0,
+  -1.0, -1.0, -1.0,
 ]
 
 normalize(light_directions);
 
 var light_colors = [
-  0.9, 0.9, 0.9,
+  1.0, 1.0, 1.0,
+  0.8, 0.8, 0.8,
+  0.5, 0.5, 0.5,
   0.4, 0.4, 0.4,
-  0.7, 0.7, 0.7,
-  0.6, 0.6, 0.6,
 ]
 
 var float32_object_colors = new Float32Array(object_colors);
