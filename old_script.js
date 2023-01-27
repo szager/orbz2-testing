@@ -32,7 +32,8 @@ var camera_rotation = [1.0, 0, -3.1];//euler xyz
 var camera_translation = [0, 3, 1];
 
 var object_positions = [0, 0, 0, 0, 0, 0];
-var object_colors = [1, 0, 1, 1, 1, 1];
+var object_colors = [1, 0, 1, 0.4, 0.4, 0.4];
+
 var traction = 0.2;
 var restitution = 0.4;
 var orbie_radius = 0.1;
