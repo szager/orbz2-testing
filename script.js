@@ -594,31 +594,4 @@ window.onmousedown = mousedown_handler;
 window.onmouseup = mouseup_handler;
 window.onmousemove = mousemove_handler;
 
-
-function factorial(n) {
-  let output = 1;
-  for(let i = n; i > 0; i--) {
-    output *= i;
-  }
-  return output;
-}
-
-function get_b(n) {
-  let b = 0;
-  for(let k = 0; k < n; k++) {
-    b += 1 / factorial(k);
-  }
-  return b;
-}
-
-function get_c(n) {
-  let c = 0;
-  for(let k = 0; k < n; k++) {
-    c += 2**k / factorial(k);
-  }
-  return c;
-}
-
-alert(String(get_b(1)) + ", " + String(get_b(2)) + ", " + String(get_b(4)) + ", " + String(get_b(6)) + ", " + String(get_b(8)));
-alert(String(get_c(1)) + ", " + String(get_c(2)) + ", " + String(get_c(4)) + ", " + String(get_c(6)) + ", " + String(get_c(8)));
 //window.onclick = draw_scene;
