@@ -276,7 +276,7 @@ var fs_source = `
     //lowp vec3 color = vec3(0.8, 0.9, 1.0);
     //gl_FragColor = vec4((normal_normal + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
     //gl_FragColor = vec4(((abs(dot(normal_normal, light_direction)) + 0.5) - 0.5) * color, 1.0);
-    gl_FragColor = vec4((vertex_color * diffuse_illumination + specular_illumination * 0.5) * max(dot(specular_ray, normal_camera),0.0), 1.0);
+    gl_FragColor = vec4((vertex_color * diffuse_illumination + specular_illumination * 0.5), 1.0);
   }
 `;
 
