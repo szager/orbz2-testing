@@ -203,7 +203,7 @@ normalize(light_directions);
 
 var light_colors = [
   0.8, 0.8, 0.8,
-  0.3, 0.3, 0.3,
+  0.1, 0.1, 0.1,
   0.1, 0.1, 0.3,
   0.3, 0.3, 0.1,
 ]
@@ -265,10 +265,10 @@ var fs_source = `
     highp vec3 normal_normal = normalize(transformed_normal);
     highp vec3 normal_camera = normalize(camera_direction);
     highp vec3 specular_ray = reflect(normal_camera, normal_normal);
-    mediump vec3 diffuse_illumination = vec3(0.5, 0.5, 0.5);
+    mediump vec3 diffuse_illumination = vec3(0.3, 0.3, 0.3);
     mediump vec3 specular_illumination = vec3(0.0, 0.0, 0.0);
     for(lowp int i = 0; i < 4; i++) {
-      diffuse_illumination += max(dot(light_directions[i],normal_normal),0.0) * light_colors[i] * 0.5;
+      diffuse_illumination += max(dot(light_directions[i],normal_normal),0.0) * light_colors[i] * 0.7;
       specular_illumination += max(pow(dot(light_directions[i],specular_ray),64.0),0.0) * light_colors[i];
     }
     
