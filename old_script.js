@@ -32,7 +32,7 @@ var camera_rotation = [1.0, 0, -3.1];//euler xyz
 var camera_translation = [0, 3, 1];
 
 var object_positions = [0, 0, 0, 0, 0, 0];
-var object_colors = [1, 0, 1, 0.4, 0.4, 0.4];
+var object_colors = [1, 0, 1, 0.4, 0.7, 0.2];
 
 var traction = 0.2;
 var restitution = 0.4;
@@ -265,11 +265,11 @@ var fs_source = `
     highp vec3 normal_normal = normalize(transformed_normal);
     highp vec3 normal_camera = normalize(camera_direction);
     highp vec3 specular_ray = reflect(normal_camera, normal_normal);
-    mediump vec3 diffuse_illumination = vec3(0.1, 0.1, 0.1);
+    mediump vec3 diffuse_illumination = vec3(0.4, 0.4, 0.4);
     mediump vec3 specular_illumination = vec3(0.0, 0.0, 0.0);
     for(lowp int i = 0; i < 4; i++) {
-      diffuse_illumination += max(dot(light_directions[i],normal_normal),0.0) * light_colors[i];
-      specular_illumination += max(pow(dot(light_directions[i],specular_ray),64.0),0.0) * light_colors[i];
+      diffuse_illumination += max(dot(light_directions[i],normal_normal),0.0) * light_colors[i] * 0.5;
+      specular_illumination += max(pow(dot(light_directions[i],specular_ray),64.0),0.0) * light_colors[i] * 0.5;
     }
     
     //highp vec3 light_direction = normalize(vec3(0.2, 0.5, 1.0));
