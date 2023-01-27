@@ -4,5 +4,17 @@ alert("uduohhhhhhhijujjjjjjhhhsliudioslu");
 
 //let the_game = new playable_game();
 
-alert("loading...");
 
+
+//  C
+//    O
+//      N
+//        F
+//          U
+//            S
+//              I
+//                O
+//                  N
+
+
+//  angry and confused
