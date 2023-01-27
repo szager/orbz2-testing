@@ -1,6 +1,8 @@
-import {playable_game} from "playable_game.js";
+alert("uduohhhhhhhijujjjjjjhhhsliudioslu");
 
-let the_game = new playable_game();
+//import {playable_game} from "playable_game.js";
+
+//let the_game = new playable_game();
 
 alert("loading...");
 
