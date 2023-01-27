@@ -194,8 +194,8 @@ var vertex_count = positions.length / 3;
 var light_directions = [
   1.0, 1.0, 1.0,
   -1.0, -1.0, -1.0,
-  1.0, 0.5, 0.5,
-  -1.0, 0.5, 0.5,
+  1.0, 0.2, 0.5,
+  -1.0, 0.8, 0.3,
 ]
 
 normalize(light_directions);
@@ -203,8 +203,8 @@ normalize(light_directions);
 var light_colors = [
   0.8, 0.8, 0.8,
   0.3, 0.3, 0.3,
-  0.1, 0.1, 0.2,
-  0.2, 0.2, 0.1,
+  0.1, 0.1, 0.3,
+  0.3, 0.3, 0.1,
 ]
 
 var float32_object_colors = new Float32Array(object_colors);
