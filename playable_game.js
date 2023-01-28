@@ -1,6 +1,9 @@
-class playable_game {
+import {game} from "./game.js";
+
+class playable_game extends game {
   constructor() {
-    alert("fuhdlkgulif");
+    super();
+    alert("stdsfgfdame");
   }
 }
 
