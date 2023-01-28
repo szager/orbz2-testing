@@ -6,6 +6,7 @@ class game_player {
     this.stopping = false;
     this.paused = false;
     this.bound_update_method = this.update.bind(this);
+    this.bound_update_method();
   }
   pause() {
     this.paused = true;
@@ -17,10 +18,12 @@ class game_player {
     this.stopping = true;
   }
   update() {//but i can't make it private
-    if(!this.paused) {
-      this.game.update();
+    if(!this.stopping) {
+      if(!this.paused) {
+        this.game.update();
+      }
+      requestAnimationFrame(this.bound_update_method);
     }
-    requestAnimationFrame(this.bound_update_method);
   }
 }
 
