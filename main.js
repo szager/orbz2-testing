@@ -1,4 +1,4 @@
-import {playable_game} from "./playable_game.js";
+import {game_player} from "./game_player.js";
 
-let the_game = new playable_game();
+let the_game = new game_player(document.querySelector("canvas"));
 
