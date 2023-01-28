@@ -1,20 +1,6 @@
-alert("uduohhhhhhhijujjjjjjhhhsliudioslu");
+import {playable_game} from "playable_game.js";
 
-//import {playable_game} from "playable_game.js";
+let the_game = new playable_game();
 
-//let the_game = new playable_game();
+alert("loading...");
 
-
-
-//  C
-//    O
-//      N
-//        F
-//          U
-//            S
-//              I
-//                O
-//                  N
-
-
-//  angry and confused
