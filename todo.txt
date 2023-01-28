@@ -1,0 +1,8 @@
+rewrite code
+revamp orbee collision (run at 50 fps)
+read obj files, make orbeez rounder
+put orbeez in a storage bin
+add ui
+make orbeez look see-through without ray tracing
+make orbeez look see-through with ray tracing
+add mobile support
