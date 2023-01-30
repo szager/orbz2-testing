@@ -202,10 +202,10 @@ var light_directions = [
 normalize(light_directions);
 
 var light_colors = [
-  0.8, 0.8, 0.8,
-  0.3, 0.3, 0.3,
-  0.1, 0.1, 0.3,
-  0.3, 0.3, 0.1,
+  1.6, 1.6, 1.6,
+  0.6, 0.6, 0.6,
+  0.2, 0.2, 0.6,
+  0.6, 0.6, 0.2,
 ]
 
 var float32_object_colors = new Float32Array(object_colors);
@@ -265,11 +265,12 @@ var fs_source = `
     highp vec3 normal_normal = normalize(transformed_normal);
     highp vec3 normal_camera = normalize(camera_direction);
     highp vec3 specular_ray = reflect(normal_camera, normal_normal);
-    highp float fresnel = max(1.0 - dot(normal_normal, normal_camera), 0.0) * 0.3 + 0.7;
+    highp float fresnel = max(1.0 - dot(normal_normal, normal_camera), 0.0) * 0.2 + 0.8;
+    highp vec3 specular_color = vec3(0.2, 0.2, 0.2) + vertex_color * 0.8;
     mediump vec3 diffuse_illumination = vec3(0.5, 0.5, 0.5);
     mediump vec3 specular_illumination = vec3(0.0, 0.0, 0.0);
     for(lowp int i = 0; i < 4; i++) {
-      diffuse_illumination += max(dot(light_directions[i],normal_normal),0.0) * light_colors[i] * 0.5;
+      diffuse_illumination += max(dot(-light_directions[i],normal_normal),0.0) * light_colors[i] * 0.5;
       specular_illumination += max(pow(dot(light_directions[i],specular_ray),64.0),0.0) * light_colors[i];
     }
     
@@ -277,7 +278,7 @@ var fs_source = `
     //lowp vec3 color = vec3(0.8, 0.9, 1.0);
     //gl_FragColor = vec4((normal_normal + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
     //gl_FragColor = vec4(((abs(dot(normal_normal, light_direction)) + 0.5) - 0.5) * color, 1.0);
-    gl_FragColor = vec4((vertex_color * diffuse_illumination * 2.0 * (1.0 - fresnel) + specular_illumination * fresnel * 2.0), 1.0);
+    gl_FragColor = vec4((vertex_color * diffuse_illumination * 2.0 * (1.0 - fresnel) + specular_illumination * fresnel * 2.0 * specular_color), 1.0);
   }
 `;
 
