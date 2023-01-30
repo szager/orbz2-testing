@@ -6,6 +6,8 @@ class scene {
     
     this.vertex_positions = [];
     
+    this.vertex_normals = [];
+    
     this.object_indices = [];
     
     this.object_translations = [];
@@ -83,12 +85,54 @@ class scene {
   }
   
   initialize_buffers() {
-    
+    this.float32_object_colors = new Float32Array(this.object_colors);
+    this.float32_light_colors = new Float32Array(this.light_colors);
+    this.float32_light_directions = new Float32Array(this.light_directions);
+
+    this.vertex_position_buffer = this.gl.createBuffer();
+    this.gl.bindBuffer(
+      this.gl.ARRAY_BUFFER,
+      this.vertex_position_buffer
+    );
+    this.gl.bufferData(
+      this.gl.ARRAY_BUFFER,
+      new Float32Array(this.vertex_positions),
+      this.gl.STATIC_DRAW
+    );
+
+    this.object_index_buffer = this.gl.createBuffer();
+    this.gl.bindBuffer(
+      this.gl.ARRAY_BUFFER,
+      this.object_index_buffer
+    );
+    this.gl.bufferData(
+      this.gl.ARRAY_BUFFER,
+      new Float32Array(this.object_indices),
+      this.gl.STATIC_DRAW
+    );
+
+    this.face_buffer = this.gl.createBuffer();
+    this.gl.bindBuffer(
+      this.gl.ELEMENT_ARRAY_BUFFER,
+      this.face_buffer
+    );
+    this.gl.bufferData(
+      this.gl.ELEMENT_ARRAY_BUFFER,
+      new Uint16Array(this.faces),
+      this.gl.STATIC_DRAW
+    );
+
+    this.vertex_normal_buffer = this.gl.createBuffer();
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertex_normal_buffer);
+    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.vertex_normals), this.gl.STATIC_DRAW);
   }
   
   draw() {
     this.gl.clearColor(0.8, 0.8, 0.8, 1.0);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+    
+    
+    
   }
 }
 
