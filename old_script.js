@@ -265,18 +265,13 @@ var fs_source = `
     highp vec3 normal_normal = normalize(transformed_normal);
     highp vec3 normal_camera = normalize(camera_direction);
     highp vec3 specular_ray = reflect(normal_camera, normal_normal);
-    highp float fresnel = pow(max(1.0 - dot(normal_normal, normal_camera), 0.0),5.0) * 0.5 + 0.5;
+    highp float fresnel = pow(max(1.0 - dot(normal_normal, normal_camera), 0.0),5.0) * 0.2 + 0.8;
     highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
     mediump vec3 diffuse_illumination = vec3(0.0, 0.0, 0.0);
     mediump vec3 specular_illumination = vec3(0.0, 0.0, 0.0);
     for(lowp int i = 0; i < 4; i++) {
-      if(dot(light_directions[i],specular_ray) * fresnel > .45) {
+      if(max(min(dot(light_directions[i],specular_ray) * fresnel)) > .75) {
         specular_illumination += light_colors[i] * 0.5;
-      }
-      if(dot(light_directions[i],normal_normal) > .45) {
-        diffuse_illumination += light_colors[i];
-      } else {
-        diffuse_illumination += light_colors[i] * 0.25;
       }
     }
     
@@ -284,7 +279,7 @@ var fs_source = `
     //lowp vec3 color = vec3(0.8, 0.9, 1.0);
     //gl_FragColor = vec4((normal_normal + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
     //gl_FragColor = vec4(((abs(dot(normal_normal, light_direction)) + 0.5) - 0.5) * color, 1.0);
-    gl_FragColor = vec4((vertex_color * diffuse_illumination + specular_illumination * specular_color), 1.0);
+    gl_FragColor = vec4((vertex_color + specular_illumination * specular_color), 1.0);
   }
 `;
 
@@ -332,7 +327,7 @@ gl.clearColor(0.0, 0.0, 0.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 
 function draw_scene() {
-  gl.clearColor(0.0, 0.0, 0.0, 1.0);
+  gl.clearColor(0.9, 0.9, 0.9, 1.0);
   gl.clearDepth(1.0);
   gl.enable(gl.DEPTH_TEST);
   gl.depthFunc(gl.LEQUAL);
