@@ -270,14 +270,14 @@ var fs_source = `
     mediump vec3 diffuse_illumination = vec3(0.0, 0.0, 0.0);
     mediump vec3 specular_illumination = vec3(0.0, 0.0, 0.0);
     for(lowp int i = 0; i < 4; i++) {
-      specular_illumination += max(0.0,pow(dot(specular_ray, light_directions[i]),32.0));
+      specular_illumination += max(0.0,dot(specular_ray, light_directions[i]) * fresnel - 0.7);
     }
     
     //highp vec3 light_direction = normalize(vec3(0.2, 0.5, 1.0));
     //lowp vec3 color = vec3(0.8, 0.9, 1.0);
     //gl_FragColor = vec4((normal_normal + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
     //gl_FragColor = vec4(((abs(dot(normal_normal, light_direction)) + 0.5) - 0.5) * color, 1.0);
-    gl_FragColor = vec4((vertex_color + specular_illumination * specular_color * 0.125), 1.0);
+    gl_FragColor = vec4((vertex_color + specular_illumination * specular_color * 4.0), 1.0);
   }
 `;
 
