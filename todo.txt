@@ -3,6 +3,6 @@ revamp orbee collision (run at 50 fps)
 read obj files, make orbeez rounder
 put orbeez in a storage bin
 add ui
-m̶a̶k̶e̶ ̶o̶r̶b̶e̶e̶z̶ ̶l̶o̶o̶k̶ ̶t̶r̶a̶n̶s̶l̶u̶c̶e̶n̶t̶ ̶w̶i̶t̶h̶o̶u̶t̶ ̶r̶a̶y̶ ̶t̶r̶a̶c̶i̶n̶g̶
+make orbeez look translucent without ray tracing
 make orbeez look translucent with ray tracing
 add mobile support
