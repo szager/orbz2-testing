@@ -274,9 +274,9 @@ var fs_source = `
       highp vec3 light_direction = light_directions[i];
       highp vec3 light_color = light_colors[i];
       highp vec3 h = normalize(normal_camera - light_direction); //🤣🤣🤣🤣🤣🤣🤣🤣🤣🤣
-      highp float fresnel = pow(max(1.0 - dot(h, normal_camera), 0.0),5.0) * 1.0 + 0.0;
-      specular_illumination += pow(max(0.0,dot(specular_ray, light_directions[i])),8.0) * light_colors[i] * fresnel;
-      diffuse_illumination += max(dot(normal_normal, light_directions[i]),0.0) * light_colors[i];
+      highp float fresnel = pow(max(1.0 - dot(h, -light_direction), 0.0),5.0) * 5.0 + 0.5;
+      specular_illumination += pow(max(0.0,dot(normal_normal, h)),32.0) * light_colors[i] * fresnel;
+      diffuse_illumination += max(dot(normal_normal, light_direction),0.0) * light_colors[i];
     }
     
     //highp vec3 light_direction = normalize(vec3(0.2, 0.5, 1.0));
