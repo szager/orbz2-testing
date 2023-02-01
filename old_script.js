@@ -265,12 +265,14 @@ var fs_source = `
     highp vec3 normal_normal = normalize(transformed_normal);
     highp vec3 normal_camera = normalize(camera_direction);
     highp vec3 specular_ray = reflect(normal_camera, normal_normal);
-    highp float camera_normal_cos = dot(normal_camera, normal_normal);
-    highp float fresnel = pow(max(1.0 - camera_normal_cos, 0.0),2.0) * 1.0 + 0.0;
+    //highp float camera_normal_cos = dot(normal_camera, normal_normal);
+    //highp float fresnel = pow(max(1.0 - camera_normal_cos, 0.0),2.0) * 1.0 + 0.0;
     highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
     mediump vec3 diffuse_illumination = vec3(0.0, 0.0, 0.0);
     mediump vec3 specular_illumination = vec3(0.0, 0.0, 0.0);
     for(lowp int i = 0; i < 4; i++) {
+      highp float h = normalize()
+      highp float fresnel = pow(max(1.0 - camera_normal_cos, 0.0),2.0) * 1.0 + 0.0;
       specular_illumination += pow(max(0.0,dot(specular_ray, light_directions[i])),8.0) * light_colors[i] * fresnel;
       diffuse_illumination += max(dot(normal_normal, light_directions[i]),0.0) * light_colors[i];
     }
