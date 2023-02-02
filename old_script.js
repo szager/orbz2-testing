@@ -276,7 +276,7 @@ var fs_source = `
       highp vec3 h = normalize(normal_camera + light_direction); //🤣🤣🤣🤣🤣🤣🤣🤣🤣🤣
       highp float fresnel = pow(max(1.0 - dot(h, normal_normal), 0.0),5.0) * 1.0 + 0.0;
       //specular_illumination += fresnel;
-      specular_illumination += pow(max(dot(normal_normal, h),0.0),1.0) * light_colors[i] * fresnel;
+      specular_illumination += pow(max(dot(normal_normal, h),0.0),64.0) * light_colors[i];
       diffuse_illumination += max(dot(normal_normal, light_direction),0.0) * light_colors[i];
     }
     
@@ -285,7 +285,7 @@ var fs_source = `
     //gl_FragColor = vec4((normal_normal + vec3(1.0, 1.0, 1.0)) * 0.5, 1.0);
     //gl_FragColor = vec4(((abs(dot(normal_normal, h)) + 0.5) - 0.5) * color, 1.0);
     //gl_FragColor = vec4((vertex_color + specular_illumination * specular_color * 0.1 * fresnel), 1.0);
-    gl_FragColor = vec4(vertex_color * diffuse_illumination + specular_color * specular_illumination * 2.0, 1.0);
+    gl_FragColor = vec4(vertex_color * diffuse_illumination + specular_color * specular_illumination * 1.0, 1.0);
   }
 `;
 
