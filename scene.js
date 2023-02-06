@@ -42,7 +42,7 @@ class scene {
     
     this.camera_rotation = [0, 0, 0];
     
-    this.camera_translation = [0, 0, -20];
+    this.camera_translation = [0, 0, -5];
     
     
     this.vertex_shader_source = `
@@ -50,8 +50,8 @@ class scene {
       attribute vec3 vertex_normal;
       attribute float object_index;
       
-      uniform vec3 object_positions[1002];
-      uniform vec3 object_colors[1002];
+      uniform vec3 object_translations[1];
+      uniform vec3 object_colors[1];
       
       uniform mat4 perspective_matrix;
       uniform mat4 camera_rotation_matrix;
@@ -65,7 +65,7 @@ class scene {
       varying highp vec3 relative_position;
       
       void main(void) {
-        transformed_normal = normalize(normal * normal_matrix);
+        transformed_normal = normalize(vertex_normal * normal_matrix);
         mediump int int_object_index = int(object_index);
         vertex_color = object_colors[int_object_index];
         relative_position = vertex_position + object_translations[int_object_index] - camera_translation;
@@ -79,10 +79,8 @@ class scene {
     `;
     
     
-    this.vertex_shader = this.gl.createShader(this.gl.VERTEX_SHADER);
-    this.fragment_shader = this.gl.createShader(this.gl.FRAGMENT_SHADER);
-    this.gl.shaderSource(this.vertex_shader, this.vertex_shader_source);
-    this.gl.shaderSource(this.fragment_shader, this.fragment_shader_source);
+    this.vertex_shader = this.load_shader(this.gl.VERTEX_SHADER, this.vertex_shader_source);
+    this.fragment_shader = this.load_shader(this.gl.FRAGMENT_SHADER, this.fragment_shader_source);
     this.shader_program = this.gl.createProgram();
     this.gl.attachShader(this.shader_program, this.vertex_shader);
     this.gl.attachShader(this.shader_program, this.fragment_shader);
@@ -100,23 +98,24 @@ class scene {
         camera_rotation_matrix: this.gl.getUniformLocation(this.shader_program, "camera_rotation_matrix"),
         normal_matrix: this.gl.getUniformLocation(this.shader_program, "normal_matrix"),
         object_translations: this.gl.getUniformLocation(this.shader_program, "object_translations"),
-        object_colors: this.gl.getUniformLocation(this.shader_program, "object_colors"),
-        light_directions: this.gl.getUniformLocation(this.shader_program, "light_directions"),
-        light_colors: this.gl.getUniformLocation(this.shader_program, "light_colors")
+        object_colors: this.gl.getUniformLocation(this.shader_program, "object_colors")
       },
     };
   }
-  check_if_the_shader_is_working(shader, message) {
+  load_shader(type, source) {
+    let shader = this.gl.createShader(type);
+    this.gl.shaderSource(shader, source);
+    this.gl.compileShader(shader);
     if (!this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS)) {
-      alert(`💩💩💩💩💩${this.gl.getShaderInfoLog(shader)}💩💩${message}💩💩`);
+      alert(`💩💩💩💩💩 ${this.gl.getShaderInfoLog(shader)}💩💩💩💩💩`);
       this.gl.deleteShader(shader);
+      return null;
     }
+    return shader;
   }
 
   initialize_buffers() {
     this.float32_object_colors = new Float32Array(this.object_colors);
-    this.float32_light_colors = new Float32Array(this.light_colors);
-    this.float32_light_directions = new Float32Array(this.light_directions);
 
     this.vertex_position_buffer = this.gl.createBuffer();
     this.gl.bindBuffer(
