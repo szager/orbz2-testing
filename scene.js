@@ -1,25 +1,45 @@
+
+
 class scene {
   constructor(canvas) {
     this.canvas = canvas;
     this.gl = this.canvas.getContext("webgl");
     
     
-    this.vertex_positions = [];
+    this.vertex_positions = [
+      0.0, -1.0, 0.0,
+      -1.0, 1.0, 0.0,
+      1.0, 1.0, 0.0,
+    ];
     
-    this.vertex_normals = [];
+    this.vertex_normals = [
+      0.0, 0.0, 1.0,
+      0.0, 0.0, 1.0,
+      0.0, 0.0, 1.0,
+    ];
     
-    this.object_indices = [];
+    this.object_indices = [
+      0,
+      0,
+      0,
+    ];
     
-    this.object_translations = [];
+    this.object_translations = [
+      0, 0, 0
+    ];
     
-    this.object_colors = [];
-        
-    this.faces = [];
+    this.object_colors = [
+      0.9, 0.6, 0.3,
+    ];
+    
+    this.faces = [
+      0, 1, 2,
+    ];
     
     
     this.camera_rotation = [0, 0, 0];
     
-    this.camera_translation = [0, 0, 0];
+    this.camera_translation = [0, 0, -4];
     
     
     this.vertex_shader_source = `
@@ -53,6 +73,9 @@ class scene {
       }
     `;
     this.fragment_shader_source = `
+      void main(void) {
+        gl_FragColor = vec4(0.9, 0.6, 0.3, 1.0);
+      }
     `;
     
     
@@ -129,9 +152,100 @@ class scene {
   
   draw() {
     this.gl.clearColor(0.8, 0.8, 0.8, 1.0);
-    this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-    
-    
+    this.gl.enable(this.gl.DEPTH_TEST);
+    this.gl.depthFunc(this.gl.LEQUAL);
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+    let camera_rotation_matrix = mat4.create();
+    let perspective_matrix = mat4.create();
+    mat4.perspective(
+      perspective_matrix,
+      fov,
+      aspect_ratio,
+      min_distance,
+      max_distance
+    );
+    mat4.rotate(camera_rotation_matrix, camera_rotation_matrix, camera_rotation[0], [-1, 0, 0]);
+    mat4.rotate(camera_matrix, camera_matrix, camera_rotation[1], [0, -1, 0]);
+    mat4.rotate(camera_matrix, camera_matrix, camera_rotation[2], [0, 0, -1]);
+    mat4.translate(camera_matrix, camera_matrix, camera_translation.map(n => -n));
+    let scene_matrix = mat4.create();
+  //mat4.rotate(scene_matrix, scene_matrix, time * 0.018403, [1.0, 0.0, 0.0]);
+  //mat4.rotate(scene_matrix, scene_matrix, time * 0.023485, [0.0, 1.0, 0.0]);
+  //mat4.rotate(scene_matrix, scene_matrix, time * 0.047634, [0.0, 0.0, 1.0]);
+    let normal_matrix = mat3.create();
+    mat3.normalFromMat4(normal_matrix, scene_matrix);
+  
+  
+    gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
+    gl.vertexAttribPointer(
+      program_info.attribute_locations.position,
+      3,
+      gl.FLOAT,
+      false,
+      0,
+      0
+    );
+    gl.bindBuffer(gl.ARRAY_BUFFER, normal_buffer);
+    gl.vertexAttribPointer(
+      program_info.attribute_locations.normal,
+      3,
+      gl.FLOAT,
+      false,
+      0,
+      0
+    );
+    gl.bindBuffer(gl.ARRAY_BUFFER, object_index_buffer);
+    gl.vertexAttribPointer(
+      program_info.attribute_locations.object_index,
+      1,
+      gl.FLOAT,
+      false,
+      0,
+      0
+    );
+
+    gl.enableVertexAttribArray(program_info.attribute_locations.position);
+    gl.enableVertexAttribArray(program_info.attribute_locations.normal);
+    gl.enableVertexAttribArray(program_info.attribute_locations.object_index);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, face_buffer);
+    gl.useProgram(program_info.program);
+
+    gl.uniform3fv(
+      program_info.uniform_locations.object_positions,
+      new Float32Array(object_positions)
+    );
+    gl.uniform3fv(
+      program_info.uniform_locations.object_colors,
+      float32_object_colors
+    );
+  
+  
+    gl.uniform3fv(
+      program_info.uniform_locations.light_directions,
+      float32_light_directions
+    );
+    gl.uniform3fv(
+      program_info.uniform_locations.light_colors,
+      float32_light_colors
+    );
+
+  
+    gl.uniformMatrix4fv(
+      program_info.uniform_locations.camera_matrix,
+      false,
+      camera_matrix
+    );
+    gl.uniformMatrix3fv(
+      program_info.uniform_locations.normal_matrix,
+      false,
+      normal_matrix
+    );
+    gl.uniformMatrix4fv(
+      program_info.uniform_locations.scene_matrix,
+      false,
+      scene_matrix
+    );
+    gl.drawElements(gl.TRIANGLES, faces.length, gl.UNSIGNED_SHORT, 0);
     
   }
 }
