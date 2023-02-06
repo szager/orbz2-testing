@@ -42,7 +42,7 @@ class scene {
     
     this.camera_rotation = [0, 0, 0];
     
-    this.camera_translation = [0, 0, -5];
+    this.camera_translation = [0, 0, 5];
     
     
     this.vertex_shader_source = `
@@ -98,7 +98,8 @@ class scene {
         camera_rotation_matrix: this.gl.getUniformLocation(this.shader_program, "camera_rotation_matrix"),
         normal_matrix: this.gl.getUniformLocation(this.shader_program, "normal_matrix"),
         object_translations: this.gl.getUniformLocation(this.shader_program, "object_translations"),
-        object_colors: this.gl.getUniformLocation(this.shader_program, "object_colors")
+        object_colors: this.gl.getUniformLocation(this.shader_program, "object_colors"),
+        camera_translation: this.gl.getUniformLocation(this.shader_program, "camera_translation"),
       },
     };
   }
@@ -212,7 +213,7 @@ class scene {
 
     this.gl.uniform3fv(
       this.program_info.uniform_locations.object_translations,
-      new Float32Array(this.object_positions)
+      new Float32Array(this.object_translations)
     );
     this.gl.uniform3fv(
       this.program_info.uniform_locations.object_colors,
@@ -221,7 +222,7 @@ class scene {
 
   
     this.gl.uniformMatrix4fv(
-      this.program_info.uniform_locations.camera_matrix,
+      this.program_info.uniform_locations.perspective_matrix,
       false,
       perspective_matrix
     );
@@ -235,7 +236,9 @@ class scene {
       false,
       camera_rotation_matrix
     );
+    alert("about to display");
     this.gl.drawElements(this.gl.TRIANGLES, this.faces.length, this.gl.UNSIGNED_SHORT, 0);
+    alert("just displayed");
   }
 }
 
