@@ -42,7 +42,7 @@ class scene {
     
     this.camera_rotation = [0, 0, 0];
     
-    this.camera_translation = [0, 0, -40];
+    this.camera_translation = [0, 0, -20];
     
     
     this.vertex_shader_source = `
@@ -52,9 +52,6 @@ class scene {
       
       uniform vec3 object_positions[1002];
       uniform vec3 object_colors[1002];
-      
-      uniform mediump vec3 light_directions[4];
-      uniform mediump vec3 light_colors[4];
       
       uniform mat4 perspective_matrix;
       uniform mat4 camera_rotation_matrix;
@@ -71,7 +68,7 @@ class scene {
         transformed_normal = normalize(normal * normal_matrix);
         mediump int int_object_index = int(object_index);
         vertex_color = object_colors[int_object_index];
-        relative_position = vposition + object_translations[int_object_index] - camera_translation;
+        relative_position = vertex_position + object_translations[int_object_index] - camera_translation;
         gl_Position = vec4(relative_position, 1.0) * camera_rotation_matrix * perspective_matrix;
       }
     `;
@@ -109,7 +106,13 @@ class scene {
       },
     };
   }
-  
+  check_if_the_shader_is_working(shader, message) {
+    if (!this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS)) {
+      alert(`💩💩💩💩💩${this.gl.getShaderInfoLog(shader)}💩💩${message}💩💩`);
+      this.gl.deleteShader(shader);
+    }
+  }
+
   initialize_buffers() {
     this.float32_object_colors = new Float32Array(this.object_colors);
     this.float32_light_colors = new Float32Array(this.light_colors);
@@ -234,7 +237,6 @@ class scene {
       camera_rotation_matrix
     );
     this.gl.drawElements(this.gl.TRIANGLES, this.faces.length, this.gl.UNSIGNED_SHORT, 0);
-    
   }
 }
 
