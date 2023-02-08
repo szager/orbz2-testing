@@ -6,7 +6,7 @@ class game_player {
     this.stopping = false;
     this.paused = false;
     this.bound_update_method = this.update.bind(this);
-    this.bound_update_method();
+    requestAnimationFrame(this.bound_update_method);
   }
   pause() {
     this.paused = true;

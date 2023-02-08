@@ -28,7 +28,7 @@ class scene {
     ];
     
     this.object_translations = [
-      0, 0, 1
+      0, 0, 2
     ];
     
     this.object_colors = [
@@ -42,7 +42,7 @@ class scene {
     
     this.camera_rotation = [0, 0, 0];
     
-    this.camera_translation = [0, 0, -5];
+    this.camera_translation = [0, 0, -2];
     
     
     this.vertex_shader_source = `
@@ -156,6 +156,7 @@ class scene {
   
   draw() {
     this.gl.clearColor(0.8, 0.8, 0.8, 1.0);
+    this.gl.clearDepth(1.0);
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.depthFunc(this.gl.LEQUAL);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -168,9 +169,9 @@ class scene {
       this.min_distance,
       this.max_distance
     );
-    mat4.rotate(camera_rotation_matrix, camera_rotation_matrix, this.camera_rotation[0], [-1, 0, 0]);
-    mat4.rotate(camera_rotation_matrix, camera_rotation_matrix, this.camera_rotation[1], [0, -1, 0]);
-    mat4.rotate(camera_rotation_matrix, camera_rotation_matrix, this.camera_rotation[2], [0, 0, -1]);
+    mat4.rotate(camera_rotation_matrix, camera_rotation_matrix, this.camera_rotation[0], [1, 0, 0]);
+    mat4.rotate(camera_rotation_matrix, camera_rotation_matrix, this.camera_rotation[1], [0, 1, 0]);
+    mat4.rotate(camera_rotation_matrix, camera_rotation_matrix, this.camera_rotation[2], [0, 0, 1]);
   
   
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertex_position_buffer);
@@ -234,7 +235,7 @@ class scene {
       camera_rotation_matrix
     );
     this.gl.drawElements(this.gl.TRIANGLES, this.faces.length, this.gl.UNSIGNED_SHORT, 0);
-    //alert("just displayed");
+    alert("just displayed");
   }
 }
 
