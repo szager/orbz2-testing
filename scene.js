@@ -106,7 +106,7 @@ class scene {
     this.gl.shaderSource(shader, source);
     this.gl.compileShader(shader);
     if (!this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS)) {
-      alert(`💩💩💩💩💩 ${this.gl.getShaderInfoLog(shader)}💩💩💩💩💩`);
+      alert(`💩💩💩💩💩💩💩 ${this.gl.getShaderInfoLog(shader)}💩💩💩💩💩💩💩💩`);
       this.gl.deleteShader(shader);
       return null;
     }
@@ -235,7 +235,7 @@ class scene {
       camera_rotation_matrix
     );
     this.gl.drawElements(this.gl.TRIANGLES, this.faces.length, this.gl.UNSIGNED_SHORT, 0);
-    alert("just displayed");
+    //alert("just displayed");
   }
 }
 
