@@ -11,7 +11,7 @@ class scene {
     
     this.vertex_positions = [
       0.0, -1.0, 0.0,
-      -1.0, 1.0, 0.0,
+      -1.0, 0.0, 0.0,
       1.0, 1.0, 0.0,
     ];
     
@@ -56,13 +56,13 @@ class scene {
       uniform mat4 perspective_matrix;
       uniform mat4 camera_rotation_matrix;
       
-      uniform highp vec3 camera_translation;
+      uniform vec3 camera_translation;
       
       varying lowp vec3 vertex_color;
       varying highp vec3 relative_position;
       varying highp vec3 fragment_normal;
       
-      void main(void) {
+      void main() {
         mediump int int_object_index = int(object_index);
         fragment_normal = vertex_normal;
         vertex_color = object_colors[int_object_index];
@@ -72,7 +72,7 @@ class scene {
     `;
     this.fragment_shader_source = `
       varying highp vec3 fragment_normal;
-      void main(void) {
+      void main() {
         gl_FragColor = vec4(0.9, 0.6, 0.3, 1.0);
       }
     `;
