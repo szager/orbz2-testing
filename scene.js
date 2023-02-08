@@ -6,7 +6,7 @@ class scene {
     this.gl = this.canvas.getContext("webgl");
     this.fov = .8;
     this.aspect_ratio = this.canvas.width / this.canvas.height;
-    this.min_distance = .1;
+    this.min_distance = .01;
     this.max_distance = 100;
     
     this.vertex_positions = [
@@ -28,7 +28,7 @@ class scene {
     ];
     
     this.object_translations = [
-      0, 0, 0
+      0, 0, 1
     ];
     
     this.object_colors = [
@@ -42,7 +42,7 @@ class scene {
     
     this.camera_rotation = [0, 0, 0];
     
-    this.camera_translation = [0, 0, 5];
+    this.camera_translation = [0, 0, -5];
     
     
     this.vertex_shader_source = `
@@ -59,9 +59,7 @@ class scene {
       uniform highp vec3 camera_translation;
       
       varying lowp vec3 vertex_color;
-      
       varying highp vec3 relative_position;
-      
       varying highp vec3 fragment_normal;
       
       void main(void) {
@@ -69,7 +67,7 @@ class scene {
         fragment_normal = vertex_normal;
         vertex_color = object_colors[int_object_index];
         relative_position = vertex_position + object_translations[int_object_index] - camera_translation;
-        gl_Position = vec4(relative_position, 0.0) * camera_rotation_matrix * perspective_matrix;
+        gl_Position = perspective_matrix * camera_rotation_matrix * vec4(relative_position, 1.0);
       }
     `;
     this.fragment_shader_source = `
@@ -217,6 +215,12 @@ class scene {
       this.program_info.uniform_locations.object_colors,
       this.float32_object_colors
     );
+    this.gl.uniform3f(
+      this.program_info.uniform_locations.camera_translation,
+      this.camera_translation[0],
+      this.camera_translation[1],
+      this.camera_translation[2]
+    );
 
   
     this.gl.uniformMatrix4fv(
@@ -230,7 +234,7 @@ class scene {
       camera_rotation_matrix
     );
     this.gl.drawElements(this.gl.TRIANGLES, this.faces.length, this.gl.UNSIGNED_SHORT, 0);
-    alert("just displayed");
+    //alert("just displayed");
   }
 }
 
