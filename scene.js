@@ -8,9 +8,9 @@ class scene {
     this.max_distance = 100;
     
     this.vertex_positions = [
-      0.0, -1.0, -0.2,
-      -1.0, 0.0, 0.5,
-      1.0, 1.0, -0.7,
+      0.1, -0.6, -0.2,
+      -1.1, 0.3, 0.5,
+      1.3, 0.9, -0.7,
     ];
     
     this.vertex_normals = [
@@ -26,11 +26,13 @@ class scene {
     ];
     
     this.object_translations = [
-      0, 0, 2
+      0, 0, 2,
+      -0.3, 0.1, 0.5
     ];
     
     this.object_colors = [
       0.9, 0.6, 0.3,
+      0.2, 0.8, 0.7,
     ];
     
     this.faces = [
@@ -48,8 +50,8 @@ class scene {
       attribute vec3 vertex_normal;
       attribute float object_index;
       
-      uniform vec3 object_translations[1];
-      uniform vec3 object_colors[1];
+      uniform vec3 object_translations[2];
+      uniform vec3 object_colors[2];
       
       uniform mat4 perspective_matrix;
       uniform mat4 camera_rotation_matrix;
@@ -232,8 +234,8 @@ class scene {
       false,
       camera_rotation_matrix
     );
-    this.gl.drawElements(this.gl.TRIANGLES, this.faces.length, this.gl.UNSIGNED_SHORT, 0);
-    //alert("just displayed");
+    this.gl.drawElements(this.gl.TRIANGLES, 3, this.gl.UNSIGNED_SHORT, 0);
+    alert(String(camera_rotation_matrix));
   }
 }
 
