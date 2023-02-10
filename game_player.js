@@ -17,7 +17,7 @@ class game_player {
   stop() {
     this.stopping = true;
   }
-  update() {//but i can't make it private
+  update() {
     if(!this.stopping) {
       if(!this.paused) {
         this.game.update();
