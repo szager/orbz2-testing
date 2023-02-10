@@ -183,6 +183,8 @@ class scene {
       0,
       0
     );
+    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_position);
+    
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertex_normal_buffer);
     this.gl.vertexAttribPointer(
       this.program_info.attribute_locations.vertex_normal,
@@ -192,6 +194,8 @@ class scene {
       0,
       0
     );
+    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_normal);
+    
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.object_index_buffer);
     this.gl.vertexAttribPointer(
       this.program_info.attribute_locations.object_index,
@@ -201,10 +205,8 @@ class scene {
       0,
       0
     );
-
-    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_position);
-    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_normal);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.object_index);
+    
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.face_buffer);
     this.gl.useProgram(this.program_info.program);
 
@@ -234,8 +236,8 @@ class scene {
       false,
       camera_rotation_matrix
     );
-    this.gl.drawElements(this.gl.TRIANGLES, 3, this.gl.UNSIGNED_SHORT, 0);
-    alert(String(camera_rotation_matrix));
+    this.gl.drawElements(this.gl.TRIANGLES, this.faces.length, this.gl.UNSIGNED_SHORT, 0);
+    alert("e");
   }
 }
 
