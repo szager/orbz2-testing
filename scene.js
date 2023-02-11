@@ -62,12 +62,12 @@ class scene {
       varying highp vec3 fragment_normal;
       
       void main() {
-        //mediump int int_object_index = int(object_index);
-        //fragment_normal = vertex_normal;
-        //vertex_color = object_colors[int_object_index];
-        //relative_position = vertex_position + object_translations[int_object_index] - camera_translation;
+        mediump int int_object_index = int(object_index);
+        fragment_normal = vertex_normal;
+        vertex_color = object_colors[int_object_index];
+        relative_position = vertex_position + object_translations[int_object_index] - camera_translation;
         //gl_Position = perspective_matrix * camera_rotation_matrix * vec4(relative_position, 1.0);
-        gl_Position = vec4(vertex_position.xy, 0.5, 0.0);
+        gl_Position = vec4(vertex_position.xy, 0.0, 0.0);
       }
     `;
 
@@ -183,7 +183,6 @@ class scene {
       0,
       0
     );
-    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_position);
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertex_normal_buffer);
     this.gl.vertexAttribPointer(
@@ -194,7 +193,6 @@ class scene {
       0,
       0
     );
-    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_normal);
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.object_index_buffer);
     this.gl.vertexAttribPointer(
@@ -205,6 +203,9 @@ class scene {
       0,
       0
     );
+    
+    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_position);
+    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_normal);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.object_index);
     
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.face_buffer);
