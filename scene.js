@@ -66,8 +66,8 @@ class scene {
         fragment_normal = vertex_normal;
         vertex_color = object_colors[int_object_index];
         relative_position = vertex_position + object_translations[int_object_index] - camera_translation;
-        //gl_Position = perspective_matrix * camera_rotation_matrix * vec4(relative_position, 1.0);
-        gl_Position = vec4(vertex_position.xy, 0.0, 0.0);
+        gl_Position = (perspective_matrix * camera_rotation_matrix * vec4(relative_position, 1.0));
+        //gl_Position = vec4(vertex_position.xy, 0.6, 0.9);
       }
     `;
 
