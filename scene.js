@@ -44,7 +44,6 @@ class scene {
     
     this.camera_translation = [0, 0, -2];
     
-    
     this.vertex_shader_source = `
       attribute vec3 vertex_position;
       attribute vec3 vertex_normal;
@@ -71,6 +70,7 @@ class scene {
         gl_Position = vec4(vertex_position.xy, 0.5, 0.0);
       }
     `;
+
     this.fragment_shader_source = `
       varying highp vec3 fragment_normal;
       void main() {
@@ -78,7 +78,6 @@ class scene {
       }
     `;
     
-
     this.vertex_shader = this.load_shader(this.gl.VERTEX_SHADER, this.vertex_shader_source);
     this.fragment_shader = this.load_shader(this.gl.FRAGMENT_SHADER, this.fragment_shader_source);
     this.shader_program = this.gl.createProgram();
