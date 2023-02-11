@@ -63,11 +63,12 @@ class scene {
       varying highp vec3 fragment_normal;
       
       void main() {
-        mediump int int_object_index = int(object_index);
-        fragment_normal = vertex_normal;
-        vertex_color = object_colors[int_object_index];
-        relative_position = vertex_position + object_translations[int_object_index] - camera_translation;
-        gl_Position = perspective_matrix * camera_rotation_matrix * vec4(relative_position, 1.0);
+        //mediump int int_object_index = int(object_index);
+        //fragment_normal = vertex_normal;
+        //vertex_color = object_colors[int_object_index];
+        //relative_position = vertex_position + object_translations[int_object_index] - camera_translation;
+        //gl_Position = perspective_matrix * camera_rotation_matrix * vec4(relative_position, 1.0);
+        gl_Position = vec4(vertex_position.xy, 0.5, 0.0);
       }
     `;
     this.fragment_shader_source = `
@@ -77,7 +78,7 @@ class scene {
       }
     `;
     
-    
+
     this.vertex_shader = this.load_shader(this.gl.VERTEX_SHADER, this.vertex_shader_source);
     this.fragment_shader = this.load_shader(this.gl.FRAGMENT_SHADER, this.fragment_shader_source);
     this.shader_program = this.gl.createProgram();
