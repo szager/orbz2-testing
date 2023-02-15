@@ -8,9 +8,9 @@ class scene {
     this.max_distance = 100;
     
     this.vertex_positions = [
-      0.1, -0.6, -0.2,
-      -0.9, 0.3, 0.5,
-      1.3, 0.9, -0.7,
+      0.1, -0.6, -0.08,
+      -0.4, 0.3, 0.2,
+      .9, 0.3, -0.28,
     ];
     
     this.vertex_normals = [
@@ -26,8 +26,8 @@ class scene {
     ];
     
     this.object_translations = [
-      0, 0, 2,
-      -0.3, 0.1, 0.5
+      0, 0, 0,
+      0, 0, 0
     ];
     
     this.object_colors = [
@@ -42,7 +42,7 @@ class scene {
     
     this.camera_rotation = [0, 0, 0];
     
-    this.camera_translation = [0, 0, -0.5];
+    this.camera_translation = [0, 0, -.7];
     
     this.vertex_shader_source = `
       attribute vec3 vertex_position;
@@ -66,8 +66,9 @@ class scene {
         fragment_normal = vertex_normal;
         vertex_color = object_colors[int_object_index];
         relative_position = vertex_position + object_translations[int_object_index] - camera_translation;
-        gl_Position = perspective_matrix * camera_rotation_matrix * vec4(relative_position, 1.0);
-        //gl_Position = vec4(relative_position.xy, 0.6, 0.9);
+        //gl_Position = perspective_matrix * camera_rotation_matrix * vec4(relative_position, 1.0);
+        gl_Position = perspective_matrix * vec4(relative_position, 1.0);
+        //gl_Position = vec4(relative_position, 1.0);
       }
     `;
 
