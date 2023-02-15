@@ -42,7 +42,7 @@ class scene {
     
     this.camera_rotation = [0, 0, 0];
     
-    this.camera_translation = [0, 0, -2];
+    this.camera_translation = [0, 0, -0.5];
     
     this.vertex_shader_source = `
       attribute vec3 vertex_position;
@@ -238,7 +238,7 @@ class scene {
       camera_rotation_matrix
     );
     this.gl.drawElements(this.gl.TRIANGLES, this.faces.length, this.gl.UNSIGNED_SHORT, 0);
-    //alert("e");
+    //alert(String(perspective_matrix));
   }
 }
 
