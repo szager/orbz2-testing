@@ -177,8 +177,9 @@ class scene {
     mat4.rotate(camera_rotation_matrix, camera_rotation_matrix, this.camera_rotation[1], [0, 1, 0]);
     mat4.rotate(camera_rotation_matrix, camera_rotation_matrix, this.camera_rotation[2], [0, 0, 1]);
     let mat3_rotation = mat3.create();
-    mat3.normalFromMat4(mat3_rotation, camera_rotation_matrix);
-  
+    mat3.rotate(mat3_rotation, mat3_rotation, this.camera_rotation[0], [-1, 0, 0]);
+    mat3.rotate(mat3_rotation, mat3_rotation, this.camera_rotation[1], [0, -1, 0]);
+    mat3.rotate(mat3_rotation, mat3_rotation, this.camera_rotation[2], [0, 0, -1]);
     
     
     
