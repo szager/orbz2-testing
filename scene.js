@@ -54,7 +54,7 @@ class scene {
       
       uniform mat4 perspective_matrix;
       uniform mat4 camera_rotation_matrix;
-      uniform mat3 normal_matrix;
+      uniform mat3 mat3_rotation;
       
       uniform vec3 camera_translation;
       
@@ -66,7 +66,7 @@ class scene {
         mediump int int_object_index = int(object_index);
         fragment_normal = vertex_normal;
         vertex_color = object_colors[int_object_index];
-        relative_position = (vertex_position + object_translations[int_object_index]) - normal_matrix * camera_translation;
+        relative_position = (vertex_position + object_translations[int_object_index]) - (mat3_rotation * camera_translation);
         gl_Position = camera_rotation_matrix * perspective_matrix * vec4(relative_position.xyz, 1.0);
       }
     `;
@@ -95,7 +95,7 @@ class scene {
       uniform_locations: {
         perspective_matrix: this.gl.getUniformLocation(this.shader_program, "perspective_matrix"),
         camera_rotation_matrix: this.gl.getUniformLocation(this.shader_program, "camera_rotation_matrix"),
-        normal_matrix: this.gl.getUniformLocation(this.shader_program, "normal_matrix"),
+        mat3_rotation: this.gl.getUniformLocation(this.shader_program, "mat3_rotation"),
         object_translations: this.gl.getUniformLocation(this.shader_program, "object_translations"),
         object_colors: this.gl.getUniformLocation(this.shader_program, "object_colors"),
         camera_translation: this.gl.getUniformLocation(this.shader_program, "camera_translation"),
@@ -176,8 +176,8 @@ class scene {
     mat4.rotate(camera_rotation_matrix, camera_rotation_matrix, this.camera_rotation[0], [1, 0, 0]);
     mat4.rotate(camera_rotation_matrix, camera_rotation_matrix, this.camera_rotation[1], [0, 1, 0]);
     mat4.rotate(camera_rotation_matrix, camera_rotation_matrix, this.camera_rotation[2], [0, 0, 1]);
-    let normal_matrix = mat3.create();
-    mat3.normalFromMat4(normal_matrix, camera_matrix);
+    let mat3_rotation = mat3.create();
+    mat3.normalFromMat4(mat3_rotation, camera_rotation_matrix);
   
     
     
@@ -241,12 +241,18 @@ class scene {
       false,
       perspective_matrix
     );
+    this.gl.uniformMatrix3fv(
+      this.program_info.uniform_locations.mat3_rotation,
+      false,
+      mat3_rotation
+    );
     this.gl.uniformMatrix4fv(
       this.program_info.uniform_locations.camera_rotaion_matrix,
       false,
       camera_rotation_matrix
     );
     this.gl.drawElements(this.gl.TRIANGLES, this.faces.length, this.gl.UNSIGNED_SHORT, 0);
+    //alert("e");
   }
 }
 
