@@ -1,12 +1,16 @@
 import {scene} from "./scene.js";
 
+
 class game {
   constructor(canvas) {
+    this.frame_time = 1 / 60;
+    this.time = 0;
     this.scene = new scene(canvas);
     this.scene.initialize_buffers();
   }
   update() {
-    this.scene.draw();
+    this.time += this.frame_time;
+    this.scene.draw(this.time);
   }
 }
 

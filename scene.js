@@ -66,7 +66,7 @@ class scene {
         fragment_normal = vertex_normal;
         vertex_color = object_colors[int_object_index];
         relative_position = vertex_position + object_translations[int_object_index] - camera_translation;
-        gl_Position = perspective_matrix * vec4(relative_position.xyz, 1.0);
+        gl_Position = camera_rotation_matrix * perspective_matrix * vec4(relative_position.xyz, 1.0);
       }
     `;
 
@@ -153,7 +153,10 @@ class scene {
     this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.vertex_normals), this.gl.STATIC_DRAW);
   }
   
-  draw() {
+  draw(time) {
+    this.camera_rotation[0] = time * -1.3357674575867674745;
+    this.camera_rotation[1] = time * .75564367798670867646;
+    this.camera_rotation[2] = time * .47658753564576776898;
     this.gl.clearColor(0.8, 0.8, 0.8, 1.0);
     this.gl.clearDepth(1.0);
     this.gl.enable(this.gl.DEPTH_TEST);
