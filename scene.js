@@ -42,7 +42,7 @@ class scene {
     
     this.camera_rotation = [0, 0, 0];
     
-    this.camera_translation = [0, 0, 2];
+    this.camera_translation = [.1, .3, 2];
     
     this.vertex_shader_source = `
       attribute vec3 vertex_position;
@@ -66,8 +66,8 @@ class scene {
         fragment_normal = vertex_normal;
         vertex_color = object_colors[int_object_index];
         relative_position = (vertex_position + object_translations[int_object_index]) - camera_translation;
-        gl_Position = perspective_matrix * camera_rotation_matrix * vec4(relative_position.xyz, 1.0);
-        //gl_Position = perspective_matrix * vec4(relative_position.xyz, 1.0);
+        //gl_Position = perspective_matrix * (camera_rotation_matrix * vec4(relative_position.xyz, 1.0));
+        gl_Position = perspective_matrix * vec4(relative_position.xyz, 1.0);
       }
     `;
 
@@ -173,9 +173,8 @@ class scene {
       this.max_distance
     );
     let camera_rotation_matrix = mat4.create();
-    mat4.rotate(camera_rotation_matrix, camera_rotation_matrix, this.camera_rotation[0], [1, 0, 0]);
-    mat4.rotate(camera_rotation_matrix, camera_rotation_matrix, this.camera_rotation[1], [0, 1, 0]);
-    mat4.rotate(camera_rotation_matrix, camera_rotation_matrix, this.camera_rotation[2], [0, 0, 1]);
+    mat4.targetTo(camera_rotation_matrix, this.camera_translation, [0, 0, 0], [0, 0, 1]);
+
     
     
   
