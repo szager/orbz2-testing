@@ -68,7 +68,7 @@ class scene {
         fragment_normal = vertex_normal;
         vertex_color = object_colors[int_object_index];
         relative_position = (vertex_position + object_translations[int_object_index]) - camera_translation;
-        gl_Position = perspective_matrix * (view_matrix * vec4(relative_position, 1.0));
+        gl_Position = perspective_matrix * view_matrix * vec4(relative_position, 1.0);
         //gl_Position = perspective_matrix * vec4(relative_position.xyz, 1.0);
       }
     `;
@@ -177,8 +177,8 @@ class scene {
       this.max_distance
     );
     let view_matrix = mat4.create();
+    mat4.rotate(view_matrix, view_matrix, Math.PI / 2 + this.pitch, [0.0, 1.0, 0.0]);
     mat4.rotate(view_matrix, view_matrix, this.yaw, [0.0, 0.0, 1.0]);
-    mat4.rotate(view_matrix, view_matrix, Math.PI / 2 - this.pitch, [0.0, 1.0, 0.0]);
     //mat4.invert(view_matrix, view_matrix);
     
   
