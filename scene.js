@@ -8,21 +8,24 @@ class scene {
     this.max_distance = 100;
     
     this.vertex_positions = [
-      -1, 0, -.732,
-      +1, 0, -.732,
-      0, 0, +1,
+      +1, +1, -1,
+      +1, -1, +1,
+      -1, +1, +1,
+      -1, -1, -1
       
     ];
     
     let recipSqrt3 = 1 / Math.sqrt(3);
     
     this.vertex_normals = [
-      -.1, .2, -.0732,
-      +.1, .2, -.0732,
-      0, .2, +.1,
+      +1, +1, -1,
+      +1, -1, +1,
+      -1, +1, +1,
+      -1, -1, -1
     ];
     
     this.object_indices = [
+      0,
       0,
       0,
       0
@@ -40,6 +43,9 @@ class scene {
     
     this.faces = [
       0, 1, 2,
+      0, 1, 3,
+      0, 2, 3,
+      1, 2, 3
     ];
     
     
@@ -84,7 +90,8 @@ class scene {
         highp vec3 n = normalize(fragment_normal);
         highp vec3 e = normalize(-relative_position);
         highp float fresnel = pow(1.0 - abs(dot(e, n)),5.0);
-        gl_FragColor = vec4(vertex_color * fresnel, 1.0);
+        highp vec3 white = vec3(1.0, 1.0, 1.0);
+        gl_FragColor = vec4(vertex_color + white * fresnel, 1.0);
       }
     `;
     
