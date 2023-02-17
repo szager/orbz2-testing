@@ -53,7 +53,7 @@ class scene {
       uniform vec3 object_colors[2];
       
       uniform mat4 perspective_matrix;
-      uniform mat4 camera_rotation_matrix;
+      uniform mat4 view_matrix;
       
       uniform vec3 camera_translation;
       
@@ -66,7 +66,7 @@ class scene {
         fragment_normal = vertex_normal;
         vertex_color = object_colors[int_object_index];
         relative_position = (vertex_position + object_translations[int_object_index]) - camera_translation;
-        gl_Position = perspective_matrix * camera_rotation_matrix * vec4(relative_position, 1.0);
+        gl_Position = perspective_matrix * (view_matrix * vec4(relative_position, 0.0));
         //gl_Position = perspective_matrix * vec4(relative_position.xyz, 1.0);
       }
     `;
@@ -95,7 +95,7 @@ class scene {
       },
       uniform_locations: {
         perspective_matrix: this.gl.getUniformLocation(this.shader_program, "perspective_matrix"),
-        camera_rotation_matrix: this.gl.getUniformLocation(this.shader_program, "camera_rotation_matrix"),
+        view_matrix: this.gl.getUniformLocation(this.shader_program, "view_matrix"),
         object_translations: this.gl.getUniformLocation(this.shader_program, "object_translations"),
         object_colors: this.gl.getUniformLocation(this.shader_program, "object_colors"),
         camera_translation: this.gl.getUniformLocation(this.shader_program, "camera_translation"),
@@ -172,9 +172,9 @@ class scene {
       this.min_distance,
       this.max_distance
     );
-    let camera_rotation_matrix = mat4.create();
-    mat4.targetTo(camera_rotation_matrix, this.camera_translation, [0, 0, 0], [0, 0, 1]);
-    //mat4.invert(camera_rotation_matrix, camera_rotation_matrix);
+    let view_matrix = mat4.create();
+    mat4.targetTo(view_matrix, this.camera_translation, [0, 0, 0], [0, 0, 1]);
+    //mat4.invert(view_matrix, view_matrix);
     
   
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertex_position_buffer);
@@ -239,10 +239,10 @@ class scene {
     this.gl.uniformMatrix4fv(
       this.program_info.uniform_locations.camera_rotaion_matrix,
       false,
-      camera_rotation_matrix
+      view_matrix
     );
     this.gl.drawElements(this.gl.TRIANGLES, this.faces.length, this.gl.UNSIGNED_SHORT, 0);
-    alert(JSON.stringify(camera_rotation_matrix, null, 1));
+    alert(JSON.stringify(perspective_matrix, null, 1));
   }
 }
 
