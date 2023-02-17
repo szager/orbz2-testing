@@ -66,7 +66,7 @@ class scene {
         fragment_normal = vertex_normal;
         vertex_color = object_colors[int_object_index];
         relative_position = (vertex_position + object_translations[int_object_index]) - camera_translation;
-        gl_Position = perspective_matrix * (camera_rotation_matrix * vec4(relative_position.xyz, 1.0));
+        gl_Position = perspective_matrix * camera_rotation_matrix * vec4(relative_position, 1.0);
         //gl_Position = perspective_matrix * vec4(relative_position.xyz, 1.0);
       }
     `;
@@ -173,8 +173,7 @@ class scene {
       this.max_distance
     );
     let camera_rotation_matrix = mat4.create();
-    mat4.lookAt(camera_rotation_matrix, this.camera_translation, [0, 0, 0], [0, 0, 1]);
-
+    mat4.targetTo(camera_rotation_matrix, this.camera_translation, [0, 0, 0], [0, 0, 1]);
     
     
   
@@ -243,7 +242,7 @@ class scene {
       camera_rotation_matrix
     );
     this.gl.drawElements(this.gl.TRIANGLES, this.faces.length, this.gl.UNSIGNED_SHORT, 0);
-    alert(String(camera_rotation_matrix));
+    alert(JSON.stringify(camera_rotation_matrix, null, 1));
   }
 }
 
