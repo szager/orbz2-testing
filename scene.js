@@ -42,7 +42,7 @@ class scene {
     
     this.pitch = 0;
     this.yaw = 0;
-    this.viewing_distance = 2;
+    this.view_distance = 2;
     this.focus = [0, 0, 0];
     
     
@@ -176,7 +176,7 @@ class scene {
     );
     let view_matrix = mat4.create();
     mat4.rotate(view_matrix, view_matrix, this.yaw, [0.0, 0.0, 1.0])
-    mat4.rotate(view_matrix, view_matrix, this.yaw, [0.0, 0.0, 1.0])
+    mat4.rotate(view_matrix, view_matrix, this.pitch, [0.0, 1.0, 0.0])
     //mat4.invert(view_matrix, view_matrix);
     
   
@@ -227,9 +227,9 @@ class scene {
     );
     this.gl.uniform3f(
       this.program_info.uniform_locations.camera_translation,
-      this.camera_translation[0],
-      this.camera_translation[1],
-      this.camera_translation[2]
+      view_matrix[3] * this.view_distance + this.focus[0],
+      view_matrix[7] * this.view_distance + this.focus[1],
+      view_matrix[10] * this.view_distance + this.focus[2]
     );
 
   
@@ -245,7 +245,7 @@ class scene {
       view_matrix
     );
     this.gl.drawElements(this.gl.TRIANGLES, this.faces.length, this.gl.UNSIGNED_SHORT, 0);
-    //alert(JSON.stringify(perspective_matrix, null, 1));
+    alert(JSON.stringify(view_matrix, null, 1));
   }
 }
 
