@@ -8,9 +8,9 @@ class scene {
     this.max_distance = 100;
     
     this.vertex_positions = [
-      0.2, -.4, -0.2,
-      -.4, 0.2, 0.4,
-      .2, 0.2, -0.2,
+      0.2, -.4, 0,
+      -.4, 0.2, 0,
+      .2, 0.2, 0,
     ];
     
     this.vertex_normals = [
@@ -41,7 +41,7 @@ class scene {
     
     
     this.pitch = 0;
-    this.yaw = Math.PI;
+    this.yaw = 0;
     this.view_distance = 5;
     this.focus = [0, 0, 0];
     
@@ -176,10 +176,11 @@ class scene {
       this.min_distance,
       this.max_distance
     );
+    let camera_matrix = mat4.create();
+    mat4.rotate(camera_matrix, camera_matrix, Math.PI / 2 + this.pitch, [0.0, 1.0, 0.0]);
+    mat4.rotate(camera_matrix, camera_matrix, this.yaw, [0.0, 0.0, 1.0]);
     let view_matrix = mat4.create();
-    mat4.rotate(view_matrix, view_matrix, Math.PI / 2 + this.pitch, [0.0, 1.0, 0.0]);
-    mat4.rotate(view_matrix, view_matrix, this.yaw, [0.0, 0.0, 1.0]);
-    //mat4.invert(view_matrix, view_matrix);
+    mat4.invert(view_matrix, camera_matrix);
     
   
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertex_position_buffer);
@@ -229,9 +230,9 @@ class scene {
     );
     this.gl.uniform3f(
       this.program_info.uniform_locations.camera_translation,
-      view_matrix[8] * this.view_distance + this.focus[0],
-      view_matrix[9] * this.view_distance + this.focus[1],
-      view_matrix[10] * this.view_distance + this.focus[2]
+      camera_matrix[8] * this.view_distance + this.focus[0],
+      camera_matrix[9] * this.view_distance + this.focus[1],
+      camera_matrix[10] * this.view_distance + this.focus[2]
     );
 
   
