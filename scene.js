@@ -8,21 +8,24 @@ class scene {
     this.max_distance = 100;
     
     this.vertex_positions = [
-      0.2, -.4, 0,
-      -.4, 0.2, 0,
-      .2, 0.2, 0,
+      +1, +1, -1,
+      +1, -1, +1
+      1, +1, +1
+      +1, -1, +1
     ];
-    
+    let recip_sqrt3 = 1 / Math.sqrt(3);
     this.vertex_normals = [
-      0.0, 0.0, 1.0,
-      0.0, 0.0, 1.0,
-      0.0, 0.0, 1.0,
+      recip_sqrt3, recip_sqrt3, recip_sqrt3,
+      recip_sqrt3, recip_sqrt3, recip_sqrt3,
+      recip_sqrt3, recip_sqrt3, recip_sqrt3,
+      recip_sqrt3, recip_sqrt3, recip_sqrt3
     ];
     
     this.object_indices = [
       0,
       0,
       0,
+      0
     ];
     
     this.object_translations = [
@@ -37,6 +40,7 @@ class scene {
     
     this.faces = [
       0, 1, 2,
+      
     ];
     
     
@@ -162,7 +166,7 @@ class scene {
     //this.camera_rotation[1] = time * .0075564367798670867646;
     //this.camera_rotation[2] = time * .0047658753564576776898;
     this.yaw = time * .986553465768875456;
-    //this.pitch = Math.sin(time * 1.1654356656567) * 0.1;
+    this.pitch = Math.sin(time * 1.1654356656567);
     this.gl.clearColor(0.8, 0.8, 0.8, 1.0);
     this.gl.clearDepth(1.0);
     this.gl.enable(this.gl.DEPTH_TEST);
@@ -177,8 +181,8 @@ class scene {
       this.max_distance
     );
     let camera_matrix = mat4.create();
-    mat4.rotate(camera_matrix, camera_matrix, Math.PI / 2 + this.pitch, [0.0, 1.0, 0.0]);
     mat4.rotate(camera_matrix, camera_matrix, this.yaw, [0.0, 0.0, 1.0]);
+    mat4.rotate(camera_matrix, camera_matrix, Math.PI / 2 + this.pitch, [1.0, 0.0, 0.0]);
     let view_matrix = mat4.create();
     mat4.invert(view_matrix, camera_matrix);
     
