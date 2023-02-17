@@ -9,16 +9,19 @@ class scene {
     
     this.vertex_positions = [
       +1, +1, -1,
-      +1, -1, +1
-      1, +1, +1
-      +1, -1, +1
+      +1, -1, +1,
+      -1, +1, +1,
+      -1, -1, -1,
+      
     ];
-    let recip_sqrt3 = 1 / Math.sqrt(3);
+    
+    let recipSqrt3 = 1 / Math.sqrt(3);
+    
     this.vertex_normals = [
-      recip_sqrt3, recip_sqrt3, recip_sqrt3,
-      recip_sqrt3, recip_sqrt3, recip_sqrt3,
-      recip_sqrt3, recip_sqrt3, recip_sqrt3,
-      recip_sqrt3, recip_sqrt3, recip_sqrt3
+      +recipSqrt3, +recipSqrt3, -recipSqrt3,
+      +recipSqrt3, -recipSqrt3, +recipSqrt3,
+      -recipSqrt3, +recipSqrt3, +recipSqrt3,
+      -recipSqrt3, -recipSqrt3, -recipSqrt3,
     ];
     
     this.object_indices = [
@@ -39,14 +42,16 @@ class scene {
     ];
     
     this.faces = [
+      1, 2, 3,
+      0, 2, 3,
+      0, 1, 3,
       0, 1, 2,
-      
     ];
     
     
     this.pitch = 0;
     this.yaw = 0;
-    this.view_distance = 5;
+    this.view_distance = 10;
     this.focus = [0, 0, 0];
     
     
@@ -78,9 +83,10 @@ class scene {
     `;
 
     this.fragment_shader_source = `
-      //varying highp vec3 fragment_normal;
+      varying highp vec3 fragment_normal;
       varying highp vec3 vertex_color;
       void main() {
+        highp float fresn
         gl_FragColor = vec4(vertex_color, 1.0);
       }
     `;
