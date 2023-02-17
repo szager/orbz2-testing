@@ -8,24 +8,21 @@ class scene {
     this.max_distance = 100;
     
     this.vertex_positions = [
-      +1, +1, -1,
-      +1, -1, +1,
-      -1, +1, +1,
-      -1, -1, -1,
+      -1, 0, -1,
+      +1, 0, -1,
+      0, 0, +1.41,
       
     ];
     
     let recipSqrt3 = 1 / Math.sqrt(3);
     
     this.vertex_normals = [
-      +recipSqrt3, +recipSqrt3, -recipSqrt3,
-      +recipSqrt3, -recipSqrt3, +recipSqrt3,
-      -recipSqrt3, +recipSqrt3, +recipSqrt3,
-      -recipSqrt3, -recipSqrt3, -recipSqrt3,
+      -1, 0, -1,
+      +1, 0, -1,
+      0, 0, +1.41,
     ];
     
     this.object_indices = [
-      0,
       0,
       0,
       0
@@ -42,9 +39,6 @@ class scene {
     ];
     
     this.faces = [
-      1, 2, 3,
-      0, 2, 3,
-      0, 1, 3,
       0, 1, 2,
     ];
     
@@ -83,11 +77,14 @@ class scene {
     `;
 
     this.fragment_shader_source = `
+      varying highp vec3 relative_position;
       varying highp vec3 fragment_normal;
       varying highp vec3 vertex_color;
       void main() {
-        highp float fresn
-        gl_FragColor = vec4(vertex_color, 1.0);
+        highp vec3 n = normalize(fragment_normal);
+        highp vec3 e = normalize(relative_position);
+        highp float fresnel = pow(min(dot(e, n) + 1.0, 1.0),5.0);
+        gl_FragColor = vec4(vertex_color * fresnel, 1.0);
       }
     `;
     
