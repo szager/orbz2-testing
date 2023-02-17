@@ -40,8 +40,8 @@ class scene {
     ];
     
     
-    this.pitch = 0;
-    this.yaw = 0;
+    this.pitch = Math.PI / 2;
+    this.yaw = Math.PI;
     this.view_distance = 2;
     this.focus = [0, 0, 0];
     
@@ -68,7 +68,7 @@ class scene {
         fragment_normal = vertex_normal;
         vertex_color = object_colors[int_object_index];
         relative_position = (vertex_position + object_translations[int_object_index]) - camera_translation;
-        gl_Position = perspective_matrix * view_matrix * vec4(relative_position, 0.0);
+        gl_Position = perspective_matrix * view_matrix * vec4(relative_position, 1.0);
         //gl_Position = perspective_matrix * vec4(relative_position.xyz, 1.0);
       }
     `;
@@ -161,6 +161,7 @@ class scene {
     //this.camera_rotation[0] = time * -.013357674575867674745;
     //this.camera_rotation[1] = time * .0075564367798670867646;
     //this.camera_rotation[2] = time * .0047658753564576776898;
+    this.yaw = time;
     this.gl.clearColor(0.8, 0.8, 0.8, 1.0);
     this.gl.clearDepth(1.0);
     this.gl.enable(this.gl.DEPTH_TEST);
@@ -240,7 +241,7 @@ class scene {
     );
 
     this.gl.uniformMatrix4fv(
-      this.program_info.uniform_locations.camera_rotaion_matrix,
+      this.program_info.uniform_locations.view_matrix,
       false,
       view_matrix
     );
