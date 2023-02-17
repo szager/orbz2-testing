@@ -42,7 +42,7 @@ class scene {
     
     this.pitch = 0;
     this.yaw = Math.PI;
-    this.view_distance = 50;
+    this.view_distance = 5;
     this.focus = [0, 0, 0];
     
     
@@ -177,8 +177,8 @@ class scene {
       this.max_distance
     );
     let view_matrix = mat4.create();
-    mat4.rotate(view_matrix, view_matrix, Math.PI / 2 + this.pitch, [0.0, 1.0, 0.0]);
     mat4.rotate(view_matrix, view_matrix, this.yaw, [0.0, 0.0, 1.0]);
+    mat4.rotate(view_matrix, view_matrix, Math.PI / 2 + this.pitch, [0.0, 1.0, 0.0]);
     //mat4.invert(view_matrix, view_matrix);
     
   
@@ -229,9 +229,9 @@ class scene {
     );
     this.gl.uniform3f(
       this.program_info.uniform_locations.camera_translation,
-      view_matrix[3] * this.view_distance + this.focus[0],
-      view_matrix[7] * this.view_distance + this.focus[1],
-      view_matrix[10] * this.view_distance + this.focus[2]
+      -view_matrix[8] * this.view_distance + this.focus[0],
+      -view_matrix[9] * this.view_distance + this.focus[1],
+      -view_matrix[10] * this.view_distance + this.focus[2]
     );
 
   
