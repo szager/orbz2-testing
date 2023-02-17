@@ -40,9 +40,11 @@ class scene {
     ];
     
     
-    this.camera_rotation = [0, 0, 0];
+    this.pitch = 0;
+    this.yaw = 0;
+    this.viewing_distance = 2;
+    this.focus = [0, 0, 0];
     
-    this.camera_translation = [.1, .3, 2];
     
     this.vertex_shader_source = `
       attribute vec3 vertex_position;
@@ -173,7 +175,8 @@ class scene {
       this.max_distance
     );
     let view_matrix = mat4.create();
-    mat4.targetTo(view_matrix, this.camera_translation, [0, 0, 0], [0, 0, 1]);
+    mat4.rotate(view_matrix, view_matrix, this.yaw, [0.0, 0.0, 1.0])
+    mat4.rotate(view_matrix, view_matrix, this.yaw, [0.0, 0.0, 1.0])
     //mat4.invert(view_matrix, view_matrix);
     
   
