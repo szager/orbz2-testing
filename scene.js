@@ -173,7 +173,7 @@ class scene {
       this.max_distance
     );
     let camera_rotation_matrix = mat4.create();
-    mat4.lookAt(camera_rotation_matrix, this.camera_translation, [0, 0, 0], [0, 0, 1]);
+    mat4.targetTo(camera_rotation_matrix, this.camera_translation, [0, 0, 0], [0, 0, 1]);
     //mat4.invert(camera_rotation_matrix, camera_rotation_matrix);
     
   
