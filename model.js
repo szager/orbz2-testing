@@ -17,3 +17,5 @@ class model {
     });
   }
 }
+
+export {model};

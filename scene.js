@@ -1,5 +1,5 @@
 class scene {
-  constructor(canvas) {
+  constructor(canvas, object_count) {
     this.canvas = canvas;
     this.gl = this.canvas.getContext("webgl");
     this.fov = .8;
@@ -60,8 +60,8 @@ class scene {
       attribute vec3 vertex_normal;
       attribute float object_index;
       
-      uniform vec3 object_translations[2];
-      uniform vec3 object_colors[2];
+      uniform vec3 object_translations[${object_count}];
+      uniform vec3 object_colors[${object_count}];
       
       uniform mat4 perspective_matrix;
       uniform mat4 view_matrix;
@@ -248,7 +248,7 @@ class scene {
       camera_matrix[9] * this.view_distance + this.focus[1],
       camera_matrix[10] * this.view_distance + this.focus[2]
     );
-
+    
   
     this.gl.uniformMatrix4fv(
       this.program_info.uniform_locations.perspective_matrix,
