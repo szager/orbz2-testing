@@ -8,11 +8,6 @@ class scene {
     this.max_distance = 100;
     
     this.vertex_positions = [
-      +1, +1, -1,
-      +1, -1, +1,
-      -1, +1, +1,
-      -1, -1, -1
-      
     ];
     
     //let recipSqrt3 = 1 / Math.sqrt(3);
