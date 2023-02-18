@@ -7,7 +7,16 @@ class game_player {
     this.paused = false;
     this.bound_update_method = this.update.bind(this);
     this.starter = document.querySelector("input");
-    this.starter.addEventListener("change
+    this.starter.addEventListener("change", this.start.bind(this), {once:true});
+  }
+  start(event) {
+    let file_reader = new FileReader();
+    file_reader.onload = function (event) {
+      alert(event.target.result);
+    //option_div.innerText = e.target.result;
+    };
+    file_reader.readAsText(event.target.files[0]);
+    this.game.complete_scene();
     requestAnimationFrame(this.bound_update_method);
   }
   pause() {
