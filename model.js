@@ -4,4 +4,7 @@ class model {
     this.normals = normals;
     this.faces = faces;
   }
+  add_to_scene(scene, object_index) {
+    
+  }
 }
