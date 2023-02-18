@@ -6,6 +6,8 @@ class game_player {
     this.stopping = false;
     this.paused = false;
     this.bound_update_method = this.update.bind(this);
+    this.starter = document.querySelector("input");
+    this.starter.addEventListener("change
     requestAnimationFrame(this.bound_update_method);
   }
   pause() {
