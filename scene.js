@@ -15,20 +15,12 @@ class scene {
       
     ];
     
-    let recipSqrt3 = 1 / Math.sqrt(3);
+    //let recipSqrt3 = 1 / Math.sqrt(3);
     
     this.vertex_normals = [
-      +1, +1, -1,
-      +1, -1, +1,
-      -1, +1, +1,
-      -.01, -.01, -.01
     ];
     
     this.object_indices = [
-      0,
-      0,
-      0,
-      0
     ];
     
     this.object_translations = [
@@ -42,10 +34,6 @@ class scene {
     ];
     
     this.faces = [
-      0, 1, 2,
-      0, 1, 3,
-      0, 2, 3,
-      1, 2, 3
     ];
     
     
