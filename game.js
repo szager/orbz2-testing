@@ -9,7 +9,8 @@ class game {
     this.scene = new scene(canvas, 2);
     tetrahedron.add_to_scene(this.scene, 0);
   }
-  complete_scene() {
+  complete_scene(file) {
+    alert(file);
     this.scene.initialize_buffers();
   }
   update() {

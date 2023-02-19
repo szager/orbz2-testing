@@ -12,12 +12,10 @@ class game_player {
   start(event) {
     let file_reader = new FileReader();
     file_reader.onload = function (event) {
-      alert(event.target.result);
-    //option_div.innerText = e.target.result;
-    };
+      this.game.complete_scene(event.target.result);
+      requestAnimationFrame(this.bound_update_method);
+    }.bind(this);
     file_reader.readAsText(event.target.files[0]);
-    this.game.complete_scene();
-    requestAnimationFrame(this.bound_update_method);
   }
   pause() {
     this.paused = true;
