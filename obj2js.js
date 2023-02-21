@@ -11,7 +11,7 @@ function obj2js(obj_file_contents) {
   let ordered_normals = [];
   let faces = [];
   
-  let content = obj_file_contents.substring(obj_file_contents.indexOf("v"), obj_file_contents.indexOf("vn"));
+  let content = obj_file_contents.substring(obj_file_contents.indexOf("v"));
   
   
   
