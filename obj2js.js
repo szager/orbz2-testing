@@ -11,13 +11,13 @@ function obj2js(obj_file_contents) {
   let ordered_normals = [];
   let faces = [];
   
-  let content = obj_file_contents.split("v", 1);
+  let content = obj_file_contents.substring(obj_file_contents.indexOf("v"), obj_file_contents.indexOf("vn"));
   
   
   
   
   
-  let json_blob = new Blob([con], {type : "text/plain"});
+  let json_blob = new Blob([content], {type : "text/plain"});
   let blob_url  = window.URL.createObjectURL(json_blob);
   window.location.assign(blob_url);
 }
