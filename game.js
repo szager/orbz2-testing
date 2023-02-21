@@ -1,6 +1,6 @@
 import {scene} from "./scene.js";
 import {tetrahedron} from "./tetrahedron.js";
-import {obj2json} from "./obj2json.js";
+import {obj2js} from "./obj2js.js";
 
 class game {
   constructor(canvas) {
@@ -11,7 +11,7 @@ class game {
     tetrahedron.add_to_scene(this.scene, 0);
   }
   complete_scene(file) {
-    obj2json(file);
+    obj2js(file);
     this.scene.initialize_buffers();
   }
   update() {
