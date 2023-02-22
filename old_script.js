@@ -479,7 +479,7 @@ function tick() {
   
   
   orbeez.forEach(orbie => {
-    orbie.dz -= .01;
+    orbie.dz -= .01; //slomo
     orbie.dx *= .97;
     orbie.dy *= .97;
     orbie.dz *= .97;
