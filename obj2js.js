@@ -27,8 +27,8 @@ function obj2js(obj_file_contents) {
   f_paragraph.forEach(corner => {
     if(corners.indexOf(corner) == -1 ) {
       corners.push(corner);
-      let pos_index = Number(corner.split("//")[0]);
-      let n_index = Number(corner.split("//")[1]);
+      let pos_index = Number(corner.split("//")[0] - 1);
+      let n_index = Number(corner.split("//")[1] - 1);
       positions.push(v_paragraph[pos_index]);
       normals.push(vn_paragraph[n_index]);
     }
@@ -44,7 +44,8 @@ function obj2js(obj_file_contents) {
   `;
   let json_blob = new Blob([js_file_contents], {type : "text/plain"});
   let blob_url  = window.URL.createObjectURL(json_blob);
-  window.location.assign(blob_url);
+  //window.location.assign(blob_url);
+  console.log(js_file_contents);
 }
 
 export {obj2js};
