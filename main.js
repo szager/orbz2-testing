@@ -1,5 +1,5 @@
-import {game_player} from "./game_player.js";
+import {game} from "./game.js";
 
-const the_game = new game_player(
+const the_game = new game(
   document.querySelector("canvas")
 );

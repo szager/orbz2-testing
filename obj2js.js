@@ -40,9 +40,9 @@ function obj2js(obj_file_contents) {
   js_file_contents = `
     import {model} from "./model.js";
     
-    new model()
+    new model([${positions}],[${normals}],[${faces}]);
   `;
-  let json_blob = new Blob([positions], {type : "text/plain"});
+  let json_blob = new Blob([js_file_contents], {type : "text/plain"});
   let blob_url  = window.URL.createObjectURL(json_blob);
   window.location.assign(blob_url);
 }
