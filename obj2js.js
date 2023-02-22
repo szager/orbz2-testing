@@ -20,7 +20,7 @@ function obj2js(obj_file_contents) {
 `);
   
   
-  let f_paragraph = content.substring(content.indexOf("f")).replaceAll("f ","").replaceAll(" ",`
+  let f_paragraph = content.substring(content.indexOf("f"), content.length - 1).replaceAll("f ","").replaceAll(" ",`
 `).split(`
 `);
   
@@ -38,9 +38,11 @@ function obj2js(obj_file_contents) {
   
   
   js_file_contents = `
-    import {model} from "./model.js";
+import {model} from "./model.js";
     
-    new model([${positions}],[${normals}],[${faces}]);
+let blank = new model([${positions}],[${normals}],[${faces}]);
+
+export {blank};
   `;
   let json_blob = new Blob([js_file_contents], {type : "text/plain"});
   let blob_url  = window.URL.createObjectURL(json_blob);
