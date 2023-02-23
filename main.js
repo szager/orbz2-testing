@@ -1,6 +1,6 @@
 import {game} from "./game.js";
 import {obj2js} from "./obj2js.js";
-if(false) {
+if(true) {
 
 const the_game = new game(
   document.querySelector("canvas")
