@@ -74,7 +74,8 @@ class scene {
         highp vec3 e = normalize(-relative_position);
         highp float fresnel = pow(1.0 - abs(dot(e, n)),5.0);
         highp vec3 white = vec3(1.0, 1.0, 1.0);
-        gl_FragColor = vec4(vertex_color + white * fresnel, 1.0);
+        highp float view_cosine = dot(e, n);
+        gl_FragColor = vec4((vertex_color * (view_cosine + 1.0) * 0.5) + white * fresnel, 1.0);
       }
     `;
     
