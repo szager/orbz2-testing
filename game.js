@@ -25,8 +25,8 @@ class game {
     this.canvas = canvas;
     this.scene = new scene(canvas, 1002);
     this.orbeez = [];
-    for(let i = 0; i < 80; i++) {
-      this.orbeez.push(new orbee(-32, -32, -32, 32, 32, 32, this.scene));
+    for(let i = 0; i < 1000; i++) {
+      this.orbeez.push(new orbee(-8, -8, -8, 8, 8, 8, this.scene));
     }
     //orbee_model.add_to_scene(this.scene);
     this.complete_scene();
@@ -45,7 +45,7 @@ class game {
   update() {
     this.time += this.frame_time;
     this.orbeez.forEach(orbie => {
-      orbie.update;
+      orbie.update();
     });
     this.scene.draw(this.time);
   }
