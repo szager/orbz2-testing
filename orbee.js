@@ -8,9 +8,13 @@ class orbee {
     this.z = z1 + Math.random() * (z2 - z1);
     this.scene = scene;
     this.object_index = this.scene.object_colors.length;
-    orbee_model.add_to_scene();
+    orbee_model.add_to_scene(this.scene);
   }
   update() {
-    this.scene.object_
+    this.scene.object_translations[this.object_index] = this.x;
+    this.scene.object_translations[this.object_index + 1] = this.y;
+    this.scene.object_translations[this.object_index + 2] = this.z;
   }
 }
+
+export {orbee};
