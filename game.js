@@ -23,7 +23,7 @@ class game {
   constructor(canvas) {
     this.canvas = canvas;
     this.scene = new scene(canvas, 2);
-    orbee_model.add_to_scene(this.scene, 0);
+    orbee_model.add_to_scene(this.scene);
     this.complete_scene();
     
     this.stopping = false;

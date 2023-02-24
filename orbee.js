@@ -7,6 +7,10 @@ class orbee {
     this.y = y1 + Math.random() * (y2 - y1);
     this.z = z1 + Math.random() * (z2 - z1);
     this.scene = scene;
-    orbee_model.
+    this.object_index = this.scene.object_colors.length;
+    orbee_model.add_to_scene();
+  }
+  update() {
+    this.scene.object_
   }
 }

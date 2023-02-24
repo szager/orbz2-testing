@@ -19,13 +19,9 @@ class scene {
     ];
     
     this.object_translations = [
-      0, 0, 0,
-      0, 0, 0
     ];
     
     this.object_colors = [
-      0.9, 0.6, 0.3,
-      0.2, 0.8, 0.7,
     ];
     
     this.faces = [
@@ -74,13 +70,13 @@ class scene {
         highp vec3 e = normalize(-relative_position);
         highp vec3 r = reflect(-e, n);
         highp float view_cosine = dot(e, n);
-        highp float fresnel = pow(1.0 - view_cosine, 5.0);
+        highp float fresnel = pow(1.0 - abs(view_cosine), 5.0);
         highp vec3 white = vec3(1.0, 1.0, 1.0);
         highp vec3 up = vec3(0.0, 0.0, 1.0);
         highp float up_cos = dot(up, n);
         highp float up_r_cos = dot(up, r);
         highp float diffuse = (up_cos + 1.0) * 0.5;
-        highp float specular = pow(max(up_r_cos, 0.0), 32.0) * (fresnel * 0.7 + 0.3);
+        highp float specular = pow(max(up_r_cos, 0.0), 32.0) * (fresnel * 0.7 + 0.3) + fresnel;
         gl_FragColor = vec4(vertex_color * diffuse + white * specular, 1.0);
       }
     `;
