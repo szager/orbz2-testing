@@ -72,10 +72,16 @@ class scene {
       void main() {
         highp vec3 n = normalize(fragment_normal);
         highp vec3 e = normalize(-relative_position);
-        highp float fresnel = pow(1.0 - abs(dot(e, n)),5.0);
-        highp vec3 white = vec3(1.0, 1.0, 1.0);
+        highp vec3 r = reflect(-e, n);
         highp float view_cosine = dot(e, n);
-        gl_FragColor = vec4((vertex_color * (view_cosine + 1.0) * 0.5) + white * fresnel, 1.0);
+        highp float fresnel = pow(1.0 - view_cosine, 5.0);
+        highp vec3 white = vec3(1.0, 1.0, 1.0);
+        highp vec3 up = vec3(0.0, 0.0, 1.0);
+        highp float up_cos = dot(up, n);
+        highp float up_r_cos = dot(up, r);
+        highp float diffuse = (up_cos + 1.0) * 0.5;
+        highp float specular = max(up_r_cos, 0.0);
+        gl_FragColor = vec4(vertex_color * diffuse + white * specular, 1.0);
       }
     `;
     
