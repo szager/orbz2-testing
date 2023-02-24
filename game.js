@@ -25,8 +25,12 @@ class game {
     this.canvas = canvas;
     this.scene = new scene(canvas, 1002);
     this.orbeez = [];
-    for(let i = 0; i < 1000; i++) {
-      this.orbeez.push(new orbee(-8, -8, -8, 8, 8, 8, this.scene));
+    for(let x = -5; x < 5; x++) {
+      for(let y = -5; y < 5; y++) {
+        for(let z = -5; z < 5; z++) {
+          this.orbeez.push(new orbee(x * 2, y * 2, z * 2, x * 2 + 2, y * 2 + 2, z * 2 + 2, this.scene));
+        }
+      }
     }
     //orbee_model.add_to_scene(this.scene);
     this.complete_scene();
