@@ -1,5 +1,8 @@
 import {orbee_model} from "./orbee_model.js";
 
+console.log();//2Fd=CdPU^2A
+//1.54  cm
+
 class orbee {
   constructor(x1, y1, z1, x2, y2, z2, scene) {
     this.x = x1 + Math.random() * (x2 - x1);
