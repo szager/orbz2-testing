@@ -51,6 +51,15 @@ class game {
     this.orbeez.forEach(orbie => {
       orbie.update();
     });
+    this.orbeez.forEach((orbie,index) => {
+      for(let i = index; i < this.orbeez.length; i++) {
+        let other_orbie = this.orbeez[i];
+        let dx = orbie.x - other_orbie.x;
+      }
+    });
+    this.orbeez.forEach(orbie => {
+      orbie.update();
+    });
     this.scene.draw(this.time);
   }
 }
