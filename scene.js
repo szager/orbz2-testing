@@ -44,6 +44,7 @@ class scene {
       
       uniform vec3 object_translations[${object_count}];
       uniform vec3 object_colors[${object_count}];
+      uniform float object_shininess[${object_count}];
       
       uniform mat4 perspective_matrix;
       uniform mat4 view_matrix;
@@ -53,11 +54,13 @@ class scene {
       varying lowp vec3 vertex_color;
       varying highp vec3 relative_position;
       varying highp vec3 fragment_normal;
+      varying lowp float shininess;
       
       void main() {
         mediump int int_object_index = int(object_index);
         fragment_normal = vertex_normal;
         vertex_color = object_colors[int_object_index];
+        shininess = object_shininess[int_object_index];
         relative_position = (vertex_position + object_translations[int_object_index]) - camera_translation;
         gl_Position = perspective_matrix * view_matrix * vec4(relative_position, 1.0);
         //gl_Position = perspective_matrix * vec4(relative_position.xyz, 1.0);
@@ -68,7 +71,9 @@ class scene {
       varying highp vec3 relative_position;
       varying highp vec3 fragment_normal;
       varying highp vec3 vertex_color;
+      varying lowp float shininess;
       void main() {
+       
         highp vec3 n = normalize(fragment_normal);
         highp vec3 e = normalize(-relative_position);
         highp vec3 r = reflect(-e, n);
@@ -78,9 +83,9 @@ class scene {
         highp vec3 up = vec3(0.0, 0.0, 1.0);
         highp float up_cos = dot(up, n);
         highp float up_r_cos = dot(up, r);
-        highp float diffuse = (up_cos + 1.0) * 0.5;
+        highp float diffuse = (up_cos * shininess + 1.0) * 0.5;
         highp float specular = pow(max(up_r_cos, 0.0), 32.0) * (fresnel * 0.7 + 0.3) + fresnel;
-        gl_FragColor = vec4(vertex_color * diffuse + white * specular, 1.0);
+        gl_FragColor = vec4(vertex_color * diffuse + white * specular * shininess, 1.0);
       }
     `;
     
@@ -103,6 +108,7 @@ class scene {
         view_matrix: this.gl.getUniformLocation(this.shader_program, "view_matrix"),
         object_translations: this.gl.getUniformLocation(this.shader_program, "object_translations"),
         object_colors: this.gl.getUniformLocation(this.shader_program, "object_colors"),
+        object_shininess: this.gl.getUniformLocation(this.shader_program, "object_shininess"),
         camera_translation: this.gl.getUniformLocation(this.shader_program, "camera_translation"),
       },
     };
@@ -230,6 +236,10 @@ class scene {
     this.gl.uniform3fv(
       this.program_info.uniform_locations.object_colors,
       this.float32_object_colors
+    );
+    this.gl.uniform1f(
+      this.program_info.uniform_locations.object_shininess,
+      new Float32Array(this.object_shininess)
     );
     this.gl.uniform3f(
       this.program_info.uniform_locations.camera_translation,

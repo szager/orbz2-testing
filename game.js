@@ -48,9 +48,6 @@ class game {
   }
   update() {
     this.time += this.frame_time;
-    this.orbeez.forEach(orbie => {
-      orbie.update();
-    });
     this.orbeez.forEach((orbie,index) => {
       for(let i = index; i < this.orbeez.length; i++) {
         let other_orbie = this.orbeez[i];

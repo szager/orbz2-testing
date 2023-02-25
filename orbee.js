@@ -9,16 +9,19 @@ class orbee {
     this.scene = scene;
     this.object_index = this.scene.object_colors.length;
     this.neighbor_count = 0;
-    this.dark = false;
+    this.shiny = false;
     orbee_model.add_to_scene(this.scene);
   }
   update() {
-    if(this.neighbor_count < 3) {
-      this.dark = ;
+    if(this.neighbor_count < 6) {
+      this.shiny = true;
+      this.scene.object_shininess[this.object_index] = 1.0;
     }
-    if(this.neighbor_count > 4) {
-      this.dark = false;
+    if(this.neighbor_count > 5) {
+      this.shiny = false;
+      this.scene.object_shininess[this.object_index] = 0.0;
     }
+    this.neighbor_count = 0;
     this.scene.object_translations[this.object_index] = this.x;
     this.scene.object_translations[this.object_index + 1] = this.y;
     this.scene.object_translations[this.object_index + 2] = this.z;
