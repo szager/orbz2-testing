@@ -85,7 +85,7 @@ class scene {
         highp float up_r_cos = dot(up, r);
         highp float diffuse = (up_cos * shininess + 1.0) * 0.5;
         highp float specular = pow(max(up_r_cos, 0.0), 32.0) * (fresnel * 0.7 + 0.3) + fresnel;
-        gl_FragColor = vec4(vertex_color * diffuse + white * specular * shininess, 1.0);
+        gl_FragColor = vec4(vertex_color * diffuse + white * specular, shininess);
       }
     `;
     
@@ -237,7 +237,7 @@ class scene {
       this.program_info.uniform_locations.object_colors,
       this.float32_object_colors
     );
-    this.gl.uniform1f(
+    this.gl.uniform1fv(
       this.program_info.uniform_locations.object_shininess,
       new Float32Array(this.object_shininess)
     );

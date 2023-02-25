@@ -15,11 +15,11 @@ class orbee {
   update() {
     if(this.neighbor_count < 6) {
       this.shiny = true;
-      this.scene.object_shininess[this.object_index] = 1.0;
+      this.scene.object_shininess[this.object_index / 3] = 1.0;
     }
-    if(this.neighbor_count > 5) {
+    if(this.neighbor_count > 7) {
       this.shiny = false;
-      this.scene.object_shininess[this.object_index] = 0.0;
+      this.scene.object_shininess[this.object_index / 3] = 0.0;
     }
     this.neighbor_count = 0;
     this.scene.object_translations[this.object_index] = this.x;
