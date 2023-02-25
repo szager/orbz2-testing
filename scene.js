@@ -33,7 +33,7 @@ class scene {
     
     this.pitch = 0;
     this.yaw = 0;
-    this.view_distance = 500;
+    this.view_distance = 700; //700 mm
     this.focus = [0, 0, 0];
     
     
