@@ -5,7 +5,7 @@ class scene {
     this.fov = .8;
     this.aspect_ratio = this.canvas.width / this.canvas.height;
     this.min_distance = 0.1;
-    this.max_distance = 100;
+    this.max_distance = 10000;
     
     this.vertex_positions = [
     ];
@@ -83,7 +83,7 @@ class scene {
         highp vec3 up = vec3(0.0, 0.0, 1.0);
         highp float up_cos = dot(up, n);
         highp float up_r_cos = dot(up, r);
-        highp float diffuse = (up_cos + 1.0) * shininess * 0.5 + (view_cosine + 1.0) * 0.3125 * (1.0 - shininess);
+        highp float diffuse = (up_cos + 1.0) * shininess * 0.25 + 0.5;
         highp float specular = pow(max(up_r_cos, 0.0), 32.0) * (fresnel * 0.7 + 0.3) + fresnel;
         gl_FragColor = vec4(vertex_color * diffuse + white * specular * shininess, 1.0);
       }

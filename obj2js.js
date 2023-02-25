@@ -29,9 +29,9 @@ function obj2js(obj_file_contents) {
       corners.push(corner);
       let pos_index = Number(corner.split("//")[0]);
       let n_index = Number(corner.split("//")[1]);
-      positions.push(v_paragraph[pos_index*3-3]);
-      positions.push(v_paragraph[pos_index*3-2]);
-      positions.push(v_paragraph[pos_index*3-1]);
+      positions.push(v_paragraph[pos_index*3-3] * 14);
+      positions.push(v_paragraph[pos_index*3-2] * 14);
+      positions.push(v_paragraph[pos_index*3-1] * 14);
       normals.push(vn_paragraph[n_index*3-3]);
       normals.push(vn_paragraph[n_index*3-2]);
       normals.push(vn_paragraph[n_index*3-1]);
