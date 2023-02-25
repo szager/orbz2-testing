@@ -24,6 +24,9 @@ class scene {
     this.object_colors = [
     ];
     
+    this.object_shininess = [
+    ];
+    
     this.faces = [
     ];
     

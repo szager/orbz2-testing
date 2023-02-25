@@ -14,10 +14,10 @@ class orbee {
   }
   update() {
     if(this.neighbor_count < 3) {
-      this.dark = false;
+      this.dark = ;
     }
     if(this.neighbor_count > 4) {
-      this.dark = true;
+      this.dark = false;
     }
     this.scene.object_translations[this.object_index] = this.x;
     this.scene.object_translations[this.object_index + 1] = this.y;
