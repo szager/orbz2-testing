@@ -1,7 +1,9 @@
 import {orbee_model} from "./orbee_model.js";
 
-console.log();//2Fd=CdPU^2A
-//1.54  cm
+console.log();// Ad = .47 * .001 * U^2 * 154 mm^2 * .00124 mg
+//A = 1.54 cm^2
+//P = 1 g / l
+//Cd = 0.47
 
 class orbee {
   constructor(x1, y1, z1, x2, y2, z2, scene) {
