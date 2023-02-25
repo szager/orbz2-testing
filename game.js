@@ -54,7 +54,7 @@ class game {
         let dx = orbie.x - other_orbie.x;
         let dy = orbie.y - other_orbie.y;
         let dz = orbie.z - other_orbie.z;
-        if(dx**2 + dy**2 + dz**2 < 2) {
+        if(dx**2 + dy**2 + dz**2 < 3) {
           orbie.neighbor_count++;
           other_orbie.neighbor_count++;
         }

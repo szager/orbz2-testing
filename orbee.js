@@ -13,11 +13,11 @@ class orbee {
     orbee_model.add_to_scene(this.scene);
   }
   update() {
-    if(this.neighbor_count < 3) {
+    if(this.neighbor_count < 4) {
       this.shiny = true;
       this.scene.object_shininess[this.object_index / 3] = 1.0;
     }
-    if(this.neighbor_count > 4) {
+    if(this.neighbor_count > 5) {
       this.shiny = false;
       this.scene.object_shininess[this.object_index / 3] = 0.0;
     }
