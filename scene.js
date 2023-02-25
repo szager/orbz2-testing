@@ -2,9 +2,9 @@ class scene {
   constructor(canvas, object_count) {
     this.canvas = canvas;
     this.gl = this.canvas.getContext("webgl");
-    this.fov = .8;
+    this.fov = .5;
     this.aspect_ratio = this.canvas.width / this.canvas.height;
-    this.min_distance = 0.1;
+    this.min_distance = 1;
     this.max_distance = 10000;
     
     this.vertex_positions = [
@@ -33,7 +33,7 @@ class scene {
     
     this.pitch = 0;
     this.yaw = 0;
-    this.view_distance = 40;
+    this.view_distance = 500;
     this.focus = [0, 0, 0];
     
     

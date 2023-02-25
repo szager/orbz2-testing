@@ -25,9 +25,18 @@ class orbee {
     }
     this.neighbor_count = 0;
     
+    //it should be half as fast as real life because slomo
+    
+    this.dz -= 1.4; // 1 mm/f² = 3.6 m/s²
+    
     this.x += this.dx;
     this.y += this.dy;
     this.z += this.dz;
+    
+    if(this.z < 7) {
+      this.z = 7;
+      this.dz *= -0.4;
+    }
     
     this.scene.object_translations[this.object_index] = this.x;
     this.scene.object_translations[this.object_index + 1] = this.y;
