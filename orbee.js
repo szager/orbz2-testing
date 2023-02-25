@@ -5,9 +5,9 @@ class orbee {
     this.x = x1 + Math.random() * (x2 - x1);
     this.y = y1 + Math.random() * (y2 - y1);
     this.z = z1 + Math.random() * (z2 - z1);
-    this.dx = (Math.random() - 0.5);
-    this.dy = (Math.random() - 0.5);
-    this.dz = (Math.random() - 0.5);
+    this.dx = (Math.random() - 0.5) * 10;
+    this.dy = (Math.random() - 0.5) * 10;
+    this.dz = (Math.random() - 0.5) * 10;
     this.scene = scene;
     this.object_index = this.scene.object_colors.length;
     this.neighbor_count = 0;
@@ -35,6 +35,14 @@ class orbee {
     
     if(this.z < 7) {
       this.z = 7;
+      let horizontal_speed = Math.hypot(this.dx, this.dy);
+      if(this.dz <= -horizontal_speed) {
+        let horizontal_speed_slowed = Math.max(horizontal_speed + this.dz, 0);
+        let slowing_ratio = (horizontal_speed_slowed / horizontal_speed) || 0;
+      
+        this.dx *= slowing_ratio;
+        this.dy *= slowing_ratio;
+      }
       this.dz *= -0.4;
     }
     

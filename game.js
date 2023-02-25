@@ -27,8 +27,8 @@ class game {
     this.orbeez = [];
     for(let x = -5; x < 5; x++) {
       for(let y = -5; y < 5; y++) {
-        for(let z = -5; z < 5; z++) {
-          this.orbeez.push(new orbee(x * 2, y * 2, z * 2, x * 2 + 2, y * 2 + 2, z * 2 + 2, this.scene));
+        for(let z = 1; z < 11; z++) {
+          this.orbeez.push(new orbee(x * 14, y * 14, z * 14, x * 14 + 14, y * 14 + 14, z * 14 + 14, this.scene));
         }
       }
     }
