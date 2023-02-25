@@ -5,9 +5,9 @@ class orbee {
     this.x = x1 + Math.random() * (x2 - x1);
     this.y = y1 + Math.random() * (y2 - y1);
     this.z = z1 + Math.random() * (z2 - z1);
-    this.dx = (Math.random() - 0.5) * 5;
-    this.dy = (Math.random() - 0.5) * 9;
-    this.dz = (Math.random() - 0.5) * 40;
+    this.dx = (Math.random() - 0.5) * 8;
+    this.dy = (Math.random() - 0.5) * 8;
+    this.dz = (Math.random() - 0.5) * 8;
     this.scene = scene;
     this.object_index = this.scene.object_colors.length;
     this.neighbor_count = 0;
@@ -42,6 +42,9 @@ class orbee {
       
         this.dx *= slowing_ratio;
         this.dy *= slowing_ratio;
+      } else {
+        this.dx = 0;
+        this.dy = 0;
       }
       this.dz *= -0.4;
     }
