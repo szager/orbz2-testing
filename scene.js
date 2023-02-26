@@ -34,7 +34,7 @@ class scene {
     this.pitch = 0;
     this.yaw = 0;
     this.view_distance = 700; //700 mm
-    this.focus = [0, 0, 0];
+    this.focus = [0, 0, 100];
     
     
     this.vertex_shader_source = `
@@ -171,7 +171,7 @@ class scene {
     //this.camera_rotation[1] = time * .0075564367798670867646;
     //this.camera_rotation[2] = time * .0047658753564576776898;
     this.yaw = time * .986553465768875456;
-    this.pitch = (Math.sin(time * 1.1654356656567)* 0.5 - 0.5);
+    this.pitch = (Math.sin(time * 1.1654356656567) * 0.5 - 0.5);
     this.gl.clearColor(0.8, 0.8, 0.8, 1.0);
     this.gl.clearDepth(1.0);
     this.gl.enable(this.gl.DEPTH_TEST);
