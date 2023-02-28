@@ -10,25 +10,25 @@ class orbee {
     this.x = x1 + Math.random() * (x2 - x1);
     this.y = y1 + Math.random() * (y2 - y1);
     this.z = z1 + Math.random() * (z2 - z1);
-    this.dx = (Math.random() - 0.5) * 8;
-    this.dy = (Math.random() - 0.5) * 8;
+    this.dx = (Math.random() - 0.5) * 2;
+    this.dy = (Math.random() - 0.5) * 2;
     this.dz = (Math.random() - 0.5) * 2;
     this.scene = scene;
     this.object_index = this.scene.object_colors.length;
-    this.neighbor_count = 0;
-    this.shiny = false;
+    //this.neighbor_count = 0;
+    //this.shiny = false;
     orbee_model.add_to_scene(this.scene);
   }
   update() {
-    if(this.neighbor_count < 4) {
-      this.shiny = true;
-      this.scene.object_shininess[this.object_index / 3] = 1.0;
-    }
-    if(this.neighbor_count > 5) {
-      this.shiny = false;
-      this.scene.object_shininess[this.object_index / 3] = 0.0;
-    }
-    this.neighbor_count = 0;
+    //if(this.neighbor_count < 4) {
+      //this.shiny = true;
+      //this.scene.object_shininess[this.object_index / 3] = 1.0;
+    //}
+    //if(this.neighbor_count > 5) {
+      //this.shiny = false;
+      //this.scene.object_shininess[this.object_index / 3] = 0.0;
+    //}
+    //this.neighbor_count = 0;
     
     //it should be half as fast as real life because slomo
     
