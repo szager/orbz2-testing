@@ -48,18 +48,18 @@ class game {
   }
   update() {
     this.time += this.frame_time;
-    this.orbeez.forEach((orbie,index) => {
-      for(let i = index; i < this.orbeez.length; i++) {
-        let other_orbie = this.orbeez[i];
-        let dx = orbie.x - other_orbie.x;
-        let dy = orbie.y - other_orbie.y;
-        let dz = orbie.z - other_orbie.z;
-        if(dx**2 + dy**2 + dz**2 < 100) {
-          orbie.neighbor_count++;
-          other_orbie.neighbor_count++;
-        }
-      }
-    });
+    //this.orbeez.forEach((orbie,index) => {
+      //for(let i = index; i < this.orbeez.length; i++) {
+        //let other_orbie = this.orbeez[i];
+        //let dx = orbie.x - other_orbie.x;
+        //let dy = orbie.y - other_orbie.y;
+        //let dz = orbie.z - other_orbie.z;
+        //if(dx**2 + dy**2 + dz**2 < 100) {
+          //orbie.neighbor_count++;
+          //other_orbie.neighbor_count++;
+        //}
+      //}
+    //});
     this.orbeez.forEach(orbie => {
       orbie.update();
     });
