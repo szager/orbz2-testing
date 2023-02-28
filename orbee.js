@@ -28,7 +28,7 @@ class orbee {
     if(this.z < constants.orbee_radius) {
       this.z = constants.orbee_radius;
       let horizontal_speed = Math.hypot(this.dx, this.dy);
-      let traction_force = -this.dz * constants.traction * constants.restitution;
+      let traction_force = -this.dz * constants.traction * (constants.restitution + 1);
       if(traction_force <= horizontal_speed) {
         let horizontal_speed_slowed = Math.max(horizontal_speed - traction_force, 0);
         let slowing_ratio = (horizontal_speed_slowed / horizontal_speed) || 0;
