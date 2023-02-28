@@ -31,9 +31,9 @@ class scene {
     ];
     
     
-    this.pitch = 0;
+    this.pitch = .2;
     this.yaw = 0;
-    this.view_distance = 700; //700 mm
+    this.view_distance = 700;
     this.focus = [0, 0, 100];
     
     
@@ -171,7 +171,7 @@ class scene {
     //this.camera_rotation[0] = time * -.013357674575867674745;
     //this.camera_rotation[1] = time * .0075564367798670867646;
     //this.camera_rotation[2] = time * .0047658753564576776898;
-    this.yaw = time * .0986553465768875456;
+    //this.yaw = time * .186553465768875456;
     //this.pitch = (Math.sin(time * 1.1654356656567) * 0.5 - 0.5);
     this.gl.clearColor(0.8, 0.8, 0.8, 1.0);
     this.gl.clearDepth(1.0);
@@ -188,7 +188,7 @@ class scene {
     );
     let camera_matrix = mat4.create();
     mat4.rotate(camera_matrix, camera_matrix, this.yaw, [0.0, 0.0, 1.0]);
-    mat4.rotate(camera_matrix, camera_matrix, Math.PI / 2 + this.pitch, [1.0, 0.0, 0.0]);
+    mat4.rotate(camera_matrix, camera_matrix, Math.PI / 2 - this.pitch, [1.0, 0.0, 0.0]);
     let view_matrix = mat4.create();
     mat4.invert(view_matrix, camera_matrix);
     

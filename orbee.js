@@ -13,7 +13,7 @@ class orbee {
     this.z = z1 + Math.random() * (z2 - z1);
     this.dx = (Math.random() - 0.5) * 24;
     this.dy = (Math.random() - 0.5) * 24;
-    this.dz = (Math.random() - 0.5) * 24;
+    this.dz = (Math.random() - 0.5) * 0;
     this.scene = scene;
     this.object_index = this.scene.object_colors.length;
     orbee_model.add_to_scene(this.scene);
@@ -28,7 +28,7 @@ class orbee {
     if(this.z < constants.orbee_radius) {
       this.z = constants.orbee_radius;
       let horizontal_speed = Math.hypot(this.dx, this.dy);
-      if(this.dz * constants.traction <= -horizontal_speed) {
+      if(this.dz * constants.traction >= -horizontal_speed) {
         let horizontal_speed_slowed = Math.max(horizontal_speed + this.dz * constants.traction, 0);
         let slowing_ratio = (horizontal_speed_slowed / horizontal_speed) || 0;
       
