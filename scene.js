@@ -83,7 +83,7 @@ class scene {
         highp vec3 up = vec3(0.0, 0.0, 1.0);
         highp float up_cos = dot(up, n);
         highp float up_r_cos = dot(up, r);
-        highp float diffuse = (up_cos + 1.0) * + 0.5;
+        highp float diffuse = (up_cos + 1.0) * 0.25 + 0.5;
         highp float specular = pow(max(up_r_cos, 0.0), 32.0) * (fresnel * 0.7 + 0.3) + fresnel;
         //gl_FragColor = vec4(vertex_color * diffuse + white * specular * shininess, 1.0);
         gl_FragColor = vec4(vertex_color * diffuse + white * specular, 1.0);
@@ -171,8 +171,8 @@ class scene {
     //this.camera_rotation[0] = time * -.013357674575867674745;
     //this.camera_rotation[1] = time * .0075564367798670867646;
     //this.camera_rotation[2] = time * .0047658753564576776898;
-    this.yaw = time * .986553465768875456;
-    this.pitch = (Math.sin(time * 1.1654356656567) * 0.5 - 0.5);
+    this.yaw = time * .0986553465768875456;
+    //this.pitch = (Math.sin(time * 1.1654356656567) * 0.5 - 0.5);
     this.gl.clearColor(0.8, 0.8, 0.8, 1.0);
     this.gl.clearDepth(1.0);
     this.gl.enable(this.gl.DEPTH_TEST);

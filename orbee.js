@@ -1,4 +1,5 @@
 import {orbee_model} from "./orbee_model.js";
+import {constants} from "./constants.js";
 
 console.log();// Ad = .47 * .001 * U^2 * 154 mm^2 * .00124 mg
 //A = 1.54 cm^2
@@ -10,39 +11,25 @@ class orbee {
     this.x = x1 + Math.random() * (x2 - x1);
     this.y = y1 + Math.random() * (y2 - y1);
     this.z = z1 + Math.random() * (z2 - z1);
-    this.dx = (Math.random() - 0.5) * 2;
-    this.dy = (Math.random() - 0.5) * 2;
-    this.dz = (Math.random() - 0.5) * 2;
+    this.dx = (Math.random() - 0.5) * 24;
+    this.dy = (Math.random() - 0.5) * 24;
+    this.dz = (Math.random() - 0.5) * 24;
     this.scene = scene;
     this.object_index = this.scene.object_colors.length;
-    //this.neighbor_count = 0;
-    //this.shiny = false;
     orbee_model.add_to_scene(this.scene);
   }
   update() {
-    //if(this.neighbor_count < 4) {
-      //this.shiny = true;
-      //this.scene.object_shininess[this.object_index / 3] = 1.0;
-    //}
-    //if(this.neighbor_count > 5) {
-      //this.shiny = false;
-      //this.scene.object_shininess[this.object_index / 3] = 0.0;
-    //}
-    //this.neighbor_count = 0;
-    
-    //it should be half as fast as real life because slomo
-    
-    this.dz -= 1.4; // 1 mm/f² = 3.6 m/s²
-    
+ 
+    this.dz -= constants.gravity;
     this.x += this.dx;
     this.y += this.dy;
     this.z += this.dz;
     
-    if(this.z < 7) {
-      this.z = 7;
+    if(this.z < constants.orbee_radius) {
+      this.z = constants.orbee_radius;
       let horizontal_speed = Math.hypot(this.dx, this.dy);
-      if(this.dz * 0.1 <= -horizontal_speed) {
-        let horizontal_speed_slowed = Math.max(horizontal_speed + this.dz * 0.1, 0);
+      if(this.dz * constants.traction <= -horizontal_speed) {
+        let horizontal_speed_slowed = Math.max(horizontal_speed + this.dz * constants.traction, 0);
         let slowing_ratio = (horizontal_speed_slowed / horizontal_speed) || 0;
       
         this.dx *= slowing_ratio;
@@ -51,7 +38,7 @@ class orbee {
         this.dx = 0;
         this.dy = 0;
       }
-      this.dz *= -0.4;
+      this.dz *= -constants.restitution;
     }
     
     this.scene.object_translations[this.object_index] = this.x;

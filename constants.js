@@ -6,6 +6,8 @@ let constants = {
   traction: 0.4,
   restitution: 0.4,
   fov: 0.5,
-  gravity: 1.4,
+  gravity: .01,
   
 }
+
+export {constants};
