@@ -26,8 +26,8 @@ class orbee {
     this.dz -= constants.gravity;
     
     if(Math.random() < .01) {
-      this.dx -= this.x * Math.random() * .01;
-      this.dy -= this.y * Math.random() * .01;
+      this.dx -= this.x * Math.random() * .03;
+      this.dy -= this.y * Math.random() * .03;
       this.dz += Math.random() * 10;
     }
     
