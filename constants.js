@@ -10,7 +10,7 @@ let constants = {
   //1 millimeter per frame squared is 3.6 meters per second squared
   gravity: 2.725, //this is 1 g of acceleration
   
-  damping: .01  //so orbeez have a terminal velocity of 324⅔ speed units, the same as real life
+  damping: .01  //the orbeez will have their real-life terminal velocity
 }
 
 export {constants};

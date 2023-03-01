@@ -11,9 +11,9 @@ class orbee {
     this.x = x1 + Math.random() * (x2 - x1);
     this.y = y1 + Math.random() * (y2 - y1);
     this.z = z1 + Math.random() * (z2 - z1);
-    this.dx = (Math.random() - 0.5) * 24;
-    this.dy = (Math.random() - 0.5) * 24;
-    this.dz = (Math.random() - 0.5) * 24;
+    this.dx = (Math.random() - 0.5) * 96;
+    this.dy = (Math.random() - 0.5) * 96;
+    this.dz = (Math.random()) * 128;
     this.scene = scene;
     this.object_index = this.scene.object_colors.length;
     orbee_model.add_to_scene(this.scene);
@@ -21,7 +21,16 @@ class orbee {
   update() {
     let damping_ratio = 1 - constants.damping;
     this.dx *= damping_ratio;
+    this.dy *= damping_ratio;
+    this.dz *= damping_ratio;
     this.dz -= constants.gravity;
+    
+    if(Math.random() < .01) {
+      this.dx -= this.x * Math.random() * .01;
+      this.dy -= this.y * Math.random() * .01;
+      this.dz += Math.random() * 10;
+    }
+    
     this.x += this.dx;
     this.y += this.dy;
     this.z += this.dz;
