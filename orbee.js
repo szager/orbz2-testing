@@ -25,11 +25,11 @@ class orbee {
     this.dz *= damping_ratio;
     this.dz -= constants.gravity;
     
-    if(Math.random() < .01) {
-      this.dx -= this.x * Math.random() * .03;
-      this.dy -= this.y * Math.random() * .03;
-      this.dz += Math.random() * 10;
-    }
+    //if(Math.random() < .1) {
+      //this.dx -= this.x * Math.random() * .03;
+      //this.dy -= this.y * Math.random() * .03;
+      //this.dz += Math.random() * 10;
+    //}
     
     this.x += this.dx;
     this.y += this.dy;

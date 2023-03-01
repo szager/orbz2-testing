@@ -60,7 +60,15 @@ class game {
         //}
       //}
     //});
+    if(this.time < 5 && this.time > 3) {
+      this.orbeez.forEach(orbie => {
+        orbie.dx -= (orbie.x + orbie.dx * 100) * 0.01;
+        orbie.dy -= (orbie.y + orbie.dy * 100) * 0.01;
+        orbie.dz += 2.8;
+      })
+    }
     this.orbeez.forEach(orbie => {
+      
       orbie.update();
     });
     this.scene.draw(this.time);
