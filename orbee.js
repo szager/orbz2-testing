@@ -13,7 +13,7 @@ class orbee {
     this.z = z1 + Math.random() * (z2 - z1);
     this.dx = (Math.random() - 0.5) * 24;
     this.dy = (Math.random() - 0.5) * 24;
-    this.dz = (Math.random() - 0.5) * 0;
+    this.dz = (Math.random() - 0.5) * 24;
     this.scene = scene;
     this.object_index = this.scene.object_colors.length;
     orbee_model.add_to_scene(this.scene);
