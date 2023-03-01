@@ -19,7 +19,8 @@ class orbee {
     orbee_model.add_to_scene(this.scene);
   }
   update() {
- 
+    let damping_ratio = 1 - constants.damping;
+    this.dx *= damping_ratio;
     this.dz -= constants.gravity;
     this.x += this.dx;
     this.y += this.dy;
