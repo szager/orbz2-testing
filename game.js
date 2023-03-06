@@ -14,10 +14,12 @@ class game {
   }
   update_and_stuff() {
     let now = performance.now();
-    this.fps_counter.innerText = `${Math.round(1000 / (now - this.then)) || "???"} frames/second`;
-    if(Math.round(1000 / (now - this.then)) > 60 && this.enable_alerts) {
-      this.enable_alerts = confirm(`wyh is the framerate so fadst? it is ${Math.round(1000 / (now - this.then)) || "???"} hertz`);
-    }
+    this.fps_counter.innerText = `${Math.floor(1000 / (now - this.then)) || "???"} frames/second`;
+    //this.alert_cooldown--;
+    //if(Math.round(1000 / (now - this.then)) > 60 && this.enable_alerts && this.alert_cooldown < 0) {
+      //this.alert_cooldown = 60;
+      //this.enable_alerts = confirm(`wyh is the framerate so fadst? it is ${Math.round(1000 / (now - this.then)) || "???"} hertz`);
+    //}
     this.then = now;
     if(!this.stopping) {
       if(!this.paused) {
@@ -29,6 +31,7 @@ class game {
   
   constructor(canvas) {
     this.then = performance.now();
+    this.alert_cooldown = 60;
     this.enable_alerts = true;
     this.fps_counter = document.querySelector("p");
     this.canvas = canvas;
