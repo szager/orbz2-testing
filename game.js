@@ -62,9 +62,9 @@ class game {
     //});
     if(this.time < 5 && this.time > 3) {
       this.orbeez.forEach(orbie => {
-        orbie.dx -= (orbie.x + orbie.dx * 100) * 0.01;
-        orbie.dy -= (orbie.y + orbie.dy * 100) * 0.01;
-        orbie.dz += 2.8;
+        orbie.dx -= (orbie.x + orbie.dx * 25) * 0.04 + Math.random() * 24 - 12;
+        orbie.dy -= (orbie.y + orbie.dy * 25) * 0.04 + Math.random() * 24 - 12;
+        orbie.dz += 2.75;
       })
     }
     this.orbeez.forEach(orbie => {
