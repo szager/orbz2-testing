@@ -16,7 +16,7 @@ class game {
     let now = performance.now();
     this.fps_counter.innerText = `oh no there was a orbeez spill animated at ${Math.round(1000 / (now - this.then)) || "an unknown number of"} frames per second`;
     if(Math.round(1000 / (now - this.then)) > 60) {
-      alert("what da f")
+      alert("wyh is the fps so fadst?");
     }
     this.then = now;
     if(!this.stopping) {
