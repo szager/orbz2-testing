@@ -13,6 +13,12 @@ class game {
     this.stopping = true;
   }
   update_and_stuff() {
+    let now = performance.now();
+    this.fps_counter.innerText = `oh no there was a orbeez spill animated at ${Math.round(1000 / (now - this.then)) || "an unknown number of"} frames per second`;
+    if(Math.round(1000 / (now - this.then)) > 60) {
+      alert("what da f")
+    }
+    this.then = now;
     if(!this.stopping) {
       if(!this.paused) {
         this.update();
@@ -22,6 +28,8 @@ class game {
   }
   
   constructor(canvas) {
+    this.then = performance.now();
+    this.fps_counter = document.querySelector("p");
     this.canvas = canvas;
     this.scene = new scene(canvas, 1002);
     this.orbeez = [];
@@ -72,6 +80,7 @@ class game {
       orbie.update();
     });
     this.scene.draw(this.time);
+    
   }
 }
 
