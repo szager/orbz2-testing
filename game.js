@@ -96,11 +96,12 @@ class game {
         orbie.dz += 2.8;
       })
     }
-    if(this.time % 10 < 9 && this.time % 10 > 5.1) {
+    if(this.time % 10 < 9 && this.time % 10 > 4) {
       this.orbeez.forEach(orbie => {
-        let distance = ((orbie.x + orbie.dx)**2 + (orbie.y + orbie.dy)**2 + (orbie.z + orbie.dz + 600)**2)**0.5;
-        if(distance < 800) {
-          let acc_ratio = (distance - 800) / (distance * 20);
+        let radius = ((this.time % 10) - 4) * 500;
+        let distance = ((orbie.x + orbie.dx)**2 + (orbie.y + orbie.dy)**2 + (orbie.z + orbie.dz)**2)**0.5;
+        if(distance < radius) {
+          let acc_ratio = (distance - radius) / (distance * 2);
           orbie.dx -= orbie.x * acc_ratio;
           orbie.dy -= orbie.y * acc_ratio;
           orbie.dz -= orbie.z * acc_ratio;
