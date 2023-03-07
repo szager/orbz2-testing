@@ -26,7 +26,7 @@ class game {
       this.framerate = (constants.frame_timestamps - 1) * 1000 / (this.frame_timestamps[constants.frame_timestamps - 1] - this.frame_timestamps[0]);
     }
     this.fps_counter.innerText = `${Math.round(this.framerate)} frames/second`;
-    this.graph_displayer.add_value(this.framerate);
+    this.framerate_displayer.add_value(this.framerate);
     //this.alert_cooldown--;
     //if(Math.round(1000 / (now - this.then)) > 60 && this.enable_alerts && this.alert_cooldown < 0) {
       //this.alert_cooldown = 60;
