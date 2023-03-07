@@ -1,6 +1,7 @@
 import {scene} from "./scene.js";
 import {orbee_model} from "./orbee_model.js";
 import {orbee} from "./orbee.js";
+import {constants} from "./constants.js";
 
 class game {
   pause() {
@@ -14,6 +15,13 @@ class game {
   }
   update_and_stuff() {
     let now = performance.now();
+    if(this.frame_timestamps.length <= constants.frame_timestamps) { //paranoia
+      this.frame_timestamps.push(now);
+    }
+    if(this.frame_timestamps.length > constants.frame_timestamps) {
+      this.frame_timestamps.shift();
+    }
+    
     this.fps_counter.innerText = `${Math.floor(1000 / (now - this.then)) || "???"} frames/second`;
     //this.alert_cooldown--;
     //if(Math.round(1000 / (now - this.then)) > 60 && this.enable_alerts && this.alert_cooldown < 0) {
@@ -30,7 +38,11 @@ class game {
   }
   
   constructor(canvas) {
-    this.then = performance.now();
+    this.frame_timestamps = [];
+    this.framerate = -1;
+    for(let i = 0; i < constants.frame_timestamps; i++) {
+      this.frame_timestamps.push(performance.now());
+    }
     this.alert_cooldown = 60;
     this.enable_alerts = true;
     this.fps_counter = document.querySelector("p");
