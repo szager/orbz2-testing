@@ -6,7 +6,7 @@ let constants = {
   traction: 0.25,
   restitution: 0.25,
   fov: 0.5,
-  frame_timestamps: 15,
+  frame_timestamps: 30,
   
   //1 millimeter per frame squared is 3.6 meters per second squared
   gravity: 2.725, //this is 1 g of acceleration

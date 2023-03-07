@@ -8,8 +8,6 @@ class graph_displayer {
     this.ctx.putImageData(image_data, 0, 0);
     this.ctx.fillStyle = "white";
     this.ctx.fillRect(this.canvas.width - 1, this.canvas.height - value, 1, value);
-    this.ctx.fillStyle = "#0000ff80";
-    this.ctx.fillRect(this.canvas.width - 1, this.canvas.height - 60, 1, 1);
   }
 }
 
