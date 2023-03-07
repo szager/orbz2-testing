@@ -9,13 +9,16 @@
       overflow: hidden;
       background-color: #405080;
     }
-    canvas {
+    #game_canvas {
       position: absolute;
       margin:auto;
       left:0;
       right:0;
       bottom: 0;
       top: 0;
+    }
+    #perf_canvas {
+      text-align:center;
     }
   </style>
   <script src="pre.js"></script>
@@ -25,6 +28,8 @@
 </head>
 <body>
   <canvas id = "game_canvas" width = "960" height = "540">
+  </canvas>
+  <canvas id = "perf_canvas" width = "960" height = "180" style = "background-color:red;">
   </canvas>
   <p>
   oh no ther was an orbeaz spile

@@ -21,14 +21,15 @@ class game {
     if(this.frame_timestamps.length > constants.frame_timestamps) {
       this.frame_timestamps.shift();
     }
-    
-    this.fps_counter.innerText = `${Math.floor(1000 / (now - this.then)) || "???"} frames/second`;
+    if(this.frame_timestamps.length == constants.frame_timestamps) {
+      this.framerate = (constants.frame_timestamps - 1) * 1000 / (this.frame_timestamps[constants.frame_timestamps - 1] - this.frame_timestamps[0]);
+    }
+    this.fps_counter.innerText = `${Math.round(this.framerate)} frames/second`;
     //this.alert_cooldown--;
     //if(Math.round(1000 / (now - this.then)) > 60 && this.enable_alerts && this.alert_cooldown < 0) {
       //this.alert_cooldown = 60;
       //this.enable_alerts = confirm(`wyh is the framerate so fadst? it is ${Math.round(1000 / (now - this.then)) || "???"} hertz`);
     //}
-    this.then = now;
     if(!this.stopping) {
       if(!this.paused) {
         this.update();
