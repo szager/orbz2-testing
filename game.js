@@ -25,7 +25,7 @@ class game {
     if(this.frame_timestamps.length == constants.frame_timestamps) {
       this.framerate = (constants.frame_timestamps - 1) * 1000 / (this.frame_timestamps[constants.frame_timestamps - 1] - this.frame_timestamps[0]);
     }
-    this.fps_counter.innerText = `${Math.round(this.framerate)} frames/second`;
+    this.fps_counter.innerText = `${Math.floor(this.framerate)} frames/second`;
     this.framerate_displayer.add_value(this.framerate);
     //this.alert_cooldown--;
     //if(Math.round(1000 / (now - this.then)) > 60 && this.enable_alerts && this.alert_cooldown < 0) {
@@ -77,6 +77,10 @@ class game {
   }
   update() {
     this.time += this.frame_time;
+    
+    for(let i = 0; i < Math.random() * 4294967296; i++) {
+      let e = Math.sin(Math.random() * 769873);
+    }
     //this.orbeez.forEach((orbie,index) => {
       //for(let i = index; i < this.orbeez.length; i++) {
         //let other_orbie = this.orbeez[i];
