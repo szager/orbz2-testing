@@ -77,10 +77,10 @@ class game {
   }
   update() {
     this.time += this.frame_time;
-    
-    for(let i = 0; i < Math.random() * 4294967296; i++) {
-      let e = Math.sin(Math.random() * 769873);
-    }
+    //let amount_of_useless_math = 2**(Math.random() * 24);
+    //for(let i = 0; i < amount_of_useless_math; i++) {
+      //let e = Math.sin(Math.random() / 7673.6587988);
+    //}
     //this.orbeez.forEach((orbie,index) => {
       //for(let i = index; i < this.orbeez.length; i++) {
         //let other_orbie = this.orbeez[i];
@@ -94,6 +94,7 @@ class game {
       //}
     //});
     if(this.time % 10 < 5 && this.time % 10 > 3) {
+      this.scene.pitch = this.time % 10 - 2.8;
       this.orbeez.forEach(orbie => {
         orbie.dx -= (orbie.x + orbie.dx * 25) * 0.04 + Math.random() * 24 - 12;
         orbie.dy -= (orbie.y + orbie.dy * 25) * 0.04 + Math.random() * 24 - 12;
@@ -101,6 +102,9 @@ class game {
       })
     }
     if(this.time % 10 < 9 && this.time % 10 > 4) {
+      this.scene.pitch = .8;
+      this.scene.viewing_distance = 10000;
+      this.scene.focus[2] = this.time 
       this.orbeez.forEach(orbie => {
         let radius = ((this.time % 10) - 4) * 500;
         let distance = ((orbie.x + orbie.dx)**2 + (orbie.y + orbie.dy)**2 + (orbie.z + orbie.dz)**2)**0.5;
