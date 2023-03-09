@@ -98,27 +98,27 @@ class game {
       this.scene.viewing_distance = 5000;
       this.scene.focus[2] = 1000;
       this.orbeez.forEach(orbie => {
-        orbie.dx -= (orbie.x + orbie.dx * 25) * 0.04 + Math.random() * 24 - 12;
-        orbie.dy -= (orbie.y + orbie.dy * 25) * 0.04 + Math.random() * 24 - 12;
-        orbie.dz += 2.9;
-      })
-    }
-    if(this.time % 10 < 9 && this.time % 10 > 4) {
-      this.scene.pitch = .8;
-      this.scene.viewing_distance = 10000;
-      this.scene.focus[2] = (this.time % 10 - 4) * 500;
-      this.orbeez.forEach(orbie => {
-        let radius = ((this.time % 10) - 4) * 500;
-        let distance = ((orbie.x + orbie.dx)**2 + (orbie.y + orbie.dy)**2 + (orbie.z + orbie.dz)**2)**0.5;
-        if(distance < radius) {
-          let acc_ratio = (distance - radius) / (distance * 2);
-          orbie.dx -= orbie.x * acc_ratio;
-          orbie.dy -= orbie.y * acc_ratio;
-          orbie.dz -= orbie.z * acc_ratio;
-        }
+        //orbie.dx -= (orbie.x + orbie.dx * 25) * 0.04 + Math.random() * 24 - 12;
+        //orbie.dy -= (orbie.y + orbie.dy * 25) * 0.04 + Math.random() * 24 - 12;
+        //orbie.dz += 2.9;
+      //})
+    //}
+    //if(this.time % 10 < 9 && this.time % 10 > 4) {
+      //this.scene.pitch = .8;
+      //this.scene.viewing_distance = 10000;
+      //this.scene.focus[2] = (this.time % 10 - 4) * 500;
+      //this.orbeez.forEach(orbie => {
+        //let radius = ((this.time % 10) - 4) * 500;
+        //let distance = ((orbie.x + orbie.dx)**2 + (orbie.y + orbie.dy)**2 + (orbie.z + orbie.dz)**2)**0.5;
+        //if(distance < radius) {
+          //let acc_ratio = (distance - radius) / (distance * 2);
+          //orbie.dx -= orbie.x * acc_ratio;
+          //orbie.dy -= orbie.y * acc_ratio;
+          //orbie.dz -= orbie.z * acc_ratio;
+        //}
         //orbie.dz += 2.7;
-      })
-    }
+      //})
+    //}
     this.orbeez.forEach(orbie => {
       
       orbie.update();

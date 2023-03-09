@@ -73,7 +73,7 @@ class scene {
       //varying highp vec3 vertex_color;
       //varying lowp float shininess;
       void main() {
-        highp vec3 color = vec3(0.375, 0.25, 0.125);
+        highp vec3 color = vec3(0.55, 0.45, 0.5);
         highp vec3 n = normalize(fragment_normal);
         highp vec3 e = normalize(-relative_position);
         highp vec3 r = reflect(-e, n);
