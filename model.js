@@ -5,7 +5,7 @@ class model {
     this.faces = faces;
   }
   add_to_scene(scene) {
-    let object_index = scene.object_colors.length / 3;
+    let object_index = scene.object_translations.length / 3;
     for(let i = 0; i < 3; i++) {
       scene.object_colors.push(Math.random());
       scene.object_translations.push(0);

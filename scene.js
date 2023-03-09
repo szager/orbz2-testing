@@ -51,7 +51,7 @@ class scene {
       
       uniform vec3 camera_translation;
       
-      varying lowp vec3 vertex_color;
+      //varying lowp vec3 vertex_color;
       varying highp vec3 relative_position;
       varying highp vec3 fragment_normal;
       //varying lowp float shininess;
@@ -59,7 +59,7 @@ class scene {
       void main() {
         mediump int int_object_index = int(object_index);
         fragment_normal = vertex_normal;
-        vertex_color = object_colors[int_object_index];
+        //vertex_color = object_colors[int_object_index];
         //shininess = object_shininess[int_object_index];
         relative_position = (vertex_position + object_translations[int_object_index]) - camera_translation;
         gl_Position = perspective_matrix * view_matrix * vec4(relative_position, 1.0);
@@ -70,10 +70,10 @@ class scene {
     this.fragment_shader_source = `
       varying highp vec3 relative_position;
       varying highp vec3 fragment_normal;
-      varying highp vec3 vertex_color;
+      //varying highp vec3 vertex_color;
       //varying lowp float shininess;
       void main() {
-       
+        highp vec3 color = vec3(0.375, 0.25, 0.125);
         highp vec3 n = normalize(fragment_normal);
         highp vec3 e = normalize(-relative_position);
         highp vec3 r = reflect(-e, n);
@@ -86,7 +86,7 @@ class scene {
         highp float diffuse = (up_cos + 1.0) * 0.25 + 0.5;
         highp float specular = pow(max(up_r_cos, 0.0), 32.0) * (fresnel * 0.7 + 0.3) + fresnel;
         //gl_FragColor = vec4(vertex_color * diffuse + white * specular * shininess, 1.0);
-        gl_FragColor = vec4(vertex_color * diffuse + white * specular, 1.0);
+        gl_FragColor = vec4(color * diffuse + white * specular, 1.0);
       }
     `;
     
@@ -234,10 +234,10 @@ class scene {
       this.program_info.uniform_locations.object_translations,
       new Float32Array(this.object_translations)
     );
-    this.gl.uniform3fv(
-      this.program_info.uniform_locations.object_colors,
-      this.float32_object_colors
-    );
+    //this.gl.uniform3fv(
+      //this.program_info.uniform_locations.object_colors,
+      //this.float32_object_colors
+    //);
     //this.gl.uniform1fv(
       //this.program_info.uniform_locations.object_shininess,
       //new Float32Array(this.object_shininess)
