@@ -1,11 +1,13 @@
+import {constants} from "./constants.js";
+
 class scene {
   constructor(canvas, object_count) {
     this.canvas = canvas;
     this.gl = this.canvas.getContext("webgl");
-    this.fov = .5;
+    this.fov = constants.fov;
     this.aspect_ratio = this.canvas.width / this.canvas.height;
-    this.min_distance = 10;
-    this.max_distance = 100000;
+    this.min_distance = constants.near_distance;
+    this.max_distance = constants.far_distance;
     
     this.vertex_positions = [
     ];
@@ -31,10 +33,10 @@ class scene {
     ];
     
     
-    this.pitch = .2;
+    this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 700;
-    this.focus = [0, 0, 100];
+    this.view_distance = 500;
+    this.focus = [0, 0, 10];
     
     
     this.vertex_shader_source = `
