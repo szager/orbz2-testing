@@ -43,7 +43,7 @@ class scene {
       attribute vec3 vertex_position;
       attribute vec3 vertex_normal;
       attribute float object_index;
-      
+      const float pi = 3.1415926535897932384626433832795;
       uniform vec3 object_translations[${object_count}];
       //uniform vec3 object_colors[${object_count}];
       //uniform float object_shininess[${object_count}];
@@ -61,7 +61,7 @@ class scene {
       void main() {
         mediump int int_object_index = int(object_index);
         fragment_normal = vertex_normal;
-        vertex_color = vec3(object_index / 1000.0, 1.0, 1.0);
+        vertex_color = vec3((sin(object_index) + 1.0) / 2.0, (sin(object_index + pi/3.0) + 1.0) / 2.0, (sin(object_index + pi/1.5) + 1.0) / 2.0);
         //shininess = object_shininess[int_object_index];
         relative_position = (vertex_position + object_translations[int_object_index]) - camera_translation;
         gl_Position = perspective_matrix * view_matrix * vec4(relative_position, 1.0);
