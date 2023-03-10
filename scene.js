@@ -21,8 +21,8 @@ class scene {
     this.object_translations = [
     ];
     
-    this.object_colors = [
-    ];
+    //this.object_colors = [
+    //];
     
     //this.object_shininess = [
     //];
@@ -43,7 +43,7 @@ class scene {
       attribute float object_index;
       
       uniform vec3 object_translations[${object_count}];
-      uniform vec3 object_colors[${object_count}];
+      //uniform vec3 object_colors[${object_count}];
       //uniform float object_shininess[${object_count}];
       
       uniform mat4 perspective_matrix;
@@ -108,7 +108,7 @@ class scene {
         perspective_matrix: this.gl.getUniformLocation(this.shader_program, "perspective_matrix"),
         view_matrix: this.gl.getUniformLocation(this.shader_program, "view_matrix"),
         object_translations: this.gl.getUniformLocation(this.shader_program, "object_translations"),
-        object_colors: this.gl.getUniformLocation(this.shader_program, "object_colors"),
+        //object_colors: this.gl.getUniformLocation(this.shader_program, "object_colors"),
         //object_shininess: this.gl.getUniformLocation(this.shader_program, "object_shininess"),
         camera_translation: this.gl.getUniformLocation(this.shader_program, "camera_translation"),
       },
@@ -127,7 +127,7 @@ class scene {
   }
 
   initialize_buffers() {
-    this.float32_object_colors = new Float32Array(this.object_colors);
+    //this.float32_object_colors = new Float32Array(this.object_colors);
 
     this.vertex_position_buffer = this.gl.createBuffer();
     this.gl.bindBuffer(
