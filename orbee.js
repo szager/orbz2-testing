@@ -15,7 +15,7 @@ class orbee {
     this.dy = (Math.random() - 0.5) * 96;
     this.dz = (Math.random()) * 128;
     this.scene = scene;
-    this.object_index = this.scene.object_translations.length;
+    this.object_index = this.scene.object_colors.length;
     orbee_model.add_to_scene(this.scene);
   }
   update() {
