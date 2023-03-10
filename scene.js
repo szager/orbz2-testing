@@ -62,11 +62,11 @@ class scene {
         mediump int int_object_index = int(object_index);
         fragment_normal = vertex_normal;
         
-        highp float hue = mod(object_index / pi, 6.0);
+        highp float hue = mod(object_index / pi, 3.0);
         
-        highp float r = min(1.0,max(0.0, 1.0 - abs(hue - 3.0)));
-        highp float g = 0.5;
-        highp float b = 0.5;
+        highp float r = min(1.0,max(0.0, abs(hue - 1.5) - 0.5));
+        highp float g = min(1.0,max(0.0, 2.0 - abs(hue - 1.0)));
+        highp float b = min(1.0,max(0.0, 1.0 - abs(hue - 2.0)));
         
         vertex_color = vec3(r,g,b);
         
