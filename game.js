@@ -75,6 +75,38 @@ class game {
   complete_scene() {
     this.scene.initialize_buffers();
   }
+  orbee_interactions() {
+    let interactions = [];
+    let orbee_count = this.orbeez.length;
+    let radius = constants.orbee_radius;
+    for(let i = 0; i < orbee_count; i++) {
+      for(let j = i; j < orbee_count; j++) {
+        let orbee_a = this.orbeez[i];
+        let orbee_b = this.orbeez[j];
+        let dx = orbee_a.x - orbee_b.x;
+        let dy = orbee_a.y - orbee_b.y;
+        let dz = orbee_a.z - orbee_b.z;
+        if (Math.abs(dx) < radius && Math.abs(dy) < radius && Math.abs(dz) < radius) { //before checking if the orbeez are touching, check if these cubes are touching
+          let d = (dx**2 + dy**2 + dz**2)**0.5;
+          if(d < radius && d > 0) {
+            interactions.push(
+              {
+                orbee_a: orbee_a,
+                orbee_b: orbee_b,
+                dx: dx,
+                dy: dy,
+                dz: dz,
+                d: d
+              }
+            );
+          }
+        }
+      }
+    }
+    interactions.forEach(interaction => {
+      let acc_ratio = ()(interaction.d)
+    })
+  }
   update() {
     this.time += this.frame_time;
     //let amount_of_useless_math = 2**(Math.random() * 24);
@@ -121,7 +153,6 @@ class game {
     //}
     if(this.time > 1) {
     this.orbeez.forEach(orbie => {
-      
       orbie.update();
     });
     }
