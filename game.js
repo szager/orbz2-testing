@@ -53,6 +53,7 @@ class game {
     this.perf_canvas = perf_canvas;
     this.framerate_displayer = new graph_displayer(this.perf_canvas);
     this.scene = new scene(canvas, 1002);
+    this.mouse_down = false;
     this.orbeez = [];
     for(let x = -5; x < 5; x++) {
       for(let y = -5; y < 5; y++) {
@@ -74,6 +75,15 @@ class game {
   }
   complete_scene() {
     this.scene.initialize_buffers();
+  }
+  handle_mousedown(e) {
+    this.mouse_down = true;
+  }
+  handle_mouseup(e) {
+    this.mouse_down = false;
+  }
+  handle_mousemove(e) {
+    
   }
   orbee_interactions() {
     let interactions = [];
@@ -104,20 +114,20 @@ class game {
       }
     }
     interactions.forEach(interaction => {
-      let acc_ratio = (radius - interaction.d)/(interaction.d);
-      interaction.orbee_a.dx += interaction.dx * acc_ratio * 0.125;
-      interaction.orbee_a.dy += interaction.dy * acc_ratio * 0.125;
-      interaction.orbee_a.dz += interaction.dz * acc_ratio * 0.125;
-      interaction.orbee_b.dx -= interaction.dx * acc_ratio * 0.125;
-      interaction.orbee_b.dy -= interaction.dy * acc_ratio * 0.125;
-      interaction.orbee_b.dz -= interaction.dz * acc_ratio * 0.125;
+      let acc_ratio = (radius - interaction.d)/(interaction.d) * 0.0625;
+      interaction.orbee_a.dx += interaction.dx * acc_ratio;
+      interaction.orbee_a.dy += interaction.dy * acc_ratio;
+      interaction.orbee_a.dz += interaction.dz * acc_ratio;
+      interaction.orbee_b.dx -= interaction.dx * acc_ratio;
+      interaction.orbee_b.dy -= interaction.dy * acc_ratio;
+      interaction.orbee_b.dz -= interaction.dz * acc_ratio;
       
-      interaction.orbee_a.x += interaction.dx * acc_ratio * 0.125;
-      interaction.orbee_a.y += interaction.dy * acc_ratio * 0.125;
-      interaction.orbee_a.z += interaction.dz * acc_ratio * 0.125;
-      interaction.orbee_b.x -= interaction.dx * acc_ratio * 0.125;
-      interaction.orbee_b.y -= interaction.dy * acc_ratio * 0.125;
-      interaction.orbee_b.z -= interaction.dz * acc_ratio * 0.125;
+      interaction.orbee_a.x += interaction.dx * acc_ratio;
+      interaction.orbee_a.y += interaction.dy * acc_ratio;
+      interaction.orbee_a.z += interaction.dz * acc_ratio;
+      interaction.orbee_b.x -= interaction.dx * acc_ratio;
+      interaction.orbee_b.y -= interaction.dy * acc_ratio;
+      interaction.orbee_b.z -= interaction.dz * acc_ratio;
     })
   }
   update() {
@@ -168,7 +178,7 @@ class game {
       this.orbeez.forEach(orbie => {
         orbie.move();
       });
-      for(let i = 0; i < 8; i++) {
+      for(let i = 0; i < 12; i++) {
         this.orbee_interactions();
       }
       
