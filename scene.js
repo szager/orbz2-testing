@@ -98,7 +98,7 @@ class scene {
         highp float up_cos = dot(up, n);
         highp float up_r_cos = dot(up, r);
         highp float diffuse = abs(up_cos) * 0.5 + 0.5;
-        highp float specular = pow(abs(up_r_cos), 32.0) * (fresnel * 2.0 + 0.25) + fresnel * 0.5;
+        highp float specular = pow(abs(up_r_cos), 32.0) * (fresnel * 1.875 + 0.125);
         //gl_FragColor = vec4(vertex_color * diffuse + white * specular * shininess, 1.0);
         gl_FragColor = vec4(vertex_color * diffuse + white * specular, 1.0);
       }
