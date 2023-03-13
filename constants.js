@@ -5,6 +5,7 @@ let constants = {
   near_distance: 10,
   traction: 0.01,
   restitution: 0.25,
+  sensitivity: 0.01, //pixels per radian
   fov: 0.5,
   frame_timestamps: 30,
   

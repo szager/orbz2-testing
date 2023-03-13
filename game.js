@@ -72,6 +72,9 @@ class game {
     
     this.bound_update_method = this.update_and_stuff.bind(this);
     requestAnimationFrame(this.bound_update_method);
+    this.canvas.addEventListener("mousedown",this.handle_mousedown.bind(this));
+    this.canvas.addEventListener("mouseup",this.handle_mouseup.bind(this));
+    this.canvas.addEventListener("mousemove",this.handle_mousemove.bind(this));
   }
   complete_scene() {
     this.scene.initialize_buffers();
@@ -83,7 +86,10 @@ class game {
     this.mouse_down = false;
   }
   handle_mousemove(e) {
-    
+    if(this.mouse_down) {
+      this.scene.pitch = Math.min(Math.PI * 0.5, Math.max(Math.PI * -0.5,this.scene.pitch + e.movementY * constants.sensitivity));
+      this.scene.yaw = (this.scene.yaw - e.movementX * constants.sensitivity) % (Math.PI);
+    }
   }
   orbee_interactions() {
     let interactions = [];
