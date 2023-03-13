@@ -87,7 +87,7 @@ class game {
   }
   handle_mousemove(e) {
     if(this.mouse_down) {
-      this.scene.pitch = Math.min(Math.PI * 0.5, Math.max(Math.PI * -0.5,this.scene.pitch + e.movementY * constants.sensitivity));
+      this.scene.pitch = Math.min(Math.PI * 0.5, Math.max(0,this.scene.pitch + e.movementY * constants.sensitivity));
       this.scene.yaw = (this.scene.yaw - e.movementX * constants.sensitivity) % (Math.PI);
     }
   }
