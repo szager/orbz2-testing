@@ -62,13 +62,17 @@ class scene {
         mediump int int_object_index = int(object_index);
         fragment_normal = vertex_normal;
         
-        highp float hue = mod(object_index / pi, 3.0);
+        highp float hue = mod(object_index / pi, 6.0);
         
-        highp float r = min(1.0,max(0.0, abs(hue - 1.5)));
-        highp float g = min(1.0,max(0.0, 1.0 - abs(hue - 2.0)));
-        highp float b = min(1.0,max(0.0, (1.0 - abs(hue - 1.0) * 2.0)));
-        
-        vertex_color = vec3(r,g,b);
+        highp float red, green, blue;
+  
+        green = min(1.0, max(0.0, (2.0 - abs(hue - 2.0))));
+  
+        blue = min(1.0, max(0.0, (2.0 - abs(hue - 4.0))));
+  
+        red = 1.0 - min(1.0, max(0.0, (2.0 - abs(hue - 3.0))));
+  
+        vertex_color = vec3(red * 0.8 + 0.15, green * 0.8 + 0.15, blue * 0.8 + 0.15);
         
         //shininess = object_shininess[int_object_index];
         relative_position = (vertex_position + object_translations[int_object_index]) - camera_translation;

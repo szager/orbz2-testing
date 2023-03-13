@@ -1,0 +1,11 @@
+
+  
+highp float red, green, blue;
+  
+green = Math.min(1, Math.max(0, (2 - Math.abs(hue - 2))));
+  
+blue = Math.min(1, Math.max(0, (2 - Math.abs(hue - 4))));
+  
+red = 1 - Math.min(1, Math.max(0, (2 - Math.abs(hue - 3))));
+  
+highp vec3 color = vec3(red, green, blue);
