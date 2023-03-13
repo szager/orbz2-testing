@@ -104,7 +104,20 @@ class game {
       }
     }
     interactions.forEach(interaction => {
-      let acc_ratio = ()(interaction.d)
+      let acc_ratio = (radius - interaction.d)/(interaction.d);
+      interaction.orbee_a.dx += interaction.dx * acc_ratio * 0.125;
+      interaction.orbee_a.dy += interaction.dy * acc_ratio * 0.125;
+      interaction.orbee_a.dz += interaction.dz * acc_ratio * 0.125;
+      interaction.orbee_b.dx -= interaction.dx * acc_ratio * 0.125;
+      interaction.orbee_b.dy -= interaction.dy * acc_ratio * 0.125;
+      interaction.orbee_b.dz -= interaction.dz * acc_ratio * 0.125;
+      
+      interaction.orbee_a.x += interaction.dx * acc_ratio * 0.125;
+      interaction.orbee_a.y += interaction.dy * acc_ratio * 0.125;
+      interaction.orbee_a.z += interaction.dz * acc_ratio * 0.125;
+      interaction.orbee_b.x -= interaction.dx * acc_ratio * 0.125;
+      interaction.orbee_b.y -= interaction.dy * acc_ratio * 0.125;
+      interaction.orbee_b.z -= interaction.dz * acc_ratio * 0.125;
     })
   }
   update() {
@@ -152,9 +165,16 @@ class game {
      // })
     //}
     if(this.time > 1) {
-    this.orbeez.forEach(orbie => {
-      orbie.update();
-    });
+      this.orbeez.forEach(orbie => {
+        orbie.move();
+      });
+      for(let i = 0; i < 8; i++) {
+        this.orbee_interactions();
+      }
+      
+      this.orbeez.forEach(orbie => {
+        orbie.update();
+      });
     }
     this.scene.draw(this.time);
     

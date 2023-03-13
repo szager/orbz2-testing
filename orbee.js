@@ -11,14 +11,14 @@ class orbee {
     this.x = x1 + Math.random() * (x2 - x1);
     this.y = y1 + Math.random() * (y2 - y1);
     this.z = z1 + Math.random() * (z2 - z1);
-    this.dx = (Math.random() - 0.5) * 32;
-    this.dy = (Math.random() - 0.5) * 32;
-    this.dz = (Math.random()) * 32;
+    this.dx = (Math.random() - 0.5) * 8;
+    this.dy = (Math.random() - 0.5) * 8;
+    this.dz = (Math.random()) * 8;
     this.scene = scene;
     this.object_index = this.scene.object_translations.length;
     orbee_model.add_to_scene(this.scene);
   }
-  update() {
+  move() {
     let damping_ratio = 1 - constants.damping;
     this.dx *= damping_ratio;
     this.dy *= damping_ratio;
@@ -34,8 +34,9 @@ class orbee {
     this.x += this.dx;
     this.y += this.dy;
     this.z += this.dz;
-    
-    if(this.z < constants.orbee_radius) {
+  }
+  update() {
+        if(this.z < constants.orbee_radius) {
       this.z = constants.orbee_radius;
       let horizontal_speed = Math.hypot(this.dx, this.dy);
       let traction_force = -this.dz * constants.traction * (constants.restitution + 1);
