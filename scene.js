@@ -299,10 +299,24 @@ class scene {
       0,
       0
     );
+    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_position);
+    
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.colors);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.color);
     this.gl.vertexAttribPointer(this.program_info.attribute_locations.color, 4, this.gl.FLOAT, false, 0, 0);
     this.extension_thingy.vertexAttribDivisorANGLE(this.program_info.attribute_locations.color, 1);
+    this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
+    
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.positions);
+    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.position);
+    this.gl.vertexAttribPointer(this.program_info.attribute_locations.position, 4, this.gl.FLOAT, false, 0, 0);
+    this.extension_thingy.vertexAttribDivisorANGLE(this.program_info.attribute_locations.position, 1);
+    this.extension_thingy.drawArraysInstancedANGLE(
+      gl.TRIANGLES,
+      0,             // offset
+      numVertices,   // num vertices per instance
+      numInstances,  // num instances
+    );
   }
 }
 
