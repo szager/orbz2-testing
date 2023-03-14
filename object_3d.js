@@ -1,7 +1,7 @@
 class object_3d {
-  constructor(model, translation, color) {
+  constructor(model, position, color) {
     this.model = model;
-    this.translation = translation;
+    this.position = position;
     this.color = color;
   }
 }
@@ -9,12 +9,15 @@ class object_3d {
 class group_3d {
   constructor(model, count) {
     this.model = model;
-    this.instances = [];
+    this.positions = [];
+    this.colors = [];
     for(let i = 0; i < count; i++) {
-      this.instances.push({
-        translation: [0.0, 0.0, 0.0],
-        color: [0.5, 0.25, 0.9]
-      });
+      this.positions.push(0);
+      this.positions.push(0);
+      this.positions.push(0);
+      this.colors.push(0.5);
+      this.colors.push(0.25);
+      this.colors.push(0.125);
     }
   }
 }

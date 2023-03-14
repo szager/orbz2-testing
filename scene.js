@@ -128,6 +128,8 @@ class scene {
         vertex_position: this.gl.getAttribLocation(this.shader_program, "vertex_position"),
         vertex_normal: this.gl.getAttribLocation(this.shader_program, "vertex_normal"),
         object_index: this.gl.getAttribLocation(this.shader_program, "object_index"),
+        color: this.gl.getAttribLocation(this.shader_program, "color"),
+        position: this.gl.getAttribLocation(this.shader_program, "position"),
       },
       uniform_locations: {
         perspective_matrix: this.gl.getUniformLocation(this.shader_program, "perspective_matrix"),
@@ -175,6 +177,27 @@ class scene {
       this.gl.bufferData(
         this.gl.ELEMENT_ARRAY_BUFFER,
         new Uint16Array(object_group.model.faces),
+        this.gl.STATIC_DRAW
+      );
+      
+      object_group.position_buffer = this.gl.createBuffer();
+      this.gl.bindBuffer(
+        this.gl.ARRAY_BUFFER,
+        object_group.position_buffer
+      );
+      this.gl.bufferData(
+        this.gl.ARRAY_BUFFER,
+        new Float32Array(object_group.model.positions),
+        this.gl.STATIC_DRAW
+      );
+      object_group.color_buffer = this.gl.createBuffer();
+      this.gl.bindBuffer(
+        this.gl.ARRAY_BUFFER,
+        object_group.color_buffer
+      );
+      this.gl.bufferData(
+        this.gl.ARRAY_BUFFER,
+        new Float32Array(object_group.model.colors),
         this.gl.STATIC_DRAW
       );
     });
@@ -276,7 +299,10 @@ class scene {
       0,
       0
     );
-    
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.colors);
+    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.color);
+    this.gl.vertexAttribPointer(this.program_info.attribute_locations.color, 4, this.gl.FLOAT, false, 0, 0);
+    this.extension_thingy.vertexAttribDivisorANGLE(this.program_info.attribute_locations.color, 1);
   }
 }
 
