@@ -9,7 +9,10 @@ class scene {
     this.aspect_ratio = this.canvas.width / this.canvas.height;
     this.min_distance = constants.near_distance;
     this.max_distance = constants.far_distance;
-    
+    this.extension_thing = this.gl.getExtension('ANGLE_instanced_arrays');
+    if(!this.extension_thing) {
+      alert("oh no your computer is bad :(");
+    }
     this.vertex_positions = [
     ];
     
@@ -150,45 +153,31 @@ class scene {
 
   initialize_buffers() {
     //this.float32_object_colors = new Float32Array(this.object_colors);
-    this.objects.forEach(object => {
-      object.vertex_position_buffer = this.gl.createBuffer();
-    })
-    this.vertex_position_buffer = this.gl.createBuffer();
-    this.gl.bindBuffer(
-      this.gl.ARRAY_BUFFER,
-      this.vertex_position_buffer
-    );
-    this.gl.bufferData(
-      this.gl.ARRAY_BUFFER,
-      new Float32Array(this.vertex_positions),
-      this.gl.STATIC_DRAW
-    );
-
-    this.object_index_buffer = this.gl.createBuffer();
-    this.gl.bindBuffer(
-      this.gl.ARRAY_BUFFER,
-      this.object_index_buffer
-    );
-    this.gl.bufferData(
-      this.gl.ARRAY_BUFFER,
-      new Float32Array(this.object_indices),
-      this.gl.STATIC_DRAW
-    );
-
-    this.face_buffer = this.gl.createBuffer();
-    this.gl.bindBuffer(
-      this.gl.ELEMENT_ARRAY_BUFFER,
-      this.face_buffer
-    );
-    this.gl.bufferData(
-      this.gl.ELEMENT_ARRAY_BUFFER,
-      new Uint16Array(this.faces),
-      this.gl.STATIC_DRAW
-    );
-
-    this.vertex_normal_buffer = this.gl.createBuffer();
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertex_normal_buffer);
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.vertex_normals), this.gl.STATIC_DRAW);
+    this.object_groups.forEach(object_group => {
+      object_group.vertex_position_buffer = this.gl.createBuffer();
+      this.gl.bindBuffer(
+        this.gl.ARRAY_BUFFER,
+        object_group.vertex_position_buffer
+      );
+      this.gl.bufferData(
+        this.gl.ARRAY_BUFFER,
+        new Float32Array(object_group.model.vertex_positions),
+        this.gl.STATIC_DRAW
+      );
+      object_group.vertex_normal_buffer = this.gl.createBuffer();
+      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.vertex_normal_buffer);
+      this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(object_group.model.vertex_normals), this.gl.STATIC_DRAW);
+      object_group.face_buffer = this.gl.createBuffer();
+      this.gl.bindBuffer(
+        this.gl.ELEMENT_ARRAY_BUFFER,
+        object_group.face_buffer
+      );
+      this.gl.bufferData(
+        this.gl.ELEMENT_ARRAY_BUFFER,
+        new Uint16Array(object_group.model.faces),
+        this.gl.STATIC_DRAW
+      );
+    });
   }
   
   draw(time) {
@@ -215,17 +204,6 @@ class scene {
     mat4.rotate(camera_matrix, camera_matrix, Math.PI / 2 - this.pitch, [1.0, 0.0, 0.0]);
     let view_matrix = mat4.create();
     mat4.invert(view_matrix, camera_matrix);
-    
-  
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertex_position_buffer);
-    this.gl.vertexAttribPointer(
-      this.program_info.attribute_locations.vertex_position,
-      3,
-      this.gl.FLOAT,
-      false,
-      0,
-      0
-    );
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertex_normal_buffer);
     this.gl.vertexAttribPointer(
@@ -287,6 +265,18 @@ class scene {
     );
     this.gl.drawElements(this.gl.TRIANGLES, this.faces.length, this.gl.UNSIGNED_SHORT, 0);
     //alert(JSON.stringify(view_matrix, null, 1));
+  }
+  draw_object_group(object_group) {
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.vertex_position_buffer);
+    this.gl.vertexAttribPointer(
+      this.program_info.attribute_locations.vertex_position,
+      3,
+      this.gl.FLOAT,
+      false,
+      0,
+      0
+    );
+    
   }
 }
 
