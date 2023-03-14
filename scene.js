@@ -86,15 +86,15 @@ class scene {
       program: this.shader_program,
       attribute_locations: {
         vertex_position: this.gl.getAttribLocation(this.shader_program, "vertex_position"),
-        vertex_normal: this.gl.getAttribLocation(this.shader_program, "vertex_normal"),
-        object_index: this.gl.getAttribLocation(this.shader_program, "object_index"),
+        //vertex_normal: this.gl.getAttribLocation(this.shader_program, "vertex_normal"),
+        //object_index: this.gl.getAttribLocation(this.shader_program, "object_index"),
         color: this.gl.getAttribLocation(this.shader_program, "color"),
         position: this.gl.getAttribLocation(this.shader_program, "position"),
       },
       uniform_locations: {
         perspective_matrix: this.gl.getUniformLocation(this.shader_program, "perspective_matrix"),
         view_matrix: this.gl.getUniformLocation(this.shader_program, "view_matrix"),
-        object_translations: this.gl.getUniformLocation(this.shader_program, "object_translations"),
+        //object_translations: this.gl.getUniformLocation(this.shader_program, "object_translations"),
         //object_colors: this.gl.getUniformLocation(this.shader_program, "object_colors"),
         //object_shininess: this.gl.getUniformLocation(this.shader_program, "object_shininess"),
         camera_translation: this.gl.getUniformLocation(this.shader_program, "camera_translation"),
@@ -188,37 +188,8 @@ class scene {
     let view_matrix = mat4.create();
     mat4.invert(view_matrix, camera_matrix);
     
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertex_normal_buffer);
-    this.gl.vertexAttribPointer(
-      this.program_info.attribute_locations.vertex_normal,
-      3,
-      this.gl.FLOAT,
-      false,
-      0,
-      0
-    );
     
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.object_index_buffer);
-    this.gl.vertexAttribPointer(
-      this.program_info.attribute_locations.object_index,
-      1,
-      this.gl.FLOAT,
-      false,
-      0,
-      0
-    );
-    
-    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_position);
-    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_normal);
-    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.object_index);
-    
-    this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.face_buffer);
     this.gl.useProgram(this.program_info.program);
-
-    this.gl.uniform3fv(
-      this.program_info.uniform_locations.object_translations,
-      new Float32Array(this.object_translations)
-    );
     //this.gl.uniform3fv(
       //this.program_info.uniform_locations.object_colors,
       //this.float32_object_colors
@@ -246,7 +217,9 @@ class scene {
       false,
       view_matrix
     );
-    this.gl.drawElements(this.gl.TRIANGLES, this.faces.length, this.gl.UNSIGNED_SHORT, 0);
+    this.object_groups.forEach(object_group => {
+      this.draw_object_group(object_group);
+    })
     //alert(JSON.stringify(view_matrix, null, 1));
   }
   draw_object_group(object_group) {
@@ -261,21 +234,21 @@ class scene {
     );
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_position);
     
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.colors);
+      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.color_buffer);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.color);
     this.gl.vertexAttribPointer(this.program_info.attribute_locations.color, 4, this.gl.FLOAT, false, 0, 0);
-    this.extension_thingy.vertexAttribDivisorANGLE(this.program_info.attribute_locations.color, 1);
+    this.extension_thing.vertexAttribDivisorANGLE(this.program_info.attribute_locations.color, 1);
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
     
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.positions);
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.position_buffer);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.position);
     this.gl.vertexAttribPointer(this.program_info.attribute_locations.position, 4, this.gl.FLOAT, false, 0, 0);
-    this.extension_thingy.vertexAttribDivisorANGLE(this.program_info.attribute_locations.position, 1);
-    this.extension_thingy.drawArraysInstancedANGLE(
-      gl.TRIANGLES,
+    this.extension_thing.vertexAttribDivisorANGLE(this.program_info.attribute_locations.position, 1);
+    this.extension_thing.drawArraysInstancedANGLE(
+      this.gl.TRIANGLES,
       0,             // offset
-      numVertices,   // num vertices per instance
-      numInstances,  // num instances
+      object_group.model.faces.length,   // num vertices per instance
+      object_group.positions.length / 3,  // num instances
     );
   }
 }
