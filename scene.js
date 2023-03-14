@@ -1,5 +1,6 @@
 import {constants} from "./constants.js";
 import {group_3d} from "./object_3d.js";
+import {orbee_model} from "./orbee_model.js";
 
 class scene {
   constructor(canvas, object_count) {
@@ -31,7 +32,9 @@ class scene {
       
     ];
     this.objects = [];
-    this.object_groups = [];
+    this.object_groups = [
+      new group_3d(orbee_model, 1.0)
+    ];
     
     //this.object_colors = [
     //];
@@ -51,67 +54,24 @@ class scene {
     
     this.vertex_shader_source = `
       attribute vec3 vertex_position;
-      attribute vec3 vertex_normal;
-      attribute float object_index;
-      const float pi = 3.1415926535897932384626433832795;
-      uniform vec3 object_translations[${object_count}];
-      //uniform vec3 object_colors[${object_count}];
-      //uniform float object_shininess[${object_count}];
+      //attribute vec3 vertex_normal;
+      attribute vec3 color;
+      attribute vec3 position;
       
       uniform mat4 perspective_matrix;
       uniform mat4 view_matrix;
       
       uniform vec3 camera_translation;
       
-      varying lowp vec3 vertex_color;
-      varying highp vec3 relative_position;
-      varying highp vec3 fragment_normal;
-      //varying lowp float shininess;
-      
       void main() {
-        mediump int int_object_index = int(object_index);
-        fragment_normal = vertex_normal;
-        
-        highp float hue = mod(object_index / pi, 6.0);
-        
-        highp float red, green, blue;
-  
-        green = min(1.0, max(0.0, (2.0 - abs(hue - 2.0))));
-  
-        blue = min(1.0, max(0.0, (2.0 - abs(hue - 4.0))));
-  
-        red = 1.0 - min(1.0, max(0.0, (2.0 - abs(hue - 3.0))));
-  
-        vertex_color = vec3(red * 0.8 + 0.15, green * 0.8 + 0.15, blue * 0.8 + 0.15);
-        
-        //shininess = object_shininess[int_object_index];
-        relative_position = (vertex_position + object_translations[int_object_index]) - camera_translation;
-        gl_Position = perspective_matrix * view_matrix * vec4(relative_position, 1.0);
-        //gl_Position = perspective_matrix * vec4(relative_position.xyz, 1.0);
+        //relative_position = (vertex_position + object_translations[int_object_index]) - camera_translation;
+        gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
       }
     `;
 
     this.fragment_shader_source = `
-      varying highp vec3 relative_position;
-      varying highp vec3 fragment_normal;
-      varying highp vec3 vertex_color;
-      //varying lowp float shininess;
       void main() {
-        //highp vec3 color = vec3(0.375, 0.25, 0.125);
-        highp vec3 n = normalize(fragment_normal);
-        highp vec3 e = normalize(-relative_position);
-        highp vec3 r = reflect(-e, n);
-        highp float view_cosine = dot(e, n);
-        highp float fresnel = pow(1.0 - abs(view_cosine), 5.0);
-        highp vec3 white = vec3(1.0, 1.0, 1.0);
-        highp vec3 up = vec3(0.0, 0.0, 1.0);
-        highp float up_cos = dot(up, n);
-        highp float up_r_cos = dot(up, r);
-        highp float diffuse = abs(up_cos) * 0.5 + 0.5;
-        highp float specular = pow(abs(up_r_cos), 32.0) * (fresnel * 1.875 + 0.125);
-        //gl_FragColor = vec4(vertex_color * diffuse + white * specular * shininess, 1.0);
-        //gl_FragColor = vec4(vertex_color * diffuse + white * specular, 1.0);
-        gl_FragColor = vec4(vertex_color, abs(view_cosine) *0.5 + 0.5);
+        gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
       }
     `;
     
