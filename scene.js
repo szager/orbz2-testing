@@ -187,9 +187,6 @@ class scene {
     mat4.rotate(camera_matrix, camera_matrix, Math.PI / 2 - this.pitch, [1.0, 0.0, 0.0]);
     let view_matrix = mat4.create();
     mat4.invert(view_matrix, camera_matrix);
-    
-    
-    this.gl.useProgram(this.program_info.program);
     //this.gl.uniform3fv(
       //this.program_info.uniform_locations.object_colors,
       //this.float32_object_colors
@@ -244,6 +241,7 @@ class scene {
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.position);
     this.gl.vertexAttribPointer(this.program_info.attribute_locations.position, 4, this.gl.FLOAT, false, 0, 0);
     this.extension_thing.vertexAttribDivisorANGLE(this.program_info.attribute_locations.position, 1);
+    this.gl.useProgram(this.program_info.program);
     this.extension_thing.drawArraysInstancedANGLE(
       this.gl.TRIANGLES,
       0,             // offset
