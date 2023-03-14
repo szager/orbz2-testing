@@ -1,4 +1,5 @@
 import {constants} from "./constants.js";
+import {group_3d} from "./object_3d.js";
 
 class scene {
   constructor(canvas, object_count) {
@@ -22,6 +23,12 @@ class scene {
     
     this.object_translations = [
     ];
+    
+    this.objects = [
+      
+    ];
+    this.objects = [];
+    this.object_groups = [];
     
     //this.object_colors = [
     //];
@@ -143,7 +150,9 @@ class scene {
 
   initialize_buffers() {
     //this.float32_object_colors = new Float32Array(this.object_colors);
-
+    this.objects.forEach(object => {
+      object.vertex_position_buffer = this.gl.createBuffer();
+    })
     this.vertex_position_buffer = this.gl.createBuffer();
     this.gl.bindBuffer(
       this.gl.ARRAY_BUFFER,
