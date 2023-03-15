@@ -33,7 +33,7 @@ class scene {
     ];
     this.objects = [];
     this.object_groups = [
-      new group_3d(orbee_model, 1.0)
+      new group_3d(orbee_model, 2.0)
     ];
     
     //this.object_colors = [
@@ -231,15 +231,18 @@ class scene {
     );
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_position);
     
-      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.color_buffer);
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.color_buffer);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.color);
-    this.gl.vertexAttribPointer(this.program_info.attribute_locations.color, 4, this.gl.FLOAT, false, 0, 0);
+    this.gl.vertexAttribPointer(this.program_info.attribute_locations.color, 3, this.gl.FLOAT, false, 0, 0);
     this.extension_thing.vertexAttribDivisorANGLE(this.program_info.attribute_locations.color, 1);
+    
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
+    
+    alert(String(object_group.model.faces));
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.position_buffer);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.position);
-    this.gl.vertexAttribPointer(this.program_info.attribute_locations.position, 4, this.gl.FLOAT, false, 0, 0);
+    this.gl.vertexAttribPointer(this.program_info.attribute_locations.position, 3, this.gl.FLOAT, false, 0, 0);
     this.extension_thing.vertexAttribDivisorANGLE(this.program_info.attribute_locations.position, 1);
     this.gl.useProgram(this.program_info.program);
     this.extension_thing.drawArraysInstancedANGLE(
