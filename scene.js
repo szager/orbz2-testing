@@ -49,7 +49,7 @@ class scene {
     this.pitch = .8;
     this.yaw = 0;
     this.view_distance = 600;
-    this.focus = [0, 0, 10];
+    this.focus = [0, 0, 0];
     
     
     this.vertex_shader_source = `
@@ -248,10 +248,11 @@ class scene {
     this.extension_thing.vertexAttribDivisorANGLE(this.program_info.attribute_locations.position, 1);
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
     this.gl.useProgram(this.program_info.program);
-    this.extension_thing.drawArraysInstancedANGLE(
+    this.extension_thing.drawElementsInstancedANGLE(
       this.gl.TRIANGLES,
+      Math.round(object_group.model.faces.length),
+      this.gl.UNSIGNED_SHORT,
       0,
-      object_group.model.faces.length,
       Math.round(object_group.positions.length / 3),
     );
   }
