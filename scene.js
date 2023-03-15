@@ -33,7 +33,7 @@ class scene {
     ];
     this.objects = [];
     this.object_groups = [
-      new group_3d(orbee_model, 2.0)
+      new group_3d(orbee_model, 8.0)
     ];
     
     //this.object_colors = [
@@ -71,7 +71,7 @@ class scene {
 
     this.fragment_shader_source = `
       void main() {
-        gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+        gl_FragColor = vec4(0.5, 0.3, 0.2, 1.0);
       }
     `;
     
@@ -217,9 +217,13 @@ class scene {
       false,
       view_matrix
     );
-    this.object_groups.forEach(object_group => {
+    for(let i = 0; i < this.object_groups.length; i++) {
+      let object_group = this.object_groups[i];
       this.draw_object_group(object_group);
-    })
+    }
+    //this.object_groups.forEach(object_group => {
+      //this.draw_object_group(object_group);
+    //})
     //alert(JSON.stringify(view_matrix, null, 1));
   }
   draw_object_group(object_group) {
