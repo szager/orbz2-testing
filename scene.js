@@ -116,6 +116,7 @@ class scene {
   initialize_buffers() {
     //this.float32_object_colors = new Float32Array(this.object_colors);
     this.object_groups.forEach(object_group => {
+      
       object_group.vertex_position_buffer = this.gl.createBuffer();
       this.gl.bindBuffer(
         this.gl.ARRAY_BUFFER,
@@ -126,9 +127,10 @@ class scene {
         new Float32Array(object_group.model.vertex_positions),
         this.gl.STATIC_DRAW
       );
-      object_group.vertex_normal_buffer = this.gl.createBuffer();
-      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.vertex_normal_buffer);
-      this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(object_group.model.vertex_normals), this.gl.STATIC_DRAW);
+      
+      //object_group.vertex_normal_buffer = this.gl.createBuffer();
+      //this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.vertex_normal_buffer);
+      //this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(object_group.model.vertex_normals), this.gl.STATIC_DRAW);
       object_group.face_buffer = this.gl.createBuffer();
       this.gl.bindBuffer(
         this.gl.ELEMENT_ARRAY_BUFFER,
@@ -160,6 +162,7 @@ class scene {
         new Float32Array(object_group.model.colors),
         this.gl.STATIC_DRAW
       );
+      
     });
   }
   
@@ -236,20 +239,20 @@ class scene {
     this.gl.vertexAttribPointer(this.program_info.attribute_locations.color, 3, this.gl.FLOAT, false, 0, 0);
     this.extension_thing.vertexAttribDivisorANGLE(this.program_info.attribute_locations.color, 1);
     
-    this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
     
-    alert(String(object_group.model.faces));
+    //alert(String(object_group.positions));
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.position_buffer);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.position);
     this.gl.vertexAttribPointer(this.program_info.attribute_locations.position, 3, this.gl.FLOAT, false, 0, 0);
     this.extension_thing.vertexAttribDivisorANGLE(this.program_info.attribute_locations.position, 1);
+    this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
     this.gl.useProgram(this.program_info.program);
     this.extension_thing.drawArraysInstancedANGLE(
       this.gl.TRIANGLES,
-      0,             // offset
-      object_group.model.faces.length,   // num vertices per instance
-      object_group.positions.length / 3,  // num instances
+      0,
+      object_group.model.faces.length,
+      Math.round(object_group.positions.length / 3),
     );
   }
 }
