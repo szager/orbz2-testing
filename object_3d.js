@@ -12,12 +12,12 @@ class group_3d {
     this.positions = [];
     this.colors = [];
     for(let i = 0; i < count; i++) {
-      this.positions.push(0);
-      this.positions.push(0);
-      this.positions.push(0);
-      this.colors.push(0.5);
-      this.colors.push(0.25);
-      this.colors.push(0.125);
+      this.positions.push(Math.random() * 1000 - 500);
+      this.positions.push(Math.random() * 1000 - 500);
+      this.positions.push(Math.random() * 1000 - 500);
+      this.colors.push(Math.random());
+      this.colors.push(Math.random());
+      this.colors.push(Math.random());
     }
   }
 }

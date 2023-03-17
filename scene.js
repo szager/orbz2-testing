@@ -33,7 +33,7 @@ class scene {
     ];
     this.objects = [];
     this.object_groups = [
-      new group_3d(orbee_model, 8.0)
+      new group_3d(orbee_model, 1000.0)
     ];
     
     //this.object_colors = [
@@ -62,16 +62,19 @@ class scene {
       uniform mat4 view_matrix;
       
       uniform vec3 camera_translation;
+      varying vec3 fColor;
       
       void main() {
+        fColor = color;
         //relative_position = (vertex_position + object_translations[int_object_index]) - camera_translation;
         gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
       }
     `;
 
     this.fragment_shader_source = `
+      varying lowp vec3 fColor;
       void main() {
-        gl_FragColor = vec4(0.5, 0.3, 0.2, 1.0);
+        gl_FragColor = vec4(fColor, 1.0);
       }
     `;
     
@@ -250,8 +253,11 @@ class scene {
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.position);
     this.gl.vertexAttribPointer(this.program_info.attribute_locations.position, 3, this.gl.FLOAT, false, 0, 0);
     this.extension_thing.vertexAttribDivisorANGLE(this.program_info.attribute_locations.position, 1);
+    
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
+    
     this.gl.useProgram(this.program_info.program);
+    
     this.extension_thing.drawElementsInstancedANGLE(
       this.gl.TRIANGLES,
       Math.round(object_group.model.faces.length),
