@@ -10,6 +10,9 @@ class scene {
     this.aspect_ratio = this.canvas.width / this.canvas.height;
     this.min_distance = constants.near_distance;
     this.max_distance = constants.far_distance;
+    
+    //alert(String(this.gl.getSupportedExtensions()));
+    
     this.extension_thing = this.gl.getExtension('ANGLE_instanced_arrays');
     if(!this.extension_thing) {
       alert("oh no your computer is bad :(");
@@ -231,6 +234,7 @@ class scene {
   }
   draw_object_group(object_group) {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.vertex_position_buffer);
+    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_position);
     this.gl.vertexAttribPointer(
       this.program_info.attribute_locations.vertex_position,
       3,
@@ -239,7 +243,6 @@ class scene {
       0,
       0
     );
-    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_position);
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.color_buffer);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.color);
