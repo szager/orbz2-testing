@@ -7,7 +7,7 @@ let constants = {
   restitution: 0.25,
   sensitivity: 0.01, //pixels per radian
   fov: 0.5,
-  frame_timestamps: 30,
+  frame_timestamps: 90,
   
   //1 millimeter per frame squared is 3.6 meters per second squared
   gravity: 2.725, //this is 1 g of acceleration
