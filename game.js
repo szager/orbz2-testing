@@ -184,9 +184,9 @@ class game {
       this.orbeez.forEach(orbie => {
         orbie.move();
       });
-      for(let i = 0; i < 12; i++) {
-        this.orbee_interactions();
-      }
+      //for(let i = 0; i < 12; i++) {
+        //this.orbee_interactions();
+      //}
       
       this.orbeez.forEach(orbie => {
         orbie.update();

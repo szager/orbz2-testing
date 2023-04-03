@@ -51,35 +51,35 @@ class scene {
     
     this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 30;
+    this.view_distance = 6000;
     this.focus = [0, 0, 0];
     
     
     this.vertex_shader_source = `
       attribute vec3 vertex_position;
-      //attribute vec3 vertex_normal;
-      //attribute vec3 color;
-      //attribute vec3 position;
+      attribute vec3 vertex_normal;
+      attribute vec3 color;
+      attribute vec3 position;
       
       uniform mat4 perspective_matrix;
       uniform mat4 view_matrix;
       
       uniform vec3 camera_translation;
-      //varying vec3 fColor;
+      varying vec3 fColor;
       
       void main() {
-        //fColor = color;
+        fColor = color;
         //relative_position = (vertex_position + object_translations[int_object_index]) - camera_translation;
-        //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
-        gl_Position = perspective_matrix * view_matrix * vec4((vertex_position) - camera_translation, 1.0);
+        gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
+        //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position) - camera_translation, 1.0);
       }
     `;
 
     this.fragment_shader_source = `
-      //varying lowp vec3 fColor;
+      varying lowp vec3 fColor;
       void main() {
-        //gl_FragColor = vec4(fColor, 1.0);
-        gl_FragColor = vec4(0.2, 0.8, 0.1, 1.0);
+        gl_FragColor = vec4(fColor, 1.0);
+        //gl_FragColor = vec4(0.2, 0.8, 0.1, 1.0);
       }
     `;
     
