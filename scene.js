@@ -36,7 +36,7 @@ class scene {
     ];
     this.objects = [];
     this.object_groups = [
-      new group_3d(orbee_model, 1000.0)
+      new group_3d(orbee_model, 80.0)
     ];
     
     //this.object_colors = [
@@ -60,8 +60,8 @@ class scene {
       attribute vec3 vertex_normal;
       
       
-      //attribute vec3 color;
-      //attribute vec3 position;
+      attribute vec3 color;
+      attribute vec3 position;
       
       uniform mat4 perspective_matrix;
       uniform mat4 view_matrix;
@@ -70,8 +70,8 @@ class scene {
       varying lowp vec3 fColor;
       
       void main() {
-        //fColor = color;
-        fColor = vec3(0.5, 0.7, 0.2);
+        fColor = color;
+        //fColor = vec3(0.5, 0.7, 0.2); // wow, that's the exact color of grass
         gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
         //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position) - camera_translation, 1.0);
       }
@@ -252,7 +252,7 @@ class scene {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.color_buffer);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.color);
     this.gl.vertexAttribPointer(this.program_info.attribute_locations.color, 3, this.gl.FLOAT, false, 0, 0);
-    this.gl.vertexAttribDivisor(this.program_info.attribute_locations.color, 3);
+    //this.gl.vertexAttribDivisor(this.program_info.attribute_locations.color, 1);
     
     
     //alert(String(object_group.positions));
@@ -260,7 +260,7 @@ class scene {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.position_buffer);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.position);
     this.gl.vertexAttribPointer(this.program_info.attribute_locations.position, 3, this.gl.FLOAT, false, 0, 0);
-    this.gl.vertexAttribDivisor(this.program_info.attribute_locations.position, 3);
+    //this.gl.vertexAttribDivisor(this.program_info.attribute_locations.position, 1);
     
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
     
