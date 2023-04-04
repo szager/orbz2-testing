@@ -174,6 +174,7 @@ class scene {
       this.draw_object_group(object_group, camera_translation, view_matrix, perspective_matrix);
     }
   }
+  
   draw_object_group(object_group, camera_translation, view_matrix, perspective_matrix) {
     this.gl.uniform3f(
       this.program_info.uniform_locations.camera_translation,
