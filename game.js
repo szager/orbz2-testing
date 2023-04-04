@@ -14,8 +14,8 @@ class game {
   stop() {
     this.stopping = true;
   }
-  update_and_stuff() {
-    let now = performance.now();
+  update_and_stuff(now) {
+    //let now = performance.now();
     if(this.frame_timestamps.length <= constants.frame_timestamps) { //paranoia
       this.frame_timestamps.push(now);
     }
