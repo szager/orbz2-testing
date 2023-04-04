@@ -175,6 +175,7 @@ class scene {
   }
   
   draw(time) {
+    this.gl.useProgram(this.program_info.program);
     //this.camera_rotation[0] = time * -.013357674575867674745;
     //this.camera_rotation[1] = time * .0075564367798670867646;
     //this.camera_rotation[2] = time * .0047658753564576776898;
@@ -261,7 +262,7 @@ class scene {
     
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
     
-    this.gl.useProgram(this.program_info.program);
+    
     
     //alert(String(object_group.position_buffer));
     
