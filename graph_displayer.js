@@ -1,7 +1,7 @@
 class graph_displayer {
   constructor(canvas) {
     this.canvas = canvas;
-    this.ctx = this.canvas.getContext("2d");
+    this.ctx = this.canvas.getContext("2d", {"willReadFrequently":true});
   }
   add_value(value) {
     let image_data = this.ctx.getImageData(1, 0, this.canvas.width - 1, this.canvas.height);

@@ -5,7 +5,7 @@ import {orbee_model} from "./orbee_model.js";
 class scene {
   constructor(canvas, object_count) {
     this.canvas = canvas;
-    this.gl = this.canvas.getContext("webgl");
+    this.gl = this.canvas.getContext("webgl2");
     this.fov = constants.fov;
     this.aspect_ratio = this.canvas.width / this.canvas.height;
     this.min_distance = constants.near_distance;
@@ -51,13 +51,15 @@ class scene {
     
     this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 6000;
+    this.view_distance = 200;
     this.focus = [0, 0, 0];
     
     
     this.vertex_shader_source = `
       attribute vec3 vertex_position;
       attribute vec3 vertex_normal;
+      
+      
       attribute vec3 color;
       attribute vec3 position;
       
@@ -65,11 +67,10 @@ class scene {
       uniform mat4 view_matrix;
       
       uniform vec3 camera_translation;
-      varying vec3 fColor;
+      varying lowp vec3 fColor;
       
       void main() {
         fColor = color;
-        //relative_position = (vertex_position + object_translations[int_object_index]) - camera_translation;
         gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
         //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position) - camera_translation, 1.0);
       }
