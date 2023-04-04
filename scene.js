@@ -13,10 +13,10 @@ class scene {
     
     //alert(String(this.gl.getSupportedExtensions()));
     
-    this.extension_thing = this.gl.getExtension('ANGLE_instanced_arrays');
-    if(!this.extension_thing) {
-      alert("oh no your computer is bad :(");
-    }
+    //this.extension_thing = this.gl.getExtension('ANGLE_instanced_arrays');
+    //if(!this.extension_thing) {
+     // alert("oh no your computer is bad :(");
+    //}
     this.vertex_positions = [
     ];
     
@@ -251,7 +251,7 @@ class scene {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.color_buffer);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.color);
     this.gl.vertexAttribPointer(this.program_info.attribute_locations.color, 3, this.gl.FLOAT, false, 0, 0);
-    this.extension_thing.vertexAttribDivisorANGLE(this.program_info.attribute_locations.color, 1);
+    this.gl.vertexAttribDivisor(this.program_info.attribute_locations.color, 1);
     
     
     //alert(String(object_group.positions));
@@ -259,7 +259,7 @@ class scene {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.position_buffer);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.position);
     this.gl.vertexAttribPointer(this.program_info.attribute_locations.position, 3, this.gl.FLOAT, false, 0, 0);
-    this.extension_thing.vertexAttribDivisorANGLE(this.program_info.attribute_locations.position, 1);
+    this.gl.vertexAttribDivisor(this.program_info.attribute_locations.position, 1);
     
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
     
@@ -267,7 +267,7 @@ class scene {
     
     //alert(String(object_group.position_buffer));
     
-    this.extension_thing.drawElementsInstancedANGLE(
+    this.gl.drawElementsInstanced(
       this.gl.TRIANGLES,
       Math.round(object_group.model.faces.length),
       this.gl.UNSIGNED_SHORT,
