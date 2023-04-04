@@ -72,8 +72,8 @@ class scene {
       void main() {
         //fColor = color;
         fColor = vec3(0.5, 0.7, 0.2); // wow, that's the exact color of grass
-        //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
-        gl_Position = perspective_matrix * view_matrix * vec4((vertex_position) - camera_translation, 1.0);
+        gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
+        //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position) - camera_translation, 1.0);
       }
     `;
 
@@ -125,7 +125,7 @@ class scene {
 
   initialize_buffers() {
     //this.float32_object_colors = new Float32Array(this.object_colors);
-    this.object_groups.forEach(object_group => {
+    this.object_groups.forEach(function(object_group) {
       
       object_group.vertex_position_buffer = this.gl.createBuffer();
       this.gl.bindBuffer(
@@ -173,11 +173,11 @@ class scene {
         this.gl.STATIC_DRAW
       );
       
-    });
+    }, this);
   }
   
   draw(time) {
-    this.gl.useProgram(this.program_info.program);
+    //this.gl.useProgram(this.program_info.program);
     //this.camera_rotation[0] = time * -.013357674575867674745;
     //this.camera_rotation[1] = time * .0075564367798670867646;
     //this.camera_rotation[2] = time * .0047658753564576776898;
@@ -209,40 +209,27 @@ class scene {
       //this.program_info.uniform_locations.object_shininess,
       //new Float32Array(this.object_shininess)
     //);
-    this.gl.uniform3f(
-      this.program_info.uniform_locations.camera_translation,
+    let camera_translation = [
       camera_matrix[8] * this.view_distance + this.focus[0],
       camera_matrix[9] * this.view_distance + this.focus[1],
       camera_matrix[10] * this.view_distance + this.focus[2]
-    );
+    ];
     
-  
-    this.gl.uniformMatrix4fv(
-      this.program_info.uniform_locations.perspective_matrix,
-      false,
-      perspective_matrix
-    );
-
-    this.gl.uniformMatrix4fv(
-      this.program_info.uniform_locations.view_matrix,
-      false,
-      view_matrix
-    );
     for(let i = 0; i < this.object_groups.length; i++) {
       let object_group = this.object_groups[i];
-      this.draw_object_group(object_group);
+      this.draw_object_group(object_group, camera_translation, view_matrix, perspective_matrix);
     }
     //this.object_groups.forEach(object_group => {
       //this.draw_object_group(object_group);
     //})
     //alert(JSON.stringify(view_matrix, null, 1));
   }
-  draw_object_group(object_group, camera_translation, view_matrix) {
+  draw_object_group(object_group, camera_translation, view_matrix, perspective_matrix) {
     this.gl.uniform3f(
       this.program_info.uniform_locations.camera_translation,
-      camera_matrix[8] * this.view_distance + this.focus[0],
-      camera_matrix[9] * this.view_distance + this.focus[1],
-      camera_matrix[10] * this.view_distance + this.focus[2]
+      camera_translation[0],
+      camera_translation[1],
+      camera_translation[2]
     );
     
   
@@ -271,7 +258,7 @@ class scene {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.color_buffer);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.color);
     this.gl.vertexAttribPointer(this.program_info.attribute_locations.color, 3, this.gl.FLOAT, false, 0, 0);
-    this.gl.vertexAttribDivisor(this.program_info.attribute_locations.color, 1);
+    //this.gl.vertexAttribDivisor(this.program_info.attribute_locations.color, 1);
     
     
     //alert(String(object_group.positions));
@@ -279,7 +266,7 @@ class scene {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.position_buffer);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.position);
     this.gl.vertexAttribPointer(this.program_info.attribute_locations.position, 3, this.gl.FLOAT, false, 0, 0);
-    this.gl.vertexAttribDivisor(this.program_info.attribute_locations.position, 1);
+    //this.gl.vertexAttribDivisor(this.program_info.attribute_locations.position, 1);
     
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
     
