@@ -70,10 +70,10 @@ class scene {
       varying lowp vec3 fColor;
       
       void main() {
-        fColor = color;
-        //fColor = vec3(0.5, 0.7, 0.2); // wow, that's the exact color of grass
-        gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
-        //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position) - camera_translation, 1.0);
+        //fColor = color;
+        fColor = vec3(0.5, 0.7, 0.2); // wow, that's the exact color of grass
+        //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
+        gl_Position = perspective_matrix * view_matrix * vec4((vertex_position) - camera_translation, 1.0);
       }
     `;
 
@@ -237,7 +237,26 @@ class scene {
     //})
     //alert(JSON.stringify(view_matrix, null, 1));
   }
-  draw_object_group(object_group) {
+  draw_object_group(object_group, camera_translation, view_matrix) {
+    this.gl.uniform3f(
+      this.program_info.uniform_locations.camera_translation,
+      camera_matrix[8] * this.view_distance + this.focus[0],
+      camera_matrix[9] * this.view_distance + this.focus[1],
+      camera_matrix[10] * this.view_distance + this.focus[2]
+    );
+    
+  
+    this.gl.uniformMatrix4fv(
+      this.program_info.uniform_locations.perspective_matrix,
+      false,
+      perspective_matrix
+    );
+
+    this.gl.uniformMatrix4fv(
+      this.program_info.uniform_locations.view_matrix,
+      false,
+      view_matrix
+    );
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.vertex_position_buffer);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_position);
     this.gl.vertexAttribPointer(
@@ -252,7 +271,7 @@ class scene {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.color_buffer);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.color);
     this.gl.vertexAttribPointer(this.program_info.attribute_locations.color, 3, this.gl.FLOAT, false, 0, 0);
-    //this.gl.vertexAttribDivisor(this.program_info.attribute_locations.color, 1);
+    this.gl.vertexAttribDivisor(this.program_info.attribute_locations.color, 1);
     
     
     //alert(String(object_group.positions));
@@ -260,7 +279,7 @@ class scene {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.position_buffer);
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.position);
     this.gl.vertexAttribPointer(this.program_info.attribute_locations.position, 3, this.gl.FLOAT, false, 0, 0);
-    //this.gl.vertexAttribDivisor(this.program_info.attribute_locations.position, 1);
+    this.gl.vertexAttribDivisor(this.program_info.attribute_locations.position, 1);
     
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
     
