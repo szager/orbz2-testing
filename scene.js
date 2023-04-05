@@ -17,6 +17,7 @@ class scene {
     //];
     
     this.objects = [];
+    this.object_translations = [];
     this.object_groups = [
       new group_3d(orbee_model, 80.0)
     ];
