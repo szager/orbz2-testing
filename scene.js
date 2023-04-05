@@ -1,6 +1,6 @@
 import {constants} from "./constants.js";
 import {group_3d} from "./object_3d.js";
-import {orbee_model} from "./orbee_model.js";
+import {models} from "./models.js";
 
 class scene {
   constructor(canvas, object_count) {
@@ -20,7 +20,7 @@ class scene {
     this.object_translations = [];
     this.object_indices = [];
     this.object_groups = [
-      new group_3d(orbee_model, 80.0)
+      new group_3d(models.orbee_model, 80.0)
     ];
     this.vertex_positions = [];
     this.vertex_normals = [];
@@ -47,8 +47,8 @@ class scene {
       out vec3 fColor;
       
       void main() {
-        fColor = color;
-        //fColor = vec3(0.5, 0.7, 0.2); // wow, that's the exact color of grass
+        //fColor = color;
+        fColor = vec3(0.5, 0.7, 0.2); // wow, that's the exact color of grass
         //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
         gl_Position = perspective_matrix * view_matrix * vec4((vertex_position) - camera_translation, 1.0);
       }
@@ -134,7 +134,7 @@ class scene {
       this.gl.bufferData(
         this.gl.ARRAY_BUFFER,
         new Float32Array(object_group.model.positions),
-        this.gl.STATIC_DRAW
+        this.gl.DYNAMIC_DRAW
       );
       object_group.color_buffer = this.gl.createBuffer();
       this.gl.bindBuffer(
@@ -224,6 +224,11 @@ class scene {
     //alert(String(object_group.positions));
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.position_buffer);
+    this.gl.bufferData(
+      this.gl.ARRAY_BUFFER,
+      new Float32Array(object_group.model.positions),
+      this.gl.DYNAMIC_DRAW
+    );
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.position);
     this.gl.vertexAttribPointer(this.program_info.attribute_locations.position, 3, this.gl.FLOAT, false, 0, 0);
     this.gl.vertexAttribDivisor(this.program_info.attribute_locations.position, 1);

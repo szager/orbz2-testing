@@ -1,4 +1,4 @@
-import {orbee_model} from "./orbee_model.js";
+import {models} from "./models.js";
 import {constants} from "./constants.js";
 
 console.log();// Ad = .47 * .001 * U^2 * 154 mm^2 * .00124 mg
@@ -16,7 +16,7 @@ class orbee {
     this.dz = (Math.random()) * 8;
     this.scene = scene;
     this.object_index = this.scene.object_translations.length;
-    orbee_model.add_to_scene(this.scene);
+    models.orbee_model.add_to_scene(this.scene);
   }
   move() {
     let damping_ratio = 1 - constants.damping;
