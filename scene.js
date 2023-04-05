@@ -57,8 +57,11 @@ class scene {
       in vec3 fNormal;
       out vec4 FragColor;
       void main() {
-      ``
-        FragColor = vec4(fColor, 1.0);
+        highp vec3 n = normalize(fNormal);
+        highp vec3 up = vec3(0.0, 0.0, 1.0);
+        highp float ambient = 0.8;
+        highp float diffuse = max(dot(up, n) * (1.0 - ambient) + ambient, 0.0);
+        FragColor = vec4(fColor * diffuse, 1.0);
         //gl_FragColor = vec4(0.2, 0.8, 0.1, 1.0);
       }
     `;
