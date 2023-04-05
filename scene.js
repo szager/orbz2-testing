@@ -32,19 +32,19 @@ class scene {
     this.focus = [0, 0, 0];
     
     
-    this.vertex_shader_source = `
-      attribute vec3 vertex_position;
+    this.vertex_shader_source = `#version 300 es
+      in vec3 vertex_position;
       //attribute vec3 vertex_normal;
       
       
-      attribute vec3 color;
-      attribute vec3 position;
+      in vec3 color;
+      in vec3 position;
       
       uniform mat4 perspective_matrix;
       uniform mat4 view_matrix;
       
       uniform vec3 camera_translation;
-      varying lowp vec3 fColor;
+      out vec3 fColor;
       
       void main() {
         fColor = color;
@@ -54,10 +54,12 @@ class scene {
       }
     `;
 
-    this.fragment_shader_source = `
-      varying lowp vec3 fColor;
+    this.fragment_shader_source = `#version 300 es
+      precision highp float;
+      in vec3 fColor;
+      out vec4 FragColor;
       void main() {
-        gl_FragColor = vec4(fColor, 1.0);
+        FragColor = vec4(fColor, 1.0);
         //gl_FragColor = vec4(0.2, 0.8, 0.1, 1.0);
       }
     `;
@@ -151,6 +153,9 @@ class scene {
   draw(time) {
     this.gl.clearColor(0.8, 0.8, 0.8, 1.0);
     this.gl.clearDepth(1.0);
+    
+    this.gl.useProgram(this.program_info.program);
+    
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.depthFunc(this.gl.LEQUAL);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -225,7 +230,6 @@ class scene {
     
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
     //alert(object_group.position_buffer.toString());
-    this.gl.useProgram(this.program_info.program);
     
     this.gl.drawElementsInstanced(
       this.gl.TRIANGLES,
