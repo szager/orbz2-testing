@@ -34,7 +34,7 @@ class scene {
     
     this.vertex_shader_source = `
       attribute vec3 vertex_position;
-      attribute vec3 vertex_normal;
+      //attribute vec3 vertex_normal;
       
       
       attribute vec3 color;
@@ -47,10 +47,10 @@ class scene {
       varying lowp vec3 fColor;
       
       void main() {
-        //fColor = color;
-        fColor = vec3(0.5, 0.7, 0.2); // wow, that's the exact color of grass
-        gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
-        //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position) - camera_translation, 1.0);
+        fColor = color;
+        //fColor = vec3(0.5, 0.7, 0.2); // wow, that's the exact color of grass
+        //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
+        gl_Position = perspective_matrix * view_matrix * vec4((vertex_position) - camera_translation, 1.0);
       }
     `;
 
@@ -224,7 +224,8 @@ class scene {
     this.gl.vertexAttribDivisor(this.program_info.attribute_locations.position, 1);
     
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
-    //alert(String(object_group.position_buffer));
+    //alert(object_group.position_buffer.toString());
+    this.gl.useProgram(this.program_info.program);
     
     this.gl.drawElementsInstanced(
       this.gl.TRIANGLES,
