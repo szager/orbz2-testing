@@ -18,10 +18,13 @@ class scene {
     
     this.objects = [];
     this.object_translations = [];
+    this.object_indices = [];
     this.object_groups = [
       new group_3d(orbee_model, 80.0)
     ];
-    
+    this.vertex_positions = [];
+    this.vertex_normals = [];
+    this.faces = [];
     
     this.pitch = .8;
     this.yaw = 0;
