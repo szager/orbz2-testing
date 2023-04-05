@@ -23,7 +23,7 @@ class scene {
     
     this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 200;
+    this.view_distance = 40;
     this.focus = [0, 0, 0];
     
     
@@ -45,7 +45,7 @@ class scene {
       void main() {
         fNormal = vertex_normal;
         //fColor = color;
-        fColor = vec3(0.5, 0.7, 0.2); // wow, that's the exact color of grass
+        fColor = vec3(0.6, 0.9, 0.3); // (0.5, 0.7, 0.2) is the color of grass.
         //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
         gl_Position = perspective_matrix * view_matrix * vec4((vertex_position) - camera_translation, 1.0);
       }
