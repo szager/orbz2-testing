@@ -17,14 +17,9 @@ class scene {
     //];
     
     this.objects = [];
-    this.object_translations = [];
-    this.object_indices = [];
     this.object_groups = [
       new group_3d(models.orbee_model, 80.0)
     ];
-    this.vertex_positions = [];
-    this.vertex_normals = [];
-    this.faces = [];
     
     this.pitch = .8;
     this.yaw = 0;
@@ -34,7 +29,7 @@ class scene {
     
     this.vertex_shader_source = `#version 300 es
       in vec3 vertex_position;
-      //attribute vec3 vertex_normal;
+      in vec3 vertex_normal;
       
       
       in vec3 color;
@@ -45,8 +40,10 @@ class scene {
       
       uniform vec3 camera_translation;
       out vec3 fColor;
+      out vec3 fNormal;
       
       void main() {
+        fNormal = vertex_normal;
         //fColor = color;
         fColor = vec3(0.5, 0.7, 0.2); // wow, that's the exact color of grass
         //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
@@ -57,8 +54,10 @@ class scene {
     this.fragment_shader_source = `#version 300 es
       precision highp float;
       in vec3 fColor;
+      in vec3 fNormal;
       out vec4 FragColor;
       void main() {
+      ``
         FragColor = vec4(fColor, 1.0);
         //gl_FragColor = vec4(0.2, 0.8, 0.1, 1.0);
       }
@@ -75,7 +74,7 @@ class scene {
       program: this.shader_program,
       attribute_locations: {
         vertex_position: this.gl.getAttribLocation(this.shader_program, "vertex_position"),
-        //vertex_normal: this.gl.getAttribLocation(this.shader_program, "vertex_normal"),
+        vertex_normal: this.gl.getAttribLocation(this.shader_program, "vertex_normal"),
         color: this.gl.getAttribLocation(this.shader_program, "color"),
         position: this.gl.getAttribLocation(this.shader_program, "position"),
       },
@@ -112,9 +111,11 @@ class scene {
         this.gl.STATIC_DRAW
       );
       
-      //object_group.vertex_normal_buffer = this.gl.createBuffer();
-      //this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.vertex_normal_buffer);
-      //this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(object_group.model.vertex_normals), this.gl.STATIC_DRAW);
+      object_group.vertex_normal_buffer = this.gl.createBuffer();
+      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.vertex_normal_buffer);
+      this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(object_group.model.vertex_normals), this.gl.STATIC_DRAW);
+      
+      
       object_group.face_buffer = this.gl.createBuffer();
       this.gl.bindBuffer(
         this.gl.ELEMENT_ARRAY_BUFFER,
@@ -208,6 +209,17 @@ class scene {
     this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_position);
     this.gl.vertexAttribPointer(
       this.program_info.attribute_locations.vertex_position,
+      3,
+      this.gl.FLOAT,
+      false,
+      0,
+      0
+    );
+    
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.vertex_normal_buffer);
+    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_normal);
+    this.gl.vertexAttribPointer(
+      this.program_info.attribute_locations.vertex_normal,
       3,
       this.gl.FLOAT,
       false,

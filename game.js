@@ -1,5 +1,5 @@
 import {scene} from "./scene.js";
-import {orbee_model} from "./orbee_model.js";
+import {models} from "./models.js";
 import {orbee} from "./orbee.js";
 import {constants} from "./constants.js";
 import {graph_displayer} from "./graph_displayer.js";
