@@ -61,8 +61,8 @@ class scene {
       out vec4 FragColor;
       void main() {
   
-        highp float ambient = 1.8;
-        highp float sun = 1.2;
+        highp float ambient = .8;
+        highp float sun = 1.8;
         highp vec3 up = vec3(0.5, 0.5, 1.0);
         highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
         highp float ri = 1.7;
