@@ -41,13 +41,15 @@ class scene {
       uniform vec3 camera_translation;
       out vec3 fColor;
       out vec3 fNormal;
+      out vec3 fPosition;
       
       void main() {
         fNormal = vertex_normal;
         //fColor = color;
         fColor = vec3(0.6, 0.9, 0.3); // (0.5, 0.7, 0.2) is the color of grass.
         //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
-        gl_Position = perspective_matrix * view_matrix * vec4((vertex_position) - camera_translation, 1.0);
+        fPosition = (vertex_position) - camera_translation;
+        gl_Position = perspective_matrix * view_matrix * vec4(fPosition, 1.0);
       }
     `;
 
@@ -55,13 +57,23 @@ class scene {
       precision highp float;
       in vec3 fColor;
       in vec3 fNormal;
+      in vec3 fPosition;
       out vec4 FragColor;
       void main() {
-        highp vec3 n = normalize(fNormal);
-        highp vec3 up = vec3(0.0, 0.0, 1.0);
+  
         highp float ambient = 0.8;
+        highp vec3 up = vec3(0.0, 0.0, 1.0);
+        highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
+        
+        highp vec3 n = normalize(fNormal);
+        highp float e = normalize(fPosition);
+        highp vec3 h = normalize(n + e);
+        //highp vec3 r = reflect(e, n);
+        
         highp float diffuse = max(dot(up, n) * (1.0 - ambient) + ambient, 0.0);
-        FragColor = vec4(fColor * diffuse, 1.0);
+        highp float specular = Pow(max(dot(up, h), 0.0), 64.0);
+        
+        FragColor = vec4(fColor * diffuse + specular_color * specular, 1.0);
         //gl_FragColor = vec4(0.2, 0.8, 0.1, 1.0);
       }
     `;
