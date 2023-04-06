@@ -4,6 +4,11 @@ import {orbee} from "./orbee.js";
 import {constants} from "./constants.js";
 import {graph_displayer} from "./graph_displayer.js";
 
+function modulo(a, b) {
+  return a - Math.floor(a / b) * b;
+}
+
+
 class game {
   pause() {
     this.paused = true;
@@ -87,8 +92,8 @@ class game {
   }
   handle_mousemove(e) {
     if(this.mouse_down) {
-      this.scene.pitch = Math.min(Math.PI * 0.5, Math.max(0,this.scene.pitch + e.movementY * constants.sensitivity));
-      this.scene.yaw = (this.scene.yaw - e.movementX * constants.sensitivity) % (Math.PI);
+      this.scene.pitch = Math.min(Math.PI * 0.5, Math.max(-0.1,this.scene.pitch + e.movementY * constants.sensitivity));
+      this.scene.yaw = modulo(this.scene.yaw - e.movementX * constants.sensitivity, Math.PI * 2);
     }
   }
   orbee_interactions() {
