@@ -46,7 +46,7 @@ class scene {
       void main() {
         fNormal = vertex_normal;
         //fColor = color;
-        fColor = vec3(0.6, 0.9, 0.3); // (0.5, 0.7, 0.2) is the color of grass.
+        fColor = vec3(0.1, 0.2, 0.3); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
         //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
         fPosition = (vertex_position) - camera_translation;
         gl_Position = perspective_matrix * view_matrix * vec4(fPosition, 1.0);
@@ -62,23 +62,24 @@ class scene {
       void main() {
   
         highp float ambient = 0.8;
+        highp float sun = 2.2;
         highp vec3 up = vec3(0.5, 0.5, 1.0);
         highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
-        highp float ri = 1.33;
+        highp float ri = 1.7;
         
         highp vec3 n = normalize(fNormal);
         highp vec3 e = normalize(-fPosition);
         highp vec3 h = normalize(up + e);
         
-        highp float angle = abs(dot(e, n));
+        highp float angle = max(dot(e, n), 0.0);
         
         highp float sqrt_reflectance = (ri - 1.0) / (ri + 1.0);
         highp float reflectance = sqrt_reflectance * sqrt_reflectance;
         highp float fresnel = reflectance + (1.0 - reflectance) * pow(1.0 - angle, 5.0);
         highp float transmission = 1.0 - fresnel;
         
-        highp float diffuse = max(dot(up, n) * (1.0 - ambient) + ambient, 0.0) * transmission;
-        highp float specular = (pow(max(dot(n, h), 0.0), 256.0) * (1.0 - ambient) + ambient) * fresnel;
+        highp float diffuse = (max(dot(up, n), 0.0) * sun + ambient) * transmission;
+        highp float specular = (pow(max(dot(n, h), 0.0), 256.0) * sun + ambient) * fresnel;
         
         FragColor = vec4(specular_color * specular + fColor * diffuse, 1.0);
         //gl_FragColor = vec4(0.2, 0.8, 0.1, 1.0);
