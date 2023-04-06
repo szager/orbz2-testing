@@ -77,8 +77,8 @@ class game {
     
     this.bound_update_method = this.update_and_stuff.bind(this);
     requestAnimationFrame(this.bound_update_method);
-    this.canvas.addEventListener("mousedown",this.handle_mousedown.bind(this));
-    this.canvas.addEventListener("mouseup",this.handle_mouseup.bind(this));
+    document.addEventListener("mousedown",this.handle_mousedown.bind(this));
+    document.addEventListener("mouseup",this.handle_mouseup.bind(this));
     this.canvas.addEventListener("mousemove",this.handle_mousemove.bind(this));
   }
   complete_scene() {
@@ -92,7 +92,7 @@ class game {
   }
   handle_mousemove(e) {
     if(this.mouse_down) {
-      this.scene.pitch = Math.min(Math.PI * 0.5, Math.max(-0.1,this.scene.pitch + e.movementY * constants.sensitivity));
+      this.scene.pitch = Math.min(Math.PI * 0.5, Math.max(-Math.SQRT2,this.scene.pitch + e.movementY * constants.sensitivity));
       this.scene.yaw = modulo(this.scene.yaw - e.movementX * constants.sensitivity, Math.PI * 2);
     }
   }
