@@ -64,20 +64,22 @@ class scene {
         highp float ambient = 0.5;
         highp vec3 up = vec3(0.5, 0.5, 1.0);
         highp vec3 specular_color = vec3(0.5, 0.5, 0.5);
-        highp vec3 ri = 1.5;
+        highp float ri = 1.5;
         
         highp vec3 n = normalize(fNormal);
         highp vec3 e = normalize(-fPosition);
         highp vec3 h = normalize(up + e);
-        highp float angle = abs(dot(n, h));
+        highp float angle = abs(dot(n, e));
         
-        highp float reflectance = 1.
+        highp float sqrt_reflectance = ((ri*angle - 1.0) / (ri*angle + 1.0));
+        highp float reflectance = sqrt_reflectance * sqrt_reflectance;
+        highp float transmission = 1.0 - reflectance;
         //highp vec3 r = reflect(e, n);
         
-        highp float diffuse = max(dot(up, n) * (1.0 - ambient) + ambient, 0.0);
-        highp float specular = pow(max(dot(n, h), 0.0), 32.0);
+        highp float diffuse = max(dot(up, n) * (1.0 - ambient) + ambient, 0.0) * transmission;
+        highp float specular = pow(max(dot(n, h), 0.0), 256.0) * reflectance;
         
-        FragColor = vec4(fColor * diffuse + specular_color * specular, 1.0);
+        FragColor = vec4(specular_color * specular, 1.0);
         //gl_FragColor = vec4(0.2, 0.8, 0.1, 1.0);
       }
     `;
