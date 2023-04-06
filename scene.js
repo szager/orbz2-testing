@@ -61,8 +61,8 @@ class scene {
       out vec4 FragColor;
       void main() {
   
-        highp float ambient = 0.8;
-        highp float sun = 2.2;
+        highp float ambient = 1.8;
+        highp float sun = 1.2;
         highp vec3 up = vec3(0.5, 0.5, 1.0);
         highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
         highp float ri = 1.7;
@@ -79,7 +79,7 @@ class scene {
         highp float transmission = 1.0 - fresnel;
         
         highp float diffuse = (max(dot(up, n), 0.0) * sun + ambient) * transmission;
-        highp float specular = (pow(max(dot(n, h), 0.0), 256.0) * sun + ambient) * fresnel;
+        highp float specular = (pow(max(dot(n, h), 0.0), 1024.0) * sun + ambient) * fresnel;
         
         FragColor = vec4(specular_color * specular + fColor * diffuse, 1.0);
         //gl_FragColor = vec4(0.2, 0.8, 0.1, 1.0);
