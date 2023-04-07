@@ -18,7 +18,7 @@ class scene {
     //];
     
     this.objects = [
-      new object_3d(models.room, [0.0, 0.0, 0.0], [0.5, 0.3, 0.5])
+      //new object_3d(models.room, [0.0, 0.0, 0.0], [0.5, 0.3, 0.5])
     ];
     this.object_groups = [
       new group_3d(models.orbee_model, 80.0)
@@ -26,8 +26,8 @@ class scene {
     
     this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 10009;
-    this.focus = [0, 0, 1000];
+    this.view_distance = 100;
+    this.focus = [0, 0, 0];
     
     
     this.vertex_shader_source = `#version 300 es
@@ -67,11 +67,11 @@ class scene {
       
       void main() {
   
-        highp float ambient = 0.8; //0.8 looks good when not using gamma correction
+        highp float ambient = 0.75; //0.8 looks good when not using gamma correction
         highp float sun = 0.75; //2.2
         highp vec3 up = vec3(0.5, 0.25, 1.0);
         highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
-        highp float ri = 1.5;
+        highp float ri = 2.4;
         
         highp vec3 n = normalize(fNormal);
         highp vec3 e = normalize(-fPosition);
@@ -88,12 +88,12 @@ class scene {
         highp float transmission = 1.0 - fresnel;
         
         highp float diffuse = (max(dot(up, n), 0.0) * sun + ambient) * transmission;
-        highp float specular = (pow(max(dot(n, h), 0.0), 2048.0) * sun + ambient) * fresnel;
+        highp float specular = (pow(max(dot(n, h), 0.0), 32.0) * sun + ambient) * fresnel;
         highp vec3 color = vec3(specular_color * specular + diffuse_color * diffuse);
         highp vec3 gamma_corrected_color = pow(color, vec3(0.45454545454545454545454545));
         
-        //FragColor = vec4(color, 1.0);
-        FragColor = vec4(diffuse_color, 1.0);
+        FragColor = vec4(color, 1.0);
+        //FragColor = vec4(diffuse_color, 1.0);
       }
     `;
     
