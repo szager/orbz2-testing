@@ -53,6 +53,8 @@ class game {
     }
     this.alert_cooldown = 60;
     this.enable_alerts = true;
+    this.momentum_yaw = 0;
+    this.momentum_pitch = 0;
     this.fps_counter = document.querySelector("p");
     this.canvas = canvas;
     this.perf_canvas = perf_canvas;
@@ -92,8 +94,8 @@ class game {
   }
   handle_mousemove(e) {
     if(this.mouse_down) {
-      this.scene.pitch = Math.min(Math.PI * 0.5, Math.max(-Math.SQRT2,this.scene.pitch + e.movementY * constants.sensitivity));
-      this.scene.yaw = modulo(this.scene.yaw - e.movementX * constants.sensitivity, Math.PI * 2);
+      this.momentum_yaw = e.movementX;
+      this.momentum_pitch = e.movementY;
     }
   }
   orbee_interactions() {
@@ -197,6 +199,11 @@ class game {
         orbie.update();
       });
     }
+    
+    this.scene.yaw = modulo(this.scene.yaw - this.momentum_yaw * constants.sensitivity, Math.PI * 2);
+    this.scene.pitch = Math.min(Math.PI * 0.5, Math.max(-Math.SQRT2,this.scene.pitch + this.momentum_pitch * constants.sensitivity));
+    
+  
     this.scene.draw(this.time);
     
   }
