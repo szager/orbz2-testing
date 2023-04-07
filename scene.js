@@ -39,14 +39,14 @@ class scene {
       uniform mat4 view_matrix;
       
       uniform vec3 camera_translation;
-      out vec3 fColor;
+      out vec3 diffuse_color;
       out vec3 fNormal;
       out vec3 fPosition;
       
       void main() {
         fNormal = vertex_normal;
-        //fColor = color;
-        fColor = vec3(0.1, 0.2, 0.3); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
+        //diffuse_color = color;
+        diffuse_color = vec3(0.1, 0.2, 0.3); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
         //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
         fPosition = (vertex_position) - camera_translation;
         gl_Position = perspective_matrix * view_matrix * vec4(fPosition, 1.0);
@@ -55,14 +55,17 @@ class scene {
 
     this.fragment_shader_source = `#version 300 es
       precision highp float;
-      in vec3 fColor;
+      in vec3 diffuse_color;
       in vec3 fNormal;
       in vec3 fPosition;
       out vec4 FragColor;
+      
+      
+      
       void main() {
   
-        highp float ambient = .8;
-        highp float sun = 1.8;
+        highp float ambient = 0.8;
+        highp float sun = 2.2;
         highp vec3 up = vec3(0.5, 0.5, 1.0);
         highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
         highp float ri = 1.7;
@@ -79,10 +82,10 @@ class scene {
         highp float transmission = 1.0 - fresnel;
         
         highp float diffuse = (max(dot(up, n), 0.0) * sun + ambient) * transmission;
-        highp float specular = (pow(max(dot(n, h), 0.0), 1024.0) * sun + ambient) * fresnel;
+        highp float specular = (pow(max(dot(n, h), 0.0), 2048.0) * sun + ambient) * fresnel;
+        highp vec3 color = vec3(specular_color * specular + diffuse_color * diffuse);
         
-        FragColor = vec4(specular_color * specular + fColor * diffuse, 1.0);
-        //gl_FragColor = vec4(0.2, 0.8, 0.1, 1.0);
+        FragColor = vec4(color, 1.0);
       }
     `;
     
