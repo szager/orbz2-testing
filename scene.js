@@ -18,7 +18,7 @@ class scene {
     //];
     
     this.objects = [
-      //new object_3d(models.room, [0.0, 0.0, 0.0], [0.5, 0.3, 0.5])
+      new object_3d(models.room, [0.0, 0.0, 0.0], [0.5, 0.3, 0.5])
     ];
     this.object_groups = [
       new group_3d(models.orbee_model, 80.0)
@@ -26,8 +26,8 @@ class scene {
     
     this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 100;
-    this.focus = [0, 0, 0];
+    this.view_distance = 1000;
+    this.focus = [0, 0, 1000];
     
     
     this.vertex_shader_source = `#version 300 es
