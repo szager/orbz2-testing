@@ -94,8 +94,8 @@ class game {
   }
   handle_mousemove(e) {
     if(this.mouse_down) {
-      this.momentum_yaw = e.movementX;
-      this.momentum_pitch = e.movementY;
+      this.scene.yaw = modulo(this.scene.yaw - e.movementX * constants.sensitivity, Math.PI * 2);
+    this.scene.pitch = Math.min(Math.PI * 0.5, Math.max(-Math.SQRT2,this.scene.pitch + e.movementY * constants.sensitivity));
     }
   }
   orbee_interactions() {
@@ -200,8 +200,6 @@ class game {
       });
     }
     
-    this.scene.yaw = modulo(this.scene.yaw - this.momentum_yaw * constants.sensitivity, Math.PI * 2);
-    this.scene.pitch = Math.min(Math.PI * 0.5, Math.max(-Math.SQRT2,this.scene.pitch + this.momentum_pitch * constants.sensitivity));
     
   
     this.scene.draw(this.time);
