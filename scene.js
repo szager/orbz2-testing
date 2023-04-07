@@ -26,7 +26,7 @@ class scene {
     
     this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 1000;
+    this.view_distance = 10009;
     this.focus = [0, 0, 1000];
     
     
@@ -67,7 +67,7 @@ class scene {
       
       void main() {
   
-        highp float ambient = 0.5; //0.8 looks good when not using gamma correction
+        highp float ambient = 0.8; //0.8 looks good when not using gamma correction
         highp float sun = 0.75; //2.2
         highp vec3 up = vec3(0.5, 0.25, 1.0);
         highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
