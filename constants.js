@@ -6,7 +6,7 @@ let constants = {
   traction: 0.01,
   restitution: 0.25,
   sensitivity: 0.003, //radians per pixel
-  fov: 0.5,
+  fov: 1,
   frame_timestamps: 90,
   
   //1 millimeter per frame squared is 3.6 meters per second squared
