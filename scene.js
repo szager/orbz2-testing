@@ -69,7 +69,7 @@ class scene {
   
         highp float ambient = 0.5; //0.8 looks good when not using gamma correction
         highp float sun = 1.0; //2.2
-        highp vec3 up = vec3(0.5, 0.5, 1.0);
+        highp vec3 up = vec3(0.5, 0.25, 1.0);
         highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
         highp float ri = 1.7;
         
