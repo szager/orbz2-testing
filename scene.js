@@ -92,7 +92,8 @@ class scene {
         highp vec3 color = vec3(specular_color * specular + diffuse_color * diffuse);
         highp vec3 gamma_corrected_color = pow(color, vec3(0.45454545454545454545454545));
         
-        FragColor = vec4(color, 1.0);
+        //FragColor = vec4(color, 1.0);
+        FragColor = vec4(diffuse_color, 1.0);
       }
     `;
     
