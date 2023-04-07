@@ -26,7 +26,7 @@ class scene {
     
     this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 40;
+    this.view_distance = 1000;
     this.focus = [0, 0, 0];
     
     
@@ -75,6 +75,9 @@ class scene {
         
         highp vec3 n = normalize(fNormal);
         highp vec3 e = normalize(-fPosition);
+        if(dot(e, n) < 0.0) {
+          n *= -1.0;
+        }
         highp vec3 h = normalize(up + e);
         
         highp float angle = max(dot(e, n), 0.0);
@@ -125,12 +128,6 @@ class scene {
         gl_Position = perspective_matrix * view_matrix * vec4(fPosition, 1.0);
       }
     `;
-
-    
-    
-    
-    
-    
     
     this.program_info = {
       program: this.shader_program,
