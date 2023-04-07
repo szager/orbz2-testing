@@ -26,7 +26,7 @@ class scene {
     
     this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 1000;
+    this.view_distance = 10000;
     this.focus = [0, 0, 1000];
     
     
@@ -71,7 +71,7 @@ class scene {
         highp float sun = 0.75; //2.2
         highp vec3 up = vec3(0.5, 0.25, 1.0);
         highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
-        highp float ri = 1.7;
+        highp float ri = 1.5;
         
         highp vec3 n = normalize(fNormal);
         highp vec3 e = normalize(-fPosition);
