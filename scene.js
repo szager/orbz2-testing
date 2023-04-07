@@ -1,5 +1,6 @@
 import {constants} from "./constants.js";
 import {group_3d} from "./object_3d.js";
+import {object_3d} from "./object_3d.js";
 import {models} from "./models.js";
 
 class scene {
@@ -16,7 +17,9 @@ class scene {
     //this.vertex_normals = [
     //];
     
-    this.objects = [];
+    this.objects = [
+      new object_3d(models.room, [0.0, 0.0, 0.0], [0.5, 0.3, 0.5])
+    ];
     this.object_groups = [
       new group_3d(models.orbee_model, 80.0)
     ];
@@ -97,6 +100,38 @@ class scene {
     this.gl.attachShader(this.shader_program, this.fragment_shader);
     this.gl.linkProgram(this.shader_program);
     
+    
+    
+    
+    this.vertex_shader_source_b = `#version 300 es
+      in vec3 vertex_position;
+      in vec3 vertex_normal;
+      uniform vec3 color;
+      uniform vec3 position;
+      uniform mat4 perspective_matrix;
+      uniform mat4 view_matrix;
+      
+      uniform vec3 camera_translation;
+      out vec3 diffuse_color;
+      out vec3 fNormal;
+      out vec3 fPosition;
+      
+      void main() {
+        fNormal = vertex_normal;
+        //diffuse_color = color;
+        diffuse_color = vec3(0.5, 0.7, 0.2); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
+        //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
+        fPosition = (vertex_position) - camera_translation;
+        gl_Position = perspective_matrix * view_matrix * vec4(fPosition, 1.0);
+      }
+    `;
+
+    
+    
+    
+    
+    
+    
     this.program_info = {
       program: this.shader_program,
       attribute_locations: {
@@ -176,6 +211,39 @@ class scene {
       );
       
     }, this);
+    
+    
+    this.objects.forEach(function(object) {
+      
+      object.vertex_position_buffer = this.gl.createBuffer();
+      this.gl.bindBuffer(
+        this.gl.ARRAY_BUFFER,
+        object.vertex_position_buffer
+      );
+      this.gl.bufferData(
+        this.gl.ARRAY_BUFFER,
+        new Float32Array(object.model.vertex_positions),
+        this.gl.STATIC_DRAW
+      );
+      
+      object.vertex_normal_buffer = this.gl.createBuffer();
+      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.vertex_normal_buffer);
+      this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(object.model.vertex_normals), this.gl.STATIC_DRAW);
+      
+      
+      object.face_buffer = this.gl.createBuffer();
+      this.gl.bindBuffer(
+        this.gl.ELEMENT_ARRAY_BUFFER,
+        object.face_buffer
+      );
+      this.gl.bufferData(
+        this.gl.ELEMENT_ARRAY_BUFFER,
+        new Uint16Array(object.model.faces),
+        this.gl.STATIC_DRAW
+      );
+      
+    }, this);
+    
   }
   
   draw(time) {
@@ -210,6 +278,63 @@ class scene {
       let object_group = this.object_groups[i];
       this.draw_object_group(object_group, camera_translation, view_matrix, perspective_matrix);
     }
+    for(let i = 0; i < this.objects.length; i++) {
+      let object = this.objects[i];
+      this.draw_object(object, camera_translation, view_matrix, perspective_matrix);
+    }
+  }
+  
+  draw_object(object, camera_translation, view_matrix, perspective_matrix) {
+    this.gl.uniform3f(
+      this.program_info.uniform_locations.camera_translation,
+      camera_translation[0],
+      camera_translation[1],
+      camera_translation[2]
+    );
+    
+  
+    this.gl.uniformMatrix4fv(
+      this.program_info.uniform_locations.perspective_matrix,
+      false,
+      perspective_matrix
+    );
+
+    this.gl.uniformMatrix4fv(
+      this.program_info.uniform_locations.view_matrix,
+      false,
+      view_matrix
+    );
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.vertex_position_buffer);
+    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_position);
+    this.gl.vertexAttribPointer(
+      this.program_info.attribute_locations.vertex_position,
+      3,
+      this.gl.FLOAT,
+      false,
+      0,
+      0
+    );
+    
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.vertex_normal_buffer);
+    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_normal);
+    this.gl.vertexAttribPointer(
+      this.program_info.attribute_locations.vertex_normal,
+      3,
+      this.gl.FLOAT,
+      false,
+      0,
+      0
+    );
+    
+    this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object.face_buffer);
+    //alert(object_group.position_buffer.toString());
+    
+    this.gl.drawElements(
+      this.gl.TRIANGLES,
+      Math.round(object.model.faces.length),
+      this.gl.UNSIGNED_SHORT,
+      0,
+    );
   }
   
   draw_object_group(object_group, camera_translation, view_matrix, perspective_matrix) {
