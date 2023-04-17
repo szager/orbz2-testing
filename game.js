@@ -200,9 +200,7 @@ class game {
       });
     }
     
-    
-  
-    this.scene.draw(this.time);
+    this.scene.draw_everything(this.time);
     
   }
 }

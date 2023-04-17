@@ -29,8 +29,25 @@ class scene {
     this.view_distance = 1000;
     this.focus = [0, 0, 1000];
     
-    
-    this.vertex_shader_source = `#version 300 es
+    this.object_group_program_info = this.create_object_group_program();
+  }
+  
+  
+  load_shader(type, source) {
+    let shader = this.gl.createShader(type);
+    this.gl.shaderSource(shader, source);
+    this.gl.compileShader(shader);
+    if (!this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS)) {
+      alert(`💩💩💩💩💩💩💩 ${this.gl.getShaderInfoLog(shader)}💩💩💩💩💩💩💩💩`);
+      this.gl.deleteShader(shader);
+      return null;
+    }
+    return shader;
+  }
+  
+  
+  create_object_group_program() {
+    let vertex_shader_source = `#version 300 es
       in vec3 vertex_position;
       in vec3 vertex_normal;
       
@@ -56,7 +73,7 @@ class scene {
       }
     `;
 
-    this.fragment_shader_source = `#version 300 es
+    let fragment_shader_source = `#version 300 es
       precision highp float;
       in vec3 diffuse_color;
       in vec3 fNormal;
@@ -97,21 +114,40 @@ class scene {
       }
     `;
     
-    this.vertex_shader = this.load_shader(this.gl.VERTEX_SHADER, this.vertex_shader_source);
-    this.fragment_shader = this.load_shader(this.gl.FRAGMENT_SHADER, this.fragment_shader_source);
-    this.shader_program = this.gl.createProgram();
-    this.gl.attachShader(this.shader_program, this.vertex_shader);
-    this.gl.attachShader(this.shader_program, this.fragment_shader);
-    this.gl.linkProgram(this.shader_program);
+    let vertex_shader = this.load_shader(this.gl.VERTEX_SHADER, vertex_shader_source);
+    let fragment_shader = this.load_shader(this.gl.FRAGMENT_SHADER, fragment_shader_source);
+    let shader_program = this.gl.createProgram();
+    this.gl.attachShader(shader_program, vertex_shader);
+    this.gl.attachShader(shader_program, fragment_shader);
+    this.gl.linkProgram(shader_program);
     
-    
-    
-    
-    this.vertex_shader_source_b = `#version 300 es
+    let program_info = {
+      program: shader_program,
+      attribute_locations: {
+        vertex_position: this.gl.getAttribLocation(shader_program, "vertex_position"),
+        vertex_normal: this.gl.getAttribLocation(shader_program, "vertex_normal"),
+        color: this.gl.getAttribLocation(shader_program, "color"),
+        position: this.gl.getAttribLocation(shader_program, "position"),
+      },
+      uniform_locations: {
+        perspective_matrix: this.gl.getUniformLocation(shader_program, "perspective_matrix"),
+        view_matrix: this.gl.getUniformLocation(shader_program, "view_matrix"),
+        camera_translation: this.gl.getUniformLocation(shader_program, "camera_translation"),
+      },
+    };
+    return program_info;
+  }
+  
+  
+  create_textured_object_program() {
+    let vertex_shader_source = `#version 300 es
       in vec3 vertex_position;
       in vec3 vertex_normal;
+      
+      
       uniform vec3 color;
       uniform vec3 position;
+      
       uniform mat4 perspective_matrix;
       uniform mat4 view_matrix;
       
@@ -123,40 +159,79 @@ class scene {
       void main() {
         fNormal = vertex_normal;
         //diffuse_color = color;
-        diffuse_color = vec3(0.5, 0.7, 0.2); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
+        diffuse_color = vec3(0.8, 0.65, 0.5); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
         //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
         fPosition = (vertex_position) - camera_translation;
         gl_Position = perspective_matrix * view_matrix * vec4(fPosition, 1.0);
       }
     `;
+
+    let fragment_shader_source = `#version 300 es
+      precision highp float;
+      in vec3 diffuse_color;
+      in vec3 fNormal;
+      in vec3 fPosition;
+      out vec4 FragColor;
+      
+      
+      
+      void main() {
+  
+        highp float ambient = 0.75; //0.8 looks good when not using gamma correction
+        highp float sun = 0.75; //2.2
+        highp vec3 up = vec3(0.5, 0.25, 1.0);
+        highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
+        highp float ri = 2.4;
+        
+        highp vec3 n = normalize(fNormal);
+        highp vec3 e = normalize(-fPosition);
+        if(dot(e, n) < 0.0) {
+          n *= -1.0;
+        }
+        highp vec3 h = normalize(up + e);
+        
+        highp float angle = max(dot(e, n), 0.0);
+        
+        highp float sqrt_reflectance = (ri - 1.0) / (ri + 1.0);
+        highp float reflectance = sqrt_reflectance * sqrt_reflectance;
+        highp float fresnel = reflectance + (1.0 - reflectance) * pow(1.0 - angle, 5.0);
+        highp float transmission = 1.0 - fresnel;
+        
+        highp float diffuse = (max(dot(up, n), 0.0) * sun + ambient) * transmission;
+        highp float specular = (pow(max(dot(n, h), 0.0), 32.0) * sun + ambient) * fresnel;
+        highp vec3 color = vec3(specular_color * specular + diffuse_color * diffuse);
+        highp vec3 gamma_corrected_color = pow(color, vec3(0.45454545454545454545454545));
+        
+        FragColor = vec4(color, 1.0);
+        //FragColor = vec4(diffuse_color, 1.0);
+      }
+    `;
     
-    this.program_info = {
-      program: this.shader_program,
+    let vertex_shader = this.load_shader(this.gl.VERTEX_SHADER, vertex_shader_source);
+    let fragment_shader = this.load_shader(this.gl.FRAGMENT_SHADER, fragment_shader_source);
+    let shader_program = this.gl.createProgram();
+    this.gl.attachShader(shader_program, vertex_shader);
+    this.gl.attachShader(shader_program, fragment_shader);
+    this.gl.linkProgram(shader_program);
+    
+    let program_info = {
+      program: shader_program,
       attribute_locations: {
-        vertex_position: this.gl.getAttribLocation(this.shader_program, "vertex_position"),
-        vertex_normal: this.gl.getAttribLocation(this.shader_program, "vertex_normal"),
-        color: this.gl.getAttribLocation(this.shader_program, "color"),
-        position: this.gl.getAttribLocation(this.shader_program, "position"),
+        vertex_position: this.gl.getAttribLocation(shader_program, "vertex_position"),
+        vertex_normal: this.gl.getAttribLocation(shader_program, "vertex_normal"),
+        color: this.gl.getAttribLocation(shader_program, "color"),
+        position: this.gl.getAttribLocation(shader_program, "position"),
       },
       uniform_locations: {
-        perspective_matrix: this.gl.getUniformLocation(this.shader_program, "perspective_matrix"),
-        view_matrix: this.gl.getUniformLocation(this.shader_program, "view_matrix"),
-        camera_translation: this.gl.getUniformLocation(this.shader_program, "camera_translation"),
+        perspective_matrix: this.gl.getUniformLocation(shader_program, "perspective_matrix"),
+        view_matrix: this.gl.getUniformLocation(shader_program, "view_matrix"),
+        camera_translation: this.gl.getUniformLocation(shader_program, "camera_translation"),
       },
     };
+    return program_info;
   }
-  load_shader(type, source) {
-    let shader = this.gl.createShader(type);
-    this.gl.shaderSource(shader, source);
-    this.gl.compileShader(shader);
-    if (!this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS)) {
-      alert(`💩💩💩💩💩💩💩 ${this.gl.getShaderInfoLog(shader)}💩💩💩💩💩💩💩💩`);
-      this.gl.deleteShader(shader);
-      return null;
-    }
-    return shader;
-  }
-
+  
+  
   initialize_buffers() {
     this.object_groups.forEach(function(object_group) {
       
@@ -244,11 +319,12 @@ class scene {
     
   }
   
-  draw(time) {
+  
+  draw_everything(time) {
+    this.gl.useProgram(this.object_group_program_info.program);
+    
     this.gl.clearColor(0.8, 0.8, 0.8, 1.0);
     this.gl.clearDepth(1.0);
-    
-    this.gl.useProgram(this.program_info.program);
     
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.depthFunc(this.gl.LEQUAL);
@@ -282,9 +358,12 @@ class scene {
     }
   }
   
+  
   draw_object(object, camera_translation, view_matrix, perspective_matrix) {
+    this.gl.useProgram(this.object_group_program_info.program);
+    
     this.gl.uniform3f(
-      this.program_info.uniform_locations.camera_translation,
+      this.object_group_program_info.uniform_locations.camera_translation,
       camera_translation[0],
       camera_translation[1],
       camera_translation[2]
@@ -292,20 +371,20 @@ class scene {
     
   
     this.gl.uniformMatrix4fv(
-      this.program_info.uniform_locations.perspective_matrix,
+      this.object_group_program_info.uniform_locations.perspective_matrix,
       false,
       perspective_matrix
     );
 
     this.gl.uniformMatrix4fv(
-      this.program_info.uniform_locations.view_matrix,
+      this.object_group_program_info.uniform_locations.view_matrix,
       false,
       view_matrix
     );
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.vertex_position_buffer);
-    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_position);
+    this.gl.enableVertexAttribArray(this.object_group_program_info.attribute_locations.vertex_position);
     this.gl.vertexAttribPointer(
-      this.program_info.attribute_locations.vertex_position,
+      this.object_group_program_info.attribute_locations.vertex_position,
       3,
       this.gl.FLOAT,
       false,
@@ -314,9 +393,9 @@ class scene {
     );
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.vertex_normal_buffer);
-    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_normal);
+    this.gl.enableVertexAttribArray(this.object_group_program_info.attribute_locations.vertex_normal);
     this.gl.vertexAttribPointer(
-      this.program_info.attribute_locations.vertex_normal,
+      this.object_group_program_info.attribute_locations.vertex_normal,
       3,
       this.gl.FLOAT,
       false,
@@ -335,9 +414,10 @@ class scene {
     );
   }
   
+  
   draw_object_group(object_group, camera_translation, view_matrix, perspective_matrix) {
     this.gl.uniform3f(
-      this.program_info.uniform_locations.camera_translation,
+      this.object_group_program_info.uniform_locations.camera_translation,
       camera_translation[0],
       camera_translation[1],
       camera_translation[2]
@@ -345,20 +425,20 @@ class scene {
     
   
     this.gl.uniformMatrix4fv(
-      this.program_info.uniform_locations.perspective_matrix,
+      this.object_group_program_info.uniform_locations.perspective_matrix,
       false,
       perspective_matrix
     );
 
     this.gl.uniformMatrix4fv(
-      this.program_info.uniform_locations.view_matrix,
+      this.object_group_program_info.uniform_locations.view_matrix,
       false,
       view_matrix
     );
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.vertex_position_buffer);
-    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_position);
+    this.gl.enableVertexAttribArray(this.object_group_program_info.attribute_locations.vertex_position);
     this.gl.vertexAttribPointer(
-      this.program_info.attribute_locations.vertex_position,
+      this.object_group_program_info.attribute_locations.vertex_position,
       3,
       this.gl.FLOAT,
       false,
@@ -367,9 +447,9 @@ class scene {
     );
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.vertex_normal_buffer);
-    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.vertex_normal);
+    this.gl.enableVertexAttribArray(this.object_group_program_info.attribute_locations.vertex_normal);
     this.gl.vertexAttribPointer(
-      this.program_info.attribute_locations.vertex_normal,
+      this.object_group_program_info.attribute_locations.vertex_normal,
       3,
       this.gl.FLOAT,
       false,
@@ -378,9 +458,9 @@ class scene {
     );
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.color_buffer);
-    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.color);
-    this.gl.vertexAttribPointer(this.program_info.attribute_locations.color, 3, this.gl.FLOAT, false, 0, 0);
-    this.gl.vertexAttribDivisor(this.program_info.attribute_locations.color, 1);
+    this.gl.enableVertexAttribArray(this.object_group_program_info.attribute_locations.color);
+    this.gl.vertexAttribPointer(this.object_group_program_info.attribute_locations.color, 3, this.gl.FLOAT, false, 0, 0);
+    this.gl.vertexAttribDivisor(this.object_group_program_info.attribute_locations.color, 1);
     
     
     //alert(String(object_group.positions));
@@ -391,9 +471,9 @@ class scene {
       new Float32Array(object_group.model.positions),
       this.gl.DYNAMIC_DRAW
     );
-    this.gl.enableVertexAttribArray(this.program_info.attribute_locations.position);
-    this.gl.vertexAttribPointer(this.program_info.attribute_locations.position, 3, this.gl.FLOAT, false, 0, 0);
-    this.gl.vertexAttribDivisor(this.program_info.attribute_locations.position, 1);
+    this.gl.enableVertexAttribArray(this.object_group_program_info.attribute_locations.position);
+    this.gl.vertexAttribPointer(this.object_group_program_info.attribute_locations.position, 3, this.gl.FLOAT, false, 0, 0);
+    this.gl.vertexAttribDivisor(this.object_group_program_info.attribute_locations.position, 1);
     
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
     //alert(object_group.position_buffer.toString());
