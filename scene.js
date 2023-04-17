@@ -26,8 +26,8 @@ class scene {
     
     this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 1000;
-    this.focus = [0, 0, 100];
+    this.view_distance = 500;
+    this.focus = [0, 0, 0];
     
     this.object_group_program_info = this.create_object_group_program();
     this.textured_object_program_info = this.create_textured_object_program();
@@ -144,7 +144,7 @@ class scene {
     let vertex_shader_source = `#version 300 es
       in vec3 vertex_position;
       in vec3 vertex_normal;
-      
+      in vec2 vertex_uv;
       
       uniform vec3 color;
       uniform vec3 position;
@@ -159,9 +159,10 @@ class scene {
       
       void main() {
         fNormal = vertex_normal;
-        diffuse_color = color;
+        //diffuse_color = color;
         //diffuse_color = vec3(0.8, 0.65, 0.5); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
         //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
+        diffuse_color = vec3(vertex_uv / 1000.0, 0.0);
         fPosition = (vertex_position + position) - camera_translation;
         gl_Position = perspective_matrix * view_matrix * vec4(fPosition, 1.0);
       }
