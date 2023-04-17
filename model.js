@@ -1,8 +1,13 @@
 class model {
-  constructor(vertex_positions, vertex_normals, faces) {
+  constructor(vertex_positions, vertex_normals, faces, uv_map) {
     this.vertex_positions = vertex_positions;
     this.vertex_normals = vertex_normals;
     this.faces = faces;
+    if(uv_map) {
+      this.uv_map = uv_map;
+    } else {
+      this.uv_map = "This model does not have a UV map."
+    }
   }
   add_to_scene(scene) {
     //return;

@@ -10,15 +10,19 @@ function modulo(a, b) {
 
 
 class game {
+  
   pause() {
     this.paused = true;
   }
+  
   unpause() {
     this.paused = false;
   }
+  
   stop() {
     this.stopping = true;
   }
+  
   update_and_stuff(now) {
     //let now = performance.now();
     if(this.frame_timestamps.length <= constants.frame_timestamps) { //paranoia
@@ -51,10 +55,6 @@ class game {
     for(let i = 0; i < constants.frame_timestamps; i++) {
       this.frame_timestamps.push(performance.now());
     }
-    this.alert_cooldown = 60;
-    this.enable_alerts = true;
-    this.momentum_yaw = 0;
-    this.momentum_pitch = 0;
     this.fps_counter = document.querySelector("p");
     this.canvas = canvas;
     this.perf_canvas = perf_canvas;
@@ -69,7 +69,6 @@ class game {
         }
       }
     }
-    //orbee_model.add_to_scene(this.scene);
     this.complete_scene();
     
     this.stopping = false;
@@ -83,21 +82,26 @@ class game {
     document.addEventListener("mouseup",this.handle_mouseup.bind(this));
     this.canvas.addEventListener("mousemove",this.handle_mousemove.bind(this));
   }
+  
   complete_scene() {
     this.scene.initialize_buffers();
   }
+  
   handle_mousedown(e) {
     this.mouse_down = true;
   }
+  
   handle_mouseup(e) {
     this.mouse_down = false;
   }
+  
   handle_mousemove(e) {
     if(this.mouse_down) {
       this.scene.yaw = modulo(this.scene.yaw - e.movementX * constants.sensitivity, Math.PI * 2);
-    this.scene.pitch = Math.min(Math.PI * 0.5, Math.max(-1, this.scene.pitch + e.movementY * constants.sensitivity));
+      this.scene.pitch = Math.min(Math.PI * 0.1, Math.max(-1, this.scene.pitch + e.movementY * constants.sensitivity));
     }
   }
+  
   orbee_interactions() {
     let interactions = [];
     let orbee_count = this.orbeez.length;
@@ -143,6 +147,7 @@ class game {
       interaction.orbee_b.z -= interaction.dz * acc_ratio;
     })
   }
+  
   update() {
     this.time += this.frame_time;
     //let amount_of_useless_math = 2**(Math.random() * 24);
@@ -203,6 +208,7 @@ class game {
     this.scene.draw_everything(this.time);
     
   }
+  
 }
 
 export {game};
