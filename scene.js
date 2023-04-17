@@ -18,7 +18,7 @@ class scene {
     //];
     
     this.objects = [
-      new object_3d(models.room, [0.0, 0.0, -1000.0], [0.5, 0.3, 0.5])
+      new object_3d(models.room, [0.0, 0.0, -1000.0], [0.5, 0.3, 0.5], "like, insert a texture here or something")
     ];
     this.object_groups = [
       new group_3d(models.orbee_model, 80.0)
