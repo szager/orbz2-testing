@@ -219,7 +219,8 @@ class scene {
       program: shader_program,
       attribute_locations: {
         vertex_position: this.gl.getAttribLocation(shader_program, "vertex_position"),
-        vertex_normal: this.gl.getAttribLocation(shader_program, "vertex_normal")
+        vertex_normal: this.gl.getAttribLocation(shader_program, "vertex_normal"),
+        vertex_uv: this.gl.getAttribLocation(shader_program, "vertex_uv")
       },
       uniform_locations: {
         color: this.gl.getUniformLocation(shader_program, "color"),
@@ -304,6 +305,10 @@ class scene {
       object.vertex_normal_buffer = this.gl.createBuffer();
       this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.vertex_normal_buffer);
       this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(object.model.vertex_normals), this.gl.STATIC_DRAW);
+      
+      object.uv_buffer = this.gl.createBuffer();
+      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.uv_buffer);
+      this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(object.model.uv_map), this.gl.STATIC_DRAW);
       
       
       object.face_buffer = this.gl.createBuffer();
@@ -409,6 +414,18 @@ class scene {
       0,
       0
     );
+    
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.uv_buffer);
+    this.gl.enableVertexAttribArray(this.textured_object_program_info.attribute_locations.vertex_uv);
+    this.gl.vertexAttribPointer(
+      this.textured_object_program_info.attribute_locations.vertex_uv,
+      2,
+      this.gl.FLOAT,
+      false,
+      0,
+      0
+    );
+    
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.vertex_normal_buffer);
     this.gl.enableVertexAttribArray(this.textured_object_program_info.attribute_locations.vertex_normal);

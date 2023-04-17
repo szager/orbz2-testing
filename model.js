@@ -6,7 +6,7 @@ class model {
     if(uv_map) {
       this.uv_map = uv_map;
     } else {
-      this.uv_map = "This model does not have a UV map."
+      this.uv_map = "This model does not have a UV map." // abusing javascript
     }
   }
   add_to_scene(scene) {
