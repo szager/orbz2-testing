@@ -18,7 +18,7 @@ class scene {
     //];
     
     this.objects = [
-      new object_3d(models.room, [0.0, 0.0, 0.0], [0.5, 0.3, 0.5])
+      new object_3d(models.room, [0.0, 0.0, -1000.0], [0.5, 0.3, 0.5])
     ];
     this.object_groups = [
       new group_3d(models.orbee_model, 80.0)
@@ -27,9 +27,10 @@ class scene {
     this.pitch = .8;
     this.yaw = 0;
     this.view_distance = 1000;
-    this.focus = [0, 0, 1000];
+    this.focus = [0, 0, 100];
     
     this.object_group_program_info = this.create_object_group_program();
+    this.textured_object_program_info = this.create_textured_object_program();
   }
   
   
@@ -158,10 +159,10 @@ class scene {
       
       void main() {
         fNormal = vertex_normal;
-        //diffuse_color = color;
-        diffuse_color = vec3(0.8, 0.65, 0.5); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
+        diffuse_color = color;
+        //diffuse_color = vec3(0.8, 0.65, 0.5); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
         //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
-        fPosition = (vertex_position) - camera_translation;
+        fPosition = (vertex_position + position) - camera_translation;
         gl_Position = perspective_matrix * view_matrix * vec4(fPosition, 1.0);
       }
     `;
@@ -177,8 +178,8 @@ class scene {
       
       void main() {
   
-        highp float ambient = 0.75; //0.8 looks good when not using gamma correction
-        highp float sun = 0.75; //2.2
+        highp float ambient = 0.75;
+        highp float sun = 0.75;
         highp vec3 up = vec3(0.5, 0.25, 1.0);
         highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
         highp float ri = 2.4;
@@ -218,16 +219,17 @@ class scene {
       program: shader_program,
       attribute_locations: {
         vertex_position: this.gl.getAttribLocation(shader_program, "vertex_position"),
-        vertex_normal: this.gl.getAttribLocation(shader_program, "vertex_normal"),
-        color: this.gl.getAttribLocation(shader_program, "color"),
-        position: this.gl.getAttribLocation(shader_program, "position"),
+        vertex_normal: this.gl.getAttribLocation(shader_program, "vertex_normal")
       },
       uniform_locations: {
+        color: this.gl.getUniformLocation(shader_program, "color"),
+        position: this.gl.getUniformLocation(shader_program, "position"),
         perspective_matrix: this.gl.getUniformLocation(shader_program, "perspective_matrix"),
         view_matrix: this.gl.getUniformLocation(shader_program, "view_matrix"),
-        camera_translation: this.gl.getUniformLocation(shader_program, "camera_translation"),
-      },
+        camera_translation: this.gl.getUniformLocation(shader_program, "camera_translation")
+      }
     };
+    
     return program_info;
   }
   
@@ -360,31 +362,47 @@ class scene {
   
   
   draw_object(object, camera_translation, view_matrix, perspective_matrix) {
-    this.gl.useProgram(this.object_group_program_info.program);
+    this.gl.useProgram(this.textured_object_program_info.program);
     
     this.gl.uniform3f(
-      this.object_group_program_info.uniform_locations.camera_translation,
+      this.textured_object_program_info.uniform_locations.camera_translation,
       camera_translation[0],
       camera_translation[1],
       camera_translation[2]
     );
     
+    this.gl.uniform3f(
+      this.textured_object_program_info.uniform_locations.position,
+      object.position[0],
+      object.position[1],
+      object.position[2]
+    );
+    
+    this.gl.uniform3f(
+      this.textured_object_program_info.uniform_locations.color,
+      object.color[0],
+      object.color[1],
+      object.color[2]
+    );
+    
   
     this.gl.uniformMatrix4fv(
-      this.object_group_program_info.uniform_locations.perspective_matrix,
+      this.textured_object_program_info.uniform_locations.perspective_matrix,
       false,
       perspective_matrix
     );
 
     this.gl.uniformMatrix4fv(
-      this.object_group_program_info.uniform_locations.view_matrix,
+      this.textured_object_program_info.uniform_locations.view_matrix,
       false,
       view_matrix
     );
+    
+    
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.vertex_position_buffer);
-    this.gl.enableVertexAttribArray(this.object_group_program_info.attribute_locations.vertex_position);
+    this.gl.enableVertexAttribArray(this.textured_object_program_info.attribute_locations.vertex_position);
     this.gl.vertexAttribPointer(
-      this.object_group_program_info.attribute_locations.vertex_position,
+      this.textured_object_program_info.attribute_locations.vertex_position,
       3,
       this.gl.FLOAT,
       false,
@@ -393,9 +411,9 @@ class scene {
     );
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.vertex_normal_buffer);
-    this.gl.enableVertexAttribArray(this.object_group_program_info.attribute_locations.vertex_normal);
+    this.gl.enableVertexAttribArray(this.textured_object_program_info.attribute_locations.vertex_normal);
     this.gl.vertexAttribPointer(
-      this.object_group_program_info.attribute_locations.vertex_normal,
+      this.textured_object_program_info.attribute_locations.vertex_normal,
       3,
       this.gl.FLOAT,
       false,
