@@ -68,7 +68,7 @@ class scene {
       void main() {
         fNormal = vertex_normal;
         //diffuse_color = color;
-        diffuse_color = vec3(0.7, 0.7, 0.7); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
+        diffuse_color = vec3(0.7, 0.8, 0.6); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
         //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
         fPosition = (vertex_position) - camera_translation;
         gl_Position = perspective_matrix * view_matrix * vec4(fPosition, 1.0);
@@ -86,8 +86,8 @@ class scene {
       
       void main() {
   
-        highp float ambient = 0.75; //0.8 looks good when not using gamma correction
-        highp float sun = 0.75; //2.2
+        highp float ambient = 0.5; //0.8 looks good when not using gamma correction
+        highp float sun = 0.5; //2.2
         highp vec3 up = vec3(0.5, 0.25, 1.0);
         highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
         highp float ri = 2.4;
@@ -180,8 +180,8 @@ class scene {
       
       void main() {
   
-        highp float ambient = 0.75;
-        highp float sun = 0.75;
+        highp float ambient = 0.5;
+        highp float sun = 0.5;
         highp vec3 up = vec3(0.5, 0.25, 1.0);
         highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
         highp float ri = 2.4;
