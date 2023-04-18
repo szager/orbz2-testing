@@ -27,7 +27,7 @@ class scene {
     
     this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 75;
+    this.view_distance = 25;
     this.focus = [0, 0, 0];
     
     this.object_group_program_info = this.create_object_group_program();
@@ -332,7 +332,7 @@ class scene {
   draw_everything(time) {
     this.gl.useProgram(this.object_group_program_info.program);
     
-    this.gl.clearColor(0.8, 0.8, 0.8, 1.0);
+    this.gl.clearColor(0.5, 0.5, 0.5, 1.0);
     this.gl.clearDepth(1.0);
     
     this.gl.enable(this.gl.DEPTH_TEST);
