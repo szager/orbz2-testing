@@ -48,132 +48,19 @@ class scene {
     return shader;
   }
   
-  create_object_group_program_old() {
-    let vertex_shader_source = `#version 300 es
-      in vec3 vertex_position;
-      in vec3 vertex_normal;
-      
-      
-      in vec3 color;
-      in vec3 position;
-      
-      uniform mat4 perspective_matrix;
-      uniform mat4 view_matrix;
-      
-      uniform vec3 camera_translation;
-      out vec3 diffuse_color;
-      out vec3 fNormal;
-      out vec3 fPosition;
-      
-      void main() {
-        fNormal = vertex_normal;
-        //diffuse_color = color;
-        diffuse_color = vec3(0.1, 1.0, 0.0); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
-        //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
-        fPosition = (vertex_position) - camera_translation;
-        gl_Position = perspective_matrix * view_matrix * vec4(fPosition, 1.0);
-      }
-    `;
-
-    let fragment_shader_source = `#version 300 es
-      precision highp float;
-      in vec3 diffuse_color;
-      in vec3 fNormal;
-      in vec3 fPosition;
-      out vec4 FragColor;
-      
-      
-      
-      void main() {
-        //cook-torance 
-  
-        highp float ambient = 0.25;
-        highp float sun = 0.5;
-        highp vec3 up = vec3(0.5, 0.25, 1.0);
-        highp vec3 specular_color = vec3(0.6, 0.6, 0.6);
-        highp float ri = 1.33;
-        
-        highp vec3 n = normalize(fNormal);
-        highp vec3 v = normalize(-fPosition);
-        if(dot(v, n) < 0.0) {
-          n *= -1.0;
-        }
-        highp vec3 h = normalize(up + v);
-        
-        highp float angle = max(dot(v, n), 0.0);
-        
-        highp float sqrt_reflectance = (ri - 1.0) / (ri + 1.0);
-        highp float reflectance = sqrt_reflectance * sqrt_reflectance;
-        highp float fresnel = reflectance + (1.0 - reflectance) * pow(1.0 - angle, 5.0);
-        highp float transmission = 1.0 - fresnel;
-        
-        //highp float d = 0.4;
-        
-        highp float roughness = 0.1;
-        highp float pi = 3.14159265359;
-        
-        highp float fish = acos(dot(n, h)); //the symbol in the equation on wikipedia looks like a fish
-        highp float d = exp(-pow(tan(fish),2.0) / pow(roughness, 2.0)) / (pi * pow(roughness, 2.0) * pow(cos(fish), 4.0));
-        
-        
-        highp float g = min(1.0, min(
-          2.0 * dot(h, n) * dot(v, n) / dot(v, h),
-          2.0 * dot(h, n) * dot(up, n) / dot(v, h)
-        ));
-        
-        highp float specular_illumination = d * fresnel * g * sun / (4.0 * dot(v, n) * dot(n, up)) + ambient * fresnel;
-        
-        highp float diffuse_illumination = (max(dot(up, n), 0.0) * sun + ambient) * transmission;
-        
-        highp vec3 illumination = specular_illumination * specular_color + diffuse_illumination * diffuse_color;
-        highp vec3 gamma_corrected_illumination = pow(illumination, vec3(0.45359237));
-        
-        
-        FragColor = vec4(gamma_corrected_illumination, 1.0);
-      }
-    `;
-
-    let bound_this = this;   
-    let vertex_shader = bound_this.load_shader(this.gl.VERTEX_SHADER, vertex_shader_source);
-    let fragment_shader = bound_this.load_shader(this.gl.FRAGMENT_SHADER, fragment_shader_source);
-    let shader_program = bound_this.gl.createProgram();
-    bound_this.gl.attachShader(shader_program, vertex_shader);
-    bound_this.gl.attachShader(shader_program, fragment_shader);
-    bound_this.gl.linkProgram(shader_program);
-    
-    let program_info = {
-      program: shader_program,
-      attribute_locations: {
-        vertex_position: bound_this.gl.getAttribLocation(shader_program, "vertex_position"),
-        vertex_normal: bound_this.gl.getAttribLocation(shader_program, "vertex_normal"),
-        color: bound_this.gl.getAttribLocation(shader_program, "color"),
-        position: bound_this.gl.getAttribLocation(shader_program, "position"),
-      },
-      uniform_locations: {
-        perspective_matrix: bound_this.gl.getUniformLocation(shader_program, "perspective_matrix"),
-        view_matrix: bound_this.gl.getUniformLocation(shader_program, "view_matrix"),
-        camera_translation: bound_this.gl.getUniformLocation(shader_program, "camera_translation"),
-      },
-    };
-    return program_info;
-  }
-  
   create_object_group_program() {
     let bound_this = this;
 
-    return Promise.all(
+    return Promise.all([
       fetch('object-group-vshader.glsl')
         .then(response => response.text())
         .then(txt => bound_this.load_shader(bound_this.gl.VERTEX_SHADER, txt)),      
       fetch('object-group-fshader.glsl')
         .then(response => response.text())
         .then(txt => bound_this.load_shader(bound_this.gl.FRAGMENT_SHADER, txt))
-    ).then(result => {
-      let vertex_shader_source = result[0];
-      let fragment_shader_source = result[1];
-
-      let vertex_shader = bound_this.load_shader(this.gl.VERTEX_SHADER, vertex_shader_source);
-      let fragment_shader = bound_this.load_shader(this.gl.FRAGMENT_SHADER, fragment_shader_source);
+    ]).then(result => {
+      let vertex_shader = result[0];
+      let fragment_shader = result[1];
       let shader_program = bound_this.gl.createProgram();
       bound_this.gl.attachShader(shader_program, vertex_shader);
       bound_this.gl.attachShader(shader_program, fragment_shader);
@@ -197,128 +84,17 @@ class scene {
     });
   }
   
-  create_textured_object_program_old() {
-    let vertex_shader_source = `#version 300 es
-      in vec3 vertex_position;
-      in vec3 vertex_normal;
-      in vec2 vertex_uv;
-      
-      uniform vec3 color;
-      uniform vec3 position;
-      
-      uniform mat4 perspective_matrix;
-      uniform mat4 view_matrix;
-      
-      uniform vec3 camera_translation;
-      out vec3 diffuse_color;
-      out vec3 fNormal;
-      out vec3 fPosition;
-      
-      void main() {
-        fNormal = vertex_normal;
-        diffuse_color = color;
-        //diffuse_color = vec3(vertex_uv, 0.0);
-        //diffuse_color = vec3(0.8, 0.65, 0.5); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
-        //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
-        fPosition = (vertex_position + position) - camera_translation;
-        gl_Position = perspective_matrix * view_matrix * vec4(fPosition, 1.0);
-      }
-    `;
-
-    let fragment_shader_source = `#version 300 es
-      precision highp float;
-      in vec3 diffuse_color;
-      in vec3 fNormal;
-      in vec3 fPosition;
-      out vec4 FragColor;
-      
-      
-      
-      void main() {
-  
-        highp float ambient = 0.25;
-        highp float sun = 0.5;
-        highp vec3 up = vec3(0.5, 0.25, 1.0);
-        highp vec3 specular_color = vec3(0.6, 0.6, 0.6);
-        highp float ri = 1.33;
-        
-        highp vec3 n = normalize(fNormal);
-        highp vec3 v = normalize(-fPosition);
-        if(dot(v, n) < 0.0) {
-          n *= -1.0;
-        }
-        highp vec3 h = normalize(up + v);
-        
-        highp float angle = max(dot(v, n), 0.0);
-        
-        highp float sqrt_reflectance = (ri - 1.0) / (ri + 1.0);
-        highp float reflectance = sqrt_reflectance * sqrt_reflectance;
-        highp float fresnel = reflectance + (1.0 - reflectance) * pow(1.0 - angle, 5.0);
-        highp float transmission = 1.0 - fresnel;
-        
-        //highp float d = 0.4;
-        
-        highp float roughness = 0.1;
-        highp float pi = 3.14159265359;
-        
-        highp float fish = acos(dot(n, h)); //the symbol in the equation on wikipedia looks like a fish
-        highp float d = exp(-pow(tan(fish),2.0) / pow(roughness, 2.0)) / (pi * pow(roughness, 2.0) * pow(cos(fish), 4.0));
-        
-        
-        highp float g = min(1.0, min(
-          2.0 * dot(h, n) * dot(v, n) / dot(v, h),
-          2.0 * dot(h, n) * dot(up, n) / dot(v, h)
-        ));
-        
-        highp float specular_illumination = d * fresnel * g * sun / (4.0 * dot(v, n) * dot(n, up)) + ambient * fresnel;
-        
-        highp float diffuse_illumination = (max(dot(up, n), 0.0) * sun + ambient) * transmission;
-        
-        highp vec3 illumination = specular_illumination * specular_color + diffuse_illumination * diffuse_color;
-        highp vec3 gamma_corrected_illumination = pow(illumination, vec3(0.45359237));
-        
-        
-        FragColor = vec4(gamma_corrected_illumination, 1.0);
-      }
-    `;
-    
-    let vertex_shader = this.load_shader(this.gl.VERTEX_SHADER, vertex_shader_source);
-    let fragment_shader = this.load_shader(this.gl.FRAGMENT_SHADER, fragment_shader_source);
-    let shader_program = this.gl.createProgram();
-    this.gl.attachShader(shader_program, vertex_shader);
-    this.gl.attachShader(shader_program, fragment_shader);
-    this.gl.linkProgram(shader_program);
-    
-    let program_info = {
-      program: shader_program,
-      attribute_locations: {
-        vertex_position: this.gl.getAttribLocation(shader_program, "vertex_position"),
-        vertex_normal: this.gl.getAttribLocation(shader_program, "vertex_normal"),
-        vertex_uv: this.gl.getAttribLocation(shader_program, "vertex_uv")
-      },
-      uniform_locations: {
-        color: this.gl.getUniformLocation(shader_program, "color"),
-        position: this.gl.getUniformLocation(shader_program, "position"),
-        perspective_matrix: this.gl.getUniformLocation(shader_program, "perspective_matrix"),
-        view_matrix: this.gl.getUniformLocation(shader_program, "view_matrix"),
-        camera_translation: this.gl.getUniformLocation(shader_program, "camera_translation")
-      }
-    };
-    
-    return program_info;
-  }
-  
   create_textured_object_program() {
     let bound_this = this;
 
-    return Promise.all(
+    return Promise.all([
       fetch('textured-object-vshader.glsl')
         .then(response => response.text())
         .then(txt => bound_this.load_shader(bound_this.gl.VERTEX_SHADER, txt)),
       fetch('textured-object-fshader.glsl')
         .then(response => response.text())
         .then(txt => bound_this.load_shader(bound_this.gl.FRAGMENT_SHADER, txt))
-    ).then(result => {
+    ]).then(result => {
       let vertex_shader = result[0];
       let fragment_shader = result[1];
       let shader_program = bound_this.gl.createProgram();
@@ -348,8 +124,8 @@ class scene {
 
   load_shaders() {
     let bound_this = this;
-    return Promise.all(this.create_object_group_program(),
-                       this.create_textured_object_program())
+    return Promise.all([this.create_object_group_program(),
+                        this.create_textured_object_program()])
     .then(result => {
       bound_this.object_group_program_info = result[0];
       bound_this.textured_object_program_info = result[1];
@@ -449,10 +225,8 @@ class scene {
   
   
   draw_everything(time) {
-    //if (this.object_group_program_info == null ||
-    //    this.textured_object_program_info == null) {
-    //  return;
-    //}
+    if (!this.object_group_program_info || !this.textured_object_program_info)
+      return;
     this.gl.useProgram(this.object_group_program_info.program);
     
     this.gl.clearColor(0.1, 0.2, 0.95, 1.0);
