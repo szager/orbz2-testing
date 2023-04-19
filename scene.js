@@ -187,7 +187,7 @@ class scene {
 
     let fragment_shader_source = `#version 300 es
       precision highp float;
-      //in vec3 diffuse_color;
+      in vec3 diffuse_color;
       in vec3 fNormal;
       in vec3 fPosition;
       out vec4 FragColor;
@@ -199,9 +199,9 @@ class scene {
         highp float ambient = 0.6;
         highp float sun = 0.4;
         highp vec3 up = vec3(0.5, 0.25, 1.0);
-        highp vec3 specular_color = vec3(1.0, 0.8, 0.4);
-        highp vec3 diffuse_color = vec3(0.0, 0.0, 0.0);
-        highp float ri = 0.2;
+        highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
+        //highp vec3 diffuse_color = vec3(1.0, 1.0, 0.7);
+        highp float ri = 1.5;
         
         highp vec3 n = normalize(fNormal);
         highp vec3 v = normalize(-fPosition);
