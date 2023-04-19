@@ -20,6 +20,7 @@ class scene {
     this.objects = [
       new object_3d(models.floor, [0.0, 0.0, -100.0], [0.125, 0.125, 0.125], "like, insert a texture here or something"),
       new object_3d(models.walls, [0.0, 0.0, -100.0], [0.95, 0.9, 0.8], "like, insert a texture here or something"),
+      new object_3d(models.trim, [0.0, 0.0, -100.0], [1.0, 1.0, 1.0], "like, insert a texture here or something"),
     ];
     this.object_groups = [
       new group_3d(models.orbee_model, 80.0)
@@ -30,6 +31,12 @@ class scene {
     this.view_distance = 75;
     this.focus = [0, 0, 5];
     
+    //this.create_object_group_program().then(result => {
+    //  this.object_group_program_info = result;
+    //});
+    //this.create_textured_object_program().then(result => {
+    //  this.textured_object_program_info = result;
+    //});
     this.object_group_program_info = this.create_object_group_program();
     this.textured_object_program_info = this.create_textured_object_program();
   }
@@ -47,8 +54,10 @@ class scene {
     return shader;
   }
   
-  
   create_object_group_program() {
+    //return new Promise((resolve, reject) => {
+    //  fetch('object-group-vshader.glsl').then()
+    //})
     let vertex_shader_source = `#version 300 es
       in vec3 vertex_position;
       in vec3 vertex_normal;
