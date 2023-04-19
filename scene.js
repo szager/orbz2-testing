@@ -85,6 +85,7 @@ class scene {
       
       
       void main() {
+        
   
         highp float ambient = 0.5; //0.8 looks good when not using gamma correction
         highp float sun = 0.5; //2.2
