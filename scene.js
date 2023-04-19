@@ -31,11 +31,12 @@ class scene {
     this.view_distance = 75;
     this.focus = [0, 0, 5];
     
+    //let bound_this = this;
     //this.create_object_group_program().then(result => {
-    //  this.object_group_program_info = result;
+    //  bound_this.object_group_program_info = result;
     //});
     //this.create_textured_object_program().then(result => {
-    //  this.textured_object_program_info = result;
+    //  bound_this.textured_object_program_info = result;
     //});
     this.object_group_program_info = this.create_object_group_program();
     this.textured_object_program_info = this.create_textured_object_program();
@@ -139,6 +140,7 @@ class scene {
       }
     `;
 
+  //create_object_group_program() {
     let bound_this = this;
 
     //return Promise.all(
@@ -379,6 +381,10 @@ class scene {
   
   
   draw_everything(time) {
+    //if (this.object_group_program_info == null ||
+    //    this.textured_object_program_info == null) {
+    //  return;
+    //}
     this.gl.useProgram(this.object_group_program_info.program);
     
     this.gl.clearColor(0.1, 0.2, 0.95, 1.0);
