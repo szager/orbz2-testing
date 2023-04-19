@@ -85,7 +85,7 @@ class scene {
       
       
       void main() {
-        
+        //cook-torance 
   
         highp float ambient = 0.5; //0.8 looks good when not using gamma correction
         highp float sun = 0.5; //2.2
@@ -333,7 +333,7 @@ class scene {
   draw_everything(time) {
     this.gl.useProgram(this.object_group_program_info.program);
     
-    this.gl.clearColor(0.5, 0.5, 0.5, 1.0);
+    this.gl.clearColor(0.1, 0.2, 0.95, 1.0);
     this.gl.clearDepth(1.0);
     
     this.gl.enable(this.gl.DEPTH_TEST);
