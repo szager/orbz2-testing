@@ -107,13 +107,10 @@ class scene {
         highp float fresnel = reflectance + (1.0 - reflectance) * pow(1.0 - angle, 5.0);
         highp float transmission = 1.0 - fresnel;
         
-        highp float diffuse = (max(dot(up, n), 0.0) * sun + ambient) * transmission;
-        highp float specular = (pow(max(dot(n, h), 0.0), 32.0) * sun + ambient) * fresnel;
-        highp vec3 color = vec3(specular_color * specular + diffuse_color * diffuse);
-        highp vec3 gamma_corrected_color = pow(color, vec3(0.45454545454545454545454545));
         
-        //FragColor = vec4(gamma_corrected_color, 1.0);
-        FragColor = vec4(color, 1.0);
+        
+        
+        FragColor = vec4(diffuse_color, 1.0);
       }
     `;
     
