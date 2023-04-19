@@ -87,11 +87,11 @@ class scene {
       void main() {
         //cook-torance 
   
-        highp float ambient = 0.6;
+        highp float ambient = 0.2;
         highp float sun = 0.4;
         highp vec3 up = vec3(0.5, 0.25, 1.0);
         highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
-        highp float ri = 1.33;
+        highp float ri = .33;
         
         highp vec3 n = normalize(fNormal);
         highp vec3 v = normalize(-fPosition);
@@ -126,9 +126,10 @@ class scene {
         highp float diffuse_illumination = (max(dot(up, n), 0.0) * sun + ambient) * transmission;
         
         highp vec3 illumination = specular_illumination * specular_color + diffuse_illumination * diffuse_color;
+        highp vec3 gamma_corrected_illumination = pow(illumination, vec3(0.45359237));
         
         
-        FragColor = vec4(illumination, 1.0);
+        FragColor = vec4(gamma_corrected_illumination, 1.0);
       }
     `;
     
