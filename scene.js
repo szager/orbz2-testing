@@ -94,20 +94,22 @@ class scene {
         highp float ri = 2.4;
         
         highp vec3 n = normalize(fNormal);
-        highp vec3 e = normalize(-fPosition);
-        if(dot(e, n) < 0.0) {
+        highp vec3 v = normalize(-fPosition);
+        if(dot(v, n) < 0.0) {
           n *= -1.0;
         }
-        highp vec3 h = normalize(up + e);
+        highp vec3 h = normalize(up + v);
         
-        highp float angle = max(dot(e, n), 0.0);
+        highp float angle = max(dot(v, n), 0.0);
         
         highp float sqrt_reflectance = (ri - 1.0) / (ri + 1.0);
         highp float reflectance = sqrt_reflectance * sqrt_reflectance;
         highp float fresnel = reflectance + (1.0 - reflectance) * pow(1.0 - angle, 5.0);
         highp float transmission = 1.0 - fresnel;
         
-        
+        highp float g = Math.min(1.0,Math.min(
+          2 * dot(h, n) * dot(v, n)
+        ));
         
         
         FragColor = vec4(diffuse_color, 1.0);
