@@ -68,7 +68,7 @@ class scene {
       void main() {
         fNormal = vertex_normal;
         //diffuse_color = color;
-        diffuse_color = vec3(0.7, 0.8, 0.6); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
+        diffuse_color = vec3(0.5, 0.6, 0.4); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
         //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
         fPosition = (vertex_position) - camera_translation;
         gl_Position = perspective_matrix * view_matrix * vec4(fPosition, 1.0);
@@ -87,11 +87,11 @@ class scene {
       void main() {
         //cook-torance 
   
-        highp float ambient = 0.5; //0.8 looks good when not using gamma correction
-        highp float sun = 0.5; //2.2
+        highp float ambient = 0.6;
+        highp float sun = 0.4;
         highp vec3 up = vec3(0.5, 0.25, 1.0);
         highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
-        highp float ri = 1.3;
+        highp float ri = 1.33;
         
         highp vec3 n = normalize(fNormal);
         highp vec3 v = normalize(-fPosition);
@@ -109,7 +109,7 @@ class scene {
         
         //highp float d = 0.4;
         
-        highp float roughness = 0.04;
+        highp float roughness = 0.1;
         highp float pi = 3.14159265359;
         
         highp float fish = acos(dot(n, h)); //the symbol in the equation on wikipedia looks like a fish
@@ -121,9 +121,11 @@ class scene {
           2.0 * dot(h, n) * dot(up, n) / dot(v, h)
         ));
         
-        highp float specular_illumination = d * fresnel * g * sun / (4.0 * dot(v, n) * dot(n, up));
+        highp float specular_illumination = d * fresnel * g * sun / (4.0 * dot(v, n) * dot(n, up)) + ambient * fresnel;
         
-        highp vec3 illumination = specular_illumination * specular_color;
+        highp float diffuse_illumination = (max(dot(up, n), 0.0) * sun + ambient) * transmission;
+        
+        highp vec3 illumination = specular_illumination * specular_color + diffuse_illumination * diffuse_color;
         
         
         FragColor = vec4(illumination, 1.0);
@@ -185,7 +187,7 @@ class scene {
 
     let fragment_shader_source = `#version 300 es
       precision highp float;
-      in vec3 diffuse_color;
+      //in vec3 diffuse_color;
       in vec3 fNormal;
       in vec3 fPosition;
       out vec4 FragColor;
@@ -194,33 +196,49 @@ class scene {
       
       void main() {
   
-        highp float ambient = 0.5;
-        highp float sun = 0.5;
+        highp float ambient = 0.6;
+        highp float sun = 0.4;
         highp vec3 up = vec3(0.5, 0.25, 1.0);
-        highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
-        highp float ri = 2.4;
+        highp vec3 specular_color = vec3(1.0, 0.8, 0.4);
+        highp vec3 diffuse_color = vec3(0.0, 0.0, 0.0);
+        highp float ri = 0.2;
         
         highp vec3 n = normalize(fNormal);
-        highp vec3 e = normalize(-fPosition);
-        if(dot(e, n) < 0.0) {
+        highp vec3 v = normalize(-fPosition);
+        if(dot(v, n) < 0.0) {
           n *= -1.0;
         }
-        highp vec3 h = normalize(up + e);
+        highp vec3 h = normalize(up + v);
         
-        highp float angle = max(dot(e, n), 0.0);
+        highp float angle = max(dot(v, n), 0.0);
         
         highp float sqrt_reflectance = (ri - 1.0) / (ri + 1.0);
         highp float reflectance = sqrt_reflectance * sqrt_reflectance;
         highp float fresnel = reflectance + (1.0 - reflectance) * pow(1.0 - angle, 5.0);
         highp float transmission = 1.0 - fresnel;
         
-        highp float diffuse = (max(dot(up, n), 0.0) * sun + ambient) * transmission;
-        highp float specular = (pow(max(dot(n, h), 0.0), 32.0) * sun + ambient) * fresnel;
-        highp vec3 color = vec3(specular_color * specular + diffuse_color * diffuse);
-        highp vec3 gamma_corrected_color = pow(color, vec3(0.45454545454545454545454545));
+        //highp float d = 0.4;
         
-        FragColor = vec4(color, 1.0);
-        //FragColor = vec4(diffuse_color, 1.0);
+        highp float roughness = 0.1;
+        highp float pi = 3.14159265359;
+        
+        highp float fish = acos(dot(n, h));
+        highp float d = exp(-pow(tan(fish),2.0) / pow(roughness, 2.0)) / (pi * pow(roughness, 2.0) * pow(cos(fish), 4.0));
+        
+        
+        highp float g = min(1.0, min(
+          2.0 * dot(h, n) * dot(v, n) / dot(v, h),
+          2.0 * dot(h, n) * dot(up, n) / dot(v, h)
+        ));
+        
+        highp float specular_illumination = d * fresnel * g * sun / (4.0 * dot(v, n) * dot(n, up)) + ambient * fresnel;
+        
+        highp float diffuse_illumination = (max(dot(up, n), 0.0) * sun + ambient) * transmission;
+        
+        highp vec3 illumination = specular_illumination * specular_color + diffuse_illumination * diffuse_color;
+        
+        
+        FragColor = vec4(illumination, 1.0);
       }
     `;
     
