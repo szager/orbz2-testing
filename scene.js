@@ -31,8 +31,8 @@ class scene {
     this.view_distance = 75;
     this.focus = [0, 0, 5];
     
-    //this.object_group_program_info = this.create_object_group_program();
-    //this.textured_object_program_info = this.create_textured_object_program();
+    //this.object_group_program_info = this.create_object_group_program_old();
+    //this.textured_object_program_info = this.create_textured_object_program_old();
   }
   
   
@@ -162,8 +162,12 @@ class scene {
     let bound_this = this;
 
     return Promise.all(
-      fetch('object-group-vshader.glsl').then(response => response.text()),
-      fetch('object-group-fshader.glsl').then(response => response.text())
+      fetch('object-group-vshader.glsl')
+        .then(response => response.text())
+        .then(txt => bound_this.load_shader(bound_this.gl.VERTEX_SHADER, txt)),      
+      fetch('object-group-fshader.glsl')
+        .then(response => response.text())
+        .then(txt => bound_this.load_shader(bound_this.gl.FRAGMENT_SHADER, txt))
     ).then(result => {
       let vertex_shader_source = result[0];
       let fragment_shader_source = result[1];
@@ -193,7 +197,7 @@ class scene {
     });
   }
   
-  create_textured_object_program() {
+  create_textured_object_program_old() {
     let vertex_shader_source = `#version 300 es
       in vec3 vertex_position;
       in vec3 vertex_normal;
@@ -278,7 +282,6 @@ class scene {
       }
     `;
     
-  //create_textured_object_program() {
     let vertex_shader = this.load_shader(this.gl.VERTEX_SHADER, vertex_shader_source);
     let fragment_shader = this.load_shader(this.gl.FRAGMENT_SHADER, fragment_shader_source);
     let shader_program = this.gl.createProgram();
@@ -305,10 +308,48 @@ class scene {
     return program_info;
   }
   
+  create_textured_object_program() {
+    let bound_this = this;
+
+    return Promise.all(
+      fetch('textured-object-vshader.glsl')
+        .then(response => response.text())
+        .then(txt => bound_this.load_shader(bound_this.gl.VERTEX_SHADER, txt)),
+      fetch('textured-object-fshader.glsl')
+        .then(response => response.text())
+        .then(txt => bound_this.load_shader(bound_this.gl.FRAGMENT_SHADER, txt))
+    ).then(result => {
+      let vertex_shader = result[0];
+      let fragment_shader = result[1];
+      let shader_program = bound_this.gl.createProgram();
+      bound_this.gl.attachShader(shader_program, vertex_shader);
+      bound_this.gl.attachShader(shader_program, fragment_shader);
+      bound_this.gl.linkProgram(shader_program);
+    
+      let program_info = {
+        program: shader_program,
+        attribute_locations: {
+          vertex_position: bound_this.gl.getAttribLocation(shader_program, "vertex_position"),
+          vertex_normal: bound_this.gl.getAttribLocation(shader_program, "vertex_normal"),
+          vertex_uv: bound_this.gl.getAttribLocation(shader_program, "vertex_uv")
+        },
+        uniform_locations: {
+          color: bound_this.gl.getUniformLocation(shader_program, "color"),
+          position: bound_this.gl.getUniformLocation(shader_program, "position"),
+          perspective_matrix: bound_this.gl.getUniformLocation(shader_program, "perspective_matrix"),
+          view_matrix: bound_this.gl.getUniformLocation(shader_program, "view_matrix"),
+          camera_translation: bound_this.gl.getUniformLocation(shader_program, "camera_translation")
+        }
+      };
+    
+      return program_info;
+    });
+  }
+
   load_shaders() {
     let bound_this = this;
-    return Promise.all(this.create_textured_object_program(),
-                       this.create_object_group_program())
+    return Promise.all(this.create_object_group_program(),
+                       this.create_textured_object_program())
     .then(result => {
       bound_this.object_group_program_info = result[0];
       bound_this.textured_object_program_info = result[1];
