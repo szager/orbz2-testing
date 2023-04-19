@@ -88,10 +88,10 @@ class scene {
         //cook-torance 
   
         highp float ambient = 0.5; //0.8 looks good when not using gamma correction
-        highp float sun = 0.5; //2.2
+        highp float sun = 10.0; //2.2
         highp vec3 up = vec3(0.5, 0.25, 1.0);
         highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
-        highp float ri = 2.4;
+        highp float ri = 1.7;
         
         highp vec3 n = normalize(fNormal);
         highp vec3 v = normalize(-fPosition);
@@ -107,12 +107,20 @@ class scene {
         highp float fresnel = reflectance + (1.0 - reflectance) * pow(1.0 - angle, 5.0);
         highp float transmission = 1.0 - fresnel;
         
+        //highp float d = 0.4;
+        
+        highp float roughness = 0.4;
+        
+        highp float fish = arccos(n, h); //the symbol in the equation on wikipedia looks like a fish
+        highp float d = exp(-pow(tan(fish),2.0) / pow(roughness, 2.0))
+        
+        
         highp float g = min(1.0, min(
           2.0 * dot(h, n) * dot(v, n) / dot(v, h),
           2.0 * dot(h, n) * dot(up, n) / dot(v, h)
         ));
         
-        highp float specular_illumination = 0.4 * fresnel * g / (4.0 * dot(v, n) * dot(n, up));
+        highp float specular_illumination = d * fresnel * g * sun / (4.0 * dot(v, n) * dot(n, up));
         
         highp vec3 illumination = specular_illumination * specular_color;
         
