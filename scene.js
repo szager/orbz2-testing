@@ -18,7 +18,7 @@ class scene {
     //];
     
     this.objects = [
-      new object_3d(models.floor, [0.0, 0.0, -100.0], [0.25, 0.25, 0.25], "like, insert a texture here or something"),
+      new object_3d(models.floor, [0.0, 0.0, -100.0], [0.125, 0.125, 0.125], "like, insert a texture here or something"),
       new object_3d(models.walls, [0.0, 0.0, -100.0], [0.95, 0.9, 0.8], "like, insert a texture here or something"),
     ];
     this.object_groups = [
@@ -27,8 +27,8 @@ class scene {
     
     this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 25;
-    this.focus = [0, 0, 0];
+    this.view_distance = 75;
+    this.focus = [0, 0, 5];
     
     this.object_group_program_info = this.create_object_group_program();
     this.textured_object_program_info = this.create_textured_object_program();
@@ -68,7 +68,7 @@ class scene {
       void main() {
         fNormal = vertex_normal;
         //diffuse_color = color;
-        diffuse_color = vec3(0.1, 0.9, 0.0); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
+        diffuse_color = vec3(0.1, 1.0, 0.0); // (0.5, 0.7, 0.2) is the color of grass, and (0.6, 0.9, 0.3) is the color of tennis ball.
         //gl_Position = perspective_matrix * view_matrix * vec4((vertex_position + position) - camera_translation, 1.0);
         fPosition = (vertex_position) - camera_translation;
         gl_Position = perspective_matrix * view_matrix * vec4(fPosition, 1.0);
@@ -88,7 +88,7 @@ class scene {
         //cook-torance 
   
         highp float ambient = 0.25;
-        highp float sun = 0.25; //Star sun = Star(695f, 2000f, {hydrogen: });
+        highp float sun = 0.5;
         highp vec3 up = vec3(0.5, 0.25, 1.0);
         highp vec3 specular_color = vec3(0.6, 0.6, 0.6);
         highp float ri = 1.33;
@@ -197,12 +197,11 @@ class scene {
       
       void main() {
   
-        highp float ambient = 0.6;
-        highp float sun = 0.4;
+        highp float ambient = 0.25;
+        highp float sun = 0.5;
         highp vec3 up = vec3(0.5, 0.25, 1.0);
-        highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
-        //highp vec3 diffuse_color = vec3(1.0, 1.0, 0.7);
-        highp float ri = 1.5;
+        highp vec3 specular_color = vec3(0.6, 0.6, 0.6);
+        highp float ri = 1.33;
         
         highp vec3 n = normalize(fNormal);
         highp vec3 v = normalize(-fPosition);
@@ -223,7 +222,7 @@ class scene {
         highp float roughness = 0.1;
         highp float pi = 3.14159265359;
         
-        highp float fish = acos(dot(n, h));
+        highp float fish = acos(dot(n, h)); //the symbol in the equation on wikipedia looks like a fish
         highp float d = exp(-pow(tan(fish),2.0) / pow(roughness, 2.0)) / (pi * pow(roughness, 2.0) * pow(cos(fish), 4.0));
         
         
@@ -237,9 +236,10 @@ class scene {
         highp float diffuse_illumination = (max(dot(up, n), 0.0) * sun + ambient) * transmission;
         
         highp vec3 illumination = specular_illumination * specular_color + diffuse_illumination * diffuse_color;
+        highp vec3 gamma_corrected_illumination = pow(illumination, vec3(0.45359237));
         
         
-        FragColor = vec4(illumination, 1.0);
+        FragColor = vec4(gamma_corrected_illumination, 1.0);
       }
     `;
     
