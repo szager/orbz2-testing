@@ -55,9 +55,6 @@ class scene {
   }
   
   create_object_group_program() {
-    //return new Promise((resolve, reject) => {
-    //  fetch('object-group-vshader.glsl').then()
-    //})
     let vertex_shader_source = `#version 300 es
       in vec3 vertex_position;
       in vec3 vertex_normal;
@@ -141,29 +138,39 @@ class scene {
         FragColor = vec4(gamma_corrected_illumination, 1.0);
       }
     `;
+
+    let bound_this = this;
+
+    //return Promise.all(
+    //  fetch('object-group-vshader.glsl').then(response => response.text()),
+    //  fetch('object-group-fshader.glsl').then(response => response.text())
+    //).then(result => {
+    //  let vertext_shader_source = result[0];
+    //  let fragment_shader_source = result[1];
     
-    let vertex_shader = this.load_shader(this.gl.VERTEX_SHADER, vertex_shader_source);
-    let fragment_shader = this.load_shader(this.gl.FRAGMENT_SHADER, fragment_shader_source);
-    let shader_program = this.gl.createProgram();
-    this.gl.attachShader(shader_program, vertex_shader);
-    this.gl.attachShader(shader_program, fragment_shader);
-    this.gl.linkProgram(shader_program);
+    let vertex_shader = bound_this.load_shader(this.gl.VERTEX_SHADER, vertex_shader_source);
+    let fragment_shader = bound_this.load_shader(this.gl.FRAGMENT_SHADER, fragment_shader_source);
+    let shader_program = bound_this.gl.createProgram();
+    bound_this.gl.attachShader(shader_program, vertex_shader);
+    bound_this.gl.attachShader(shader_program, fragment_shader);
+    bound_this.gl.linkProgram(shader_program);
     
     let program_info = {
       program: shader_program,
       attribute_locations: {
-        vertex_position: this.gl.getAttribLocation(shader_program, "vertex_position"),
-        vertex_normal: this.gl.getAttribLocation(shader_program, "vertex_normal"),
-        color: this.gl.getAttribLocation(shader_program, "color"),
-        position: this.gl.getAttribLocation(shader_program, "position"),
+        vertex_position: bound_this.gl.getAttribLocation(shader_program, "vertex_position"),
+        vertex_normal: bound_this.gl.getAttribLocation(shader_program, "vertex_normal"),
+        color: bound_this.gl.getAttribLocation(shader_program, "color"),
+        position: bound_this.gl.getAttribLocation(shader_program, "position"),
       },
       uniform_locations: {
-        perspective_matrix: this.gl.getUniformLocation(shader_program, "perspective_matrix"),
-        view_matrix: this.gl.getUniformLocation(shader_program, "view_matrix"),
-        camera_translation: this.gl.getUniformLocation(shader_program, "camera_translation"),
+        perspective_matrix: bound_this.gl.getUniformLocation(shader_program, "perspective_matrix"),
+        view_matrix: bound_this.gl.getUniformLocation(shader_program, "view_matrix"),
+        camera_translation: bound_this.gl.getUniformLocation(shader_program, "camera_translation"),
       },
     };
     return program_info;
+    //});
   }
   
   
