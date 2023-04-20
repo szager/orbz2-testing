@@ -53,4 +53,5 @@ void main() {
   
   
   FragColor = vec4(gamma_corrected_illumination, 1.0);
+  
 }
