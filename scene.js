@@ -29,8 +29,8 @@ class scene {
     
     this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 75;
-    this.focus = [0, 0, 5];
+    this.view_distance = 750;
+    this.focus = [-0, -0, 5];
     
     //this.object_group_program_info = this.create_object_group_program_old();
     //this.textured_object_program_info = this.create_textured_object_program_old();
