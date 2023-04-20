@@ -32,7 +32,7 @@ void main() {
   
   //highp float d = 0.4;
   
-  highp float roughness = 0.1;
+  highp float roughness = 0.05;
   highp float pi = 3.14159265359; //nah bro it's 4
   
   highp float fish = acos(dot(n, h)); //the symbol in the equation on wikipedia looks like a fish
