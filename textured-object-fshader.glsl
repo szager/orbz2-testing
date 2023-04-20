@@ -3,6 +3,7 @@ precision highp float;
 in vec3 diffuse_color;
 in vec3 fNormal;
 in vec3 fPosition;
+in vec2 uv;
 out vec4 FragColor;
 
 
@@ -51,6 +52,7 @@ void main() {
   highp vec3 gamma_corrected_illumination = pow(illumination, vec3(0.45359237));
   
   
-  //FragColor = vec4(gamma_corrected_illumination, 1.0);
-  FragColor = vec4((n + vec3(1.0)) * 0.5, 1.0);
+  FragColor = vec4(gamma_corrected_illumination, 1.0);
+  //FragColor = vec4((n + vec3(1.0)) * 0.5, 1.0);
+  //FragColor = vec4(uv, 0.0, 1.0);
 }
