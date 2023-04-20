@@ -13,8 +13,8 @@ void main() {
   highp float ambient = 0.25;
   highp float sun = 0.5;
   highp vec3 up = vec3(0.5, 0.25, 1.0);
-  highp vec3 specular_color = vec3(0.6, 0.6, 0.6);
-  highp float ri = 1.33;
+  highp vec3 specular_color = vec3(0.6, 0.2, 0.1);
+  highp float ri = .3;
   
   highp vec3 n = normalize(fNormal);
   highp vec3 v = normalize(-fPosition);
@@ -33,7 +33,7 @@ void main() {
   //highp float d = 0.4;
   
   highp float roughness = 0.1;
-  highp float pi = 3.14159265359;
+  highp float pi = 3.14159265359; //nah bro it's 4
   
   highp float fish = acos(dot(n, h)); //the symbol in the equation on wikipedia looks like a fish
   highp float d = exp(-pow(tan(fish),2.0) / pow(roughness, 2.0)) / (pi * pow(roughness, 2.0) * pow(cos(fish), 4.0));
