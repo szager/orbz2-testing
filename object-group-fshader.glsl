@@ -10,11 +10,11 @@ out vec4 FragColor;
 void main() {
   //cook-torance 
   
-  highp float ambient = 0.25;
+  highp float ambient = 0.5;
   highp float sun = 0.5;
   highp vec3 up = vec3(0.5, 0.25, 1.0);
-  highp vec3 specular_color = vec3(0.6, 0.2, 0.1);
-  highp float ri = .3;
+  highp vec3 specular_color = vec3(0.8, 0.8, 0.8);
+  highp float ri = 1.33;
   
   highp vec3 n = normalize(fNormal);
   highp vec3 v = normalize(-fPosition);
