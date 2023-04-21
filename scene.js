@@ -2,7 +2,6 @@ import {constants} from "./constants.js";
 import {group_3d} from "./object_3d.js";
 import {object_3d} from "./object_3d.js";
 import {models} from "./models.js";
-import
 
 
 class scene {
