@@ -69,7 +69,6 @@ class game {
         }
       }
     }
-    this.complete_scene();
     
     this.stopping = false;
     this.paused = false;
@@ -78,12 +77,12 @@ class game {
     
     this.bound_update_method = this.update_and_stuff.bind(this);
     let bound_this = this;
-    this.scene.load_shaders().then(() => {
-      requestAnimationFrame(bound_this.bound_update_method);
-      document.addEventListener("mousedown", bound_this.handle_mousedown.bind(bound_this));
-      document.addEventListener("mouseup", bound_this.handle_mouseup.bind(bound_this));
-      this.canvas.addEventListener("mousemove", bound_this.handle_mousemove.bind(bound_this));
-    });
+    
+    document.addEventListener("mousedown", bound_this.handle_mousedown.bind(bound_this));
+    document.addEventListener("mouseup", bound_this.handle_mouseup.bind(bound_this));
+    this.canvas.addEventListener("mousemove", bound_this.handle_mousemove.bind(bound_this));
+    
+    this.complete_scene().then(this.bound_update_method);
   }
   
   async complete_scene() {
