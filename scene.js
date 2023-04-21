@@ -2,6 +2,8 @@ import {constants} from "./constants.js";
 import {group_3d} from "./object_3d.js";
 import {object_3d} from "./object_3d.js";
 import {models} from "./models.js";
+import
+
 
 class scene {
   constructor(canvas, object_count) {
@@ -29,7 +31,7 @@ class scene {
     
     this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 1000;
+    this.view_distance = 100;
     this.focus = [-0, -0, 5];
     
     //this.object_group_program_info = this.create_object_group_program_old();
