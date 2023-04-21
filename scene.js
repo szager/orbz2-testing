@@ -3,6 +3,9 @@ import {group_3d} from "./object_3d.js";
 import {object_3d} from "./object_3d.js";
 import {models} from "./models.js";
 
+let beautiful_image = new Image();
+beautiful_image.src = "https://cdn.glitch.global/e7cbcc0a-13a1-4d09-b0ab-538eef5ec805/pug_again.jpg?v=1681751131676";
+console.log(beautiful_image);
 
 class scene {
   constructor(canvas, object_count) {
