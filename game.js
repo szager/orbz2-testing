@@ -86,8 +86,9 @@ class game {
     });
   }
   
-  complete_scene() {
+  async complete_scene() {
     this.scene.initialize_buffers();
+    await this.scene.load_shaders();
   }
   
   handle_mousedown(e) {
