@@ -151,7 +151,7 @@ class scene {
   }
   
   async load_the_pug_texture() {
-    this.load_texture("https://cdn.glitch.global/e7cbcc0a-13a1-4d09-b0ab-538eef5ec805/pug_again.jpg?v=1681751131676").then(
+    this.load_texture("textures/pug.jpg").then(
       function(texture) {
         this.pug_texture = texture;
       }.bind(this)
@@ -327,9 +327,8 @@ class scene {
       view_matrix
     );
     
-    this.gl.uniform1i(
+    this.gl.uniform1iv(
       this.textured_object_program_info.uniform_locations.diffuse_sampler,
-      false,
       this.pug_texture
     );
     
