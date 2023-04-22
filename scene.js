@@ -142,6 +142,9 @@ class scene {
     let image = new Image();
     image.src = url;
     let texture = this.gl.createTexture();
+    this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 1, 1, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE,
+              new Uint8Array([0, 0, 255, 255]));
     await new Promise(function(resolve, reject) {
       this.onload = resolve;
     }.bind(image));
@@ -329,8 +332,10 @@ class scene {
     
     this.gl.uniform1i(
       this.textured_object_program_info.uniform_locations.diffuse_sampler,
-      this.pug_texture
+      0
     );
+    this.gl.activeTexture(this.gl.TEXTURE0);
+    this.gl.bindTexture(this.gl.TEXTURE_2D, this.pug_texture);
     
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.vertex_position_buffer);
