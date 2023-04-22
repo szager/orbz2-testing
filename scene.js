@@ -327,7 +327,7 @@ class scene {
       view_matrix
     );
     
-
+    
     
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.vertex_position_buffer);
