@@ -116,6 +116,7 @@ class scene {
         },
         uniform_locations: {
           color: bound_this.gl.getUniformLocation(shader_program, "color"),
+          diffuse_texture: bound_this.gl.getUniformLocation(shader_program, "diffuse_texture"),
           position: bound_this.gl.getUniformLocation(shader_program, "position"),
           perspective_matrix: bound_this.gl.getUniformLocation(shader_program, "perspective_matrix"),
           view_matrix: bound_this.gl.getUniformLocation(shader_program, "view_matrix"),
@@ -147,6 +148,14 @@ class scene {
     this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
     this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image);
     return texture;
+  }
+  
+  async load_the_pug_texture() {
+    this.load_texture("https://cdn.glitch.global/e7cbcc0a-13a1-4d09-b0ab-538eef5ec805/pug_again.jpg?v=1681751131676").then(
+      function(texture) {
+        this.pug_texture = texture;
+      }.bind(this)
+    );
   }
   
   initialize_buffers() {
