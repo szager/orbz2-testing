@@ -116,7 +116,7 @@ class scene {
         },
         uniform_locations: {
           color: bound_this.gl.getUniformLocation(shader_program, "color"),
-          diffuse_texture: bound_this.gl.getUniformLocation(shader_program, "diffuse_texture"),
+          diffuse_sampler: bound_this.gl.getUniformLocation(shader_program, "diffuse_sampler"),
           position: bound_this.gl.getUniformLocation(shader_program, "position"),
           perspective_matrix: bound_this.gl.getUniformLocation(shader_program, "perspective_matrix"),
           view_matrix: bound_this.gl.getUniformLocation(shader_program, "view_matrix"),
@@ -326,6 +326,8 @@ class scene {
       false,
       view_matrix
     );
+    
+
     
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.vertex_position_buffer);
