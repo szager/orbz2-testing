@@ -79,16 +79,17 @@ class game {
     let bound_this = this;
     document.addEventListener("mousedown", bound_this.handle_mousedown.bind(bound_this));
     document.addEventListener("mouseup", bound_this.handle_mouseup.bind(bound_this));
-    this.canvas.addEventListener("mousemove", bound_this.handle_mousemove.bind(bound_this));
-    
+    this.canvas.addEventListener("mousemove", bound_this.handle_mousemove.bind(bound_this));    
     
     this.complete_scene().then(() => { requestAnimationFrame(bound_this.bound_update_method); });
   }
   
   async complete_scene() {
     this.scene.initialize_buffers();
-    await this.scene.load_the_pug_texture();
-    await this.scene.load_shaders();
+    return Promise.all([
+      this.scene.load_the_pug_texture(),
+      this.scene.load_shaders()
+    ]);
   }
   
   handle_mousedown(e) {
