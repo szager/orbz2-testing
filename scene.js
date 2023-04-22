@@ -137,6 +137,12 @@ class scene {
     });
   }
   
+  async load_texture(destination, url) {
+    let image = new Image();
+    image.src = url;
+    image.onload;
+  }
+  
   initialize_buffers() {
     this.object_groups.forEach(function(object_group) {
       
