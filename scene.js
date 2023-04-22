@@ -151,7 +151,7 @@ class scene {
   }
   
   async load_the_pug_texture() {
-    this.load_texture("textures/pug.jpg").then(
+    this.load_texture("./textures/pug.jpg").then(
       function(texture) {
         this.pug_texture = texture;
       }.bind(this)
@@ -327,7 +327,7 @@ class scene {
       view_matrix
     );
     
-    this.gl.uniform1iv(
+    this.gl.uniform1i(
       this.textured_object_program_info.uniform_locations.diffuse_sampler,
       this.pug_texture
     );
