@@ -137,10 +137,16 @@ class scene {
     });
   }
   
-  async load_texture(destination, url) {
+  async load_texture(url) {
     let image = new Image();
     image.src = url;
-    image.onload;
+    let texture = this.gl.createTexture();
+    await new Promise(function(resolve, reject) {
+      this.onload = resolve;
+    }.bind(image));
+    this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image);
+    return texture;
   }
   
   initialize_buffers() {
@@ -231,7 +237,6 @@ class scene {
       );
       
     }, this);
-    
   }
   
   
