@@ -6,7 +6,7 @@ class model {
     if(uv_map) {
       this.uv_map = uv_map;
       for(let i = 0; i < this.uv_map.length; i++) {
-        this.uv_map[i] *= 0.0009765625;
+        this.uv_map[i] *= 1;
       }
     } else {
       this.uv_map = "This model does not have a UV map." // abusing javascript

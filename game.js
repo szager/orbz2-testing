@@ -87,7 +87,7 @@ class game {
   async complete_scene() {
     this.scene.initialize_buffers();
     return Promise.all([
-      this.scene.load_the_pug_texture(),
+      this.scene.load_textures(),
       this.scene.load_shaders()
     ]);
   }

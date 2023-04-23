@@ -22,10 +22,10 @@ class scene {
     //];
     
     this.objects = [
-      new object_3d(models.floor, [0.0, 0.0, -100.0], [0.125, 0.125, 0.125], "https://cdn.glitch.global/e7cbcc0a-13a1-4d09-b0ab-538eef5ec805/walls.png?v=1682278523944"),
-      new object_3d(models.walls, [0.0, 0.0, -100.0], [0.95, 0.9, 0.8], "https://cdn.glitch.global/e7cbcc0a-13a1-4d09-b0ab-538eef5ec805/walls.png?v=1682278523944"),
-      new object_3d(models.trim, [0.0, 0.0, -100.0], [1.0, 1.0, 1.0], "https://cdn.glitch.global/e7cbcc0a-13a1-4d09-b0ab-538eef5ec805/walls.png?v=1682278523944"),
-      new object_3d(models.ceiling, [0.0, 0.0, -100.0], [0.9, 0.9, 0.9], "https://cdn.glitch.global/e7cbcc0a-13a1-4d09-b0ab-538eef5ec805/walls.png?v=1682278523944"),
+      new object_3d(models.floor, [0.0, 0.0, -100.0], [0.125, 0.125, 0.125], "textures/pug.jpg"),
+      new object_3d(models.walls, [0.0, 0.0, -100.0], [0.95, 0.9, 0.8], "textures/walls_beta.png"),
+      new object_3d(models.trim, [0.0, 0.0, -100.0], [1.0, 1.0, 1.0], "textures/walls_beta.png"),
+      new object_3d(models.ceiling, [0.0, 0.0, -100.0], [0.9, 0.9, 0.9], "textures/walls_beta.png"),
     ];
     this.object_groups = [
       new group_3d(models.orbee_model, 80.0)
@@ -143,10 +143,10 @@ class scene {
     image.src = url;
     let texture = this.gl.createTexture();
     this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.MIRRORED_REPEAT);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.MIRRORED_REPEAT);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
+    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.REPEAT);
+    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.REPEAT);
+    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
     
     this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 1, 1, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, new Uint8Array([255, 0, 255, 255]));
     
@@ -173,7 +173,7 @@ class scene {
       let object = this.objects[i];
       await this.load_texture(object.texture_url).then(
         function(texture) {
-          object.texture = texture;
+          this.texture = texture;
         }.bind(object)
       ); //This code is could easily be optimised but no
     }
