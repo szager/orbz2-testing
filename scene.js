@@ -22,10 +22,10 @@ class scene {
     //];
     
     this.objects = [
-      new object_3d(models.floor, [0.0, 0.0, -100.0], [0.125, 0.125, 0.125], "like, insert a texture here or something"),
-      new object_3d(models.walls, [0.0, 0.0, -100.0], [0.95, 0.9, 0.8], "like, insert a texture here or something"),
-      new object_3d(models.trim, [0.0, 0.0, -100.0], [1.0, 1.0, 1.0], "like, insert a texture here or something"),
-      new object_3d(models.ceiling, [0.0, 0.0, -100.0], [0.9, 0.9, 0.9], "like, insert a texture here or something"),
+      new object_3d(models.floor, [0.0, 0.0, -100.0], [0.125, 0.125, 0.125], "https://cdn.glitch.global/e7cbcc0a-13a1-4d09-b0ab-538eef5ec805/walls.png?v=1682278523944"),
+      new object_3d(models.walls, [0.0, 0.0, -100.0], [0.95, 0.9, 0.8], "https://cdn.glitch.global/e7cbcc0a-13a1-4d09-b0ab-538eef5ec805/walls.png?v=1682278523944"),
+      new object_3d(models.trim, [0.0, 0.0, -100.0], [1.0, 1.0, 1.0], "https://cdn.glitch.global/e7cbcc0a-13a1-4d09-b0ab-538eef5ec805/walls.png?v=1682278523944"),
+      new object_3d(models.ceiling, [0.0, 0.0, -100.0], [0.9, 0.9, 0.9], "https://cdn.glitch.global/e7cbcc0a-13a1-4d09-b0ab-538eef5ec805/walls.png?v=1682278523944"),
     ];
     this.object_groups = [
       new group_3d(models.orbee_model, 80.0)
@@ -168,7 +168,16 @@ class scene {
     );
   }
   
-  async lo
+  async load_textures() {
+    for(let i = 0; i < this.objects.length; i++) {
+      let object = this.objects[i];
+      await this.load_texture(object.texture_url).then(
+        function(texture) {
+          object.texture = texture;
+        }.bind(object)
+      ); //This code is could easily be optimised but no
+    }
+  }
   
   initialize_buffers() {
     this.object_groups.forEach(function(object_group) {
@@ -344,7 +353,7 @@ class scene {
       0
     );
     this.gl.activeTexture(this.gl.TEXTURE0);
-    this.gl.bindTexture(this.gl.TEXTURE_2D, this.pug_texture);
+    this.gl.bindTexture(this.gl.TEXTURE_2D, object.texture);
     
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.vertex_position_buffer);

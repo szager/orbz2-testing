@@ -1,9 +1,9 @@
 class object_3d {
-  constructor(model, position, color, texture) {
+  constructor(model, position, color, texture_url) {
     this.model = model;
     this.position = position;
     this.color = color;
-    this.texture = texture;
+    this.texture_url = texture_url;
   }
 }
 
