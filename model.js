@@ -5,10 +5,9 @@ class model {
     this.faces = faces;
     if(uv_map) {
       this.uv_map = uv_map;
-      this.uv_map.forEach(coordinate => {
-        coordinate *= 0.0009765625; // 1/1024
-        //multiplication is quicker than division.
-      });
+      for(let i = 0; i < this.uv_map.length; i++) {
+        this.uv_map[i] *= 0.0009765625;
+      }
     } else {
       this.uv_map = "This model does not have a UV map." // abusing javascript
     }
