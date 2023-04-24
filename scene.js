@@ -25,7 +25,7 @@ class scene {
       new object_3d(models.floor, [0.0, 0.0, -100.0], [0.125, 0.125, 0.125], "textures/floor_beta.png"),
       new object_3d(models.walls, [0.0, 0.0, -100.0], [0.95, 0.9, 0.8], "textures/walls_beta.png"),
       new object_3d(models.trim, [0.0, 0.0, -100.0], [1.0, 1.0, 1.0], "textures/pug.jpg"),
-      new object_3d(models.ceiling, [0.0, 0.0, -100.0], [0.9, 0.9, 0.9], "textures/walls_beta.png"),
+      new object_3d(models.ceiling, [0.0, 0.0, -100.0], [0.9, 0.9, 0.9], "textures/pug.jpg"),
     ];
     this.object_groups = [
       new group_3d(models.orbee_model, 80.0)
