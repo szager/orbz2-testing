@@ -10,8 +10,8 @@ uniform sampler2D diffuse_sampler;
 
 void main() {
   highp vec4 texel_color = texture(diffuse_sampler, uv);
-  //highp vec3 diffuse_color = texel_color.xyz;
-  highp vec3 diffuse_color = vec3(0.8, 0.7, 0.6);
+  highp vec3 diffuse_color = texel_color.xyz;
+  //highp vec3 diffuse_color = vec3(0.8, 0.7, 0.6);
   
   highp float ambient = 0.5;
   highp float sun = 0.5;
