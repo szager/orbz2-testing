@@ -10,7 +10,8 @@ uniform sampler2D diffuse_sampler;
 
 void main() {
   highp vec4 texel_color = texture(diffuse_sampler, uv);
-  highp vec3 diffuse_color = texel_color.xyz;
+  //highp vec3 diffuse_color = texel_color.xyz;
+  highp vec3 diffuse_color = vec3(0.8, 0.7, 0.6);
   
   highp float ambient = 0.5;
   highp float sun = 0.5;
@@ -54,7 +55,7 @@ void main() {
   highp vec3 gamma_corrected_illumination = pow(illumination, vec3(0.45359237));
   
   
-  FragColor = vec4(gamma_corrected_illumination, texel_color.w);
+  FragColor = vec4(gamma_corrected_illumination, 1.0);
   //FragColor = vec4((n + vec3(1.0)) * 0.5, 1.0);
   //FragColor = vec4(uv, 0.0, 1.0);
   //FragColor = vec4(texture(diffuse_sampler, uv));
