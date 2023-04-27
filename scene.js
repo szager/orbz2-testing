@@ -27,7 +27,7 @@ class scene {
       new object_3d(models.trim, [0.0, 0.0, -100.0], [1.0, 1.0, 1.0], "textures/pug.jpg"),
       new object_3d(models.ceiling, [0.0, 0.0, -100.0], [0.9, 0.9, 0.9], "textures/pug.jpg"),
       new object_3d(models.shelf, [197.0, -147.0, -100.0], [0.9, 0.9, 0.9], "textures/pug.jpg"),
-      new object_3d(models.shelf, [197.0, -47.0, -100.0], [0.9, 0.9, 0.9], "textures/pug.jpg"),
+      new object_3d(models.shelf, [197.0, -40.0, -100.0], [0.9, 0.9, 0.9], "textures/scrimbleh.jpg"),
     ];
     this.object_groups = [
       new group_3d(models.orbee_model, 80.0)
