@@ -27,6 +27,7 @@ class scene {
       new object_3d(models.trim, [0.0, 0.0, -100.0], [1.0, 1.0, 1.0], "textures/pug.jpg"),
       new object_3d(models.ceiling, [0.0, 0.0, -100.0], [0.9, 0.9, 0.9], "textures/pug.jpg"),
       new object_3d(models.shelf, [197.0, -147.0, -100.0], [0.9, 0.9, 0.9], "textures/pug.jpg"),
+      new object_3d(models.shelf, [197.0, -47.0, -100.0], [0.9, 0.9, 0.9], "textures/pug.jpg"),
     ];
     this.object_groups = [
       new group_3d(models.orbee_model, 80.0)
@@ -35,7 +36,7 @@ class scene {
     this.pitch = .8;
     this.yaw = 0;
     this.view_distance = 100;
-    this.focus = [150, -150, 50];
+    this.focus = [0, 0, 0];
     
     //this.object_group_program_info = this.create_object_group_program_old();
     //this.textured_object_program_info = this.create_textured_object_program_old();
