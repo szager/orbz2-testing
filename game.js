@@ -157,8 +157,8 @@ class game {
     this.time += this.frame_time;
     
 
-    this.scene.objects[4].position[1] += Math.cos(this.time * 4.6358873) + Math.sin(this.time * 11.63375) - Math.sin(this.time * 12.237126) + Math.cos(this.time * 9.86430864);
-      this.scene.objects[4].position[2] += Math.sin(this.time * 4.6358873) + Math.cos(this.time * 11.63375) - Math.cos(this.time * 12.237126) + Math.sin(this.time * );
+    this.scene.objects[4].position[2] += Math.sin(this.time * 16.3);
+    this.scene.objects[5].position[2] += Math.sin(this.time * 14.3);
     //let amount_of_useless_math = 2**(Math.random() * 24);
     //for(let i = 0; i < amount_of_useless_math; i++) {
       //let e = Math.sin(Math.random() / 7673.6587988);
