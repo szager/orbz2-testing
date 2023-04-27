@@ -156,7 +156,7 @@ class game {
   update() {
     this.time += this.frame_time;
     
-    this.scene.objects[4].position[2] -= .1;
+    //this.scene.objects[4].position[2] -= .1;
     //let amount_of_useless_math = 2**(Math.random() * 24);
     //for(let i = 0; i < amount_of_useless_math; i++) {
       //let e = Math.sin(Math.random() / 7673.6587988);
