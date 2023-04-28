@@ -36,7 +36,7 @@ class scene {
     
     this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 250;
+    this.view_distance = 100;
     this.focus = [0, 0, 0];
     
     //this.object_group_program_info = this.create_object_group_program_old();
