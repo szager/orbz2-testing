@@ -29,6 +29,7 @@ class scene {
       new object_3d(models.shelf, [197.0, -147.0, -100.0], [0.9, 0.9, 0.9], "textures/pug.jpg"),
       new object_3d(models.shelf, [197.0, -40.0, -100.0], [0.9, 0.9, 0.9], "textures/scrimbleh.jpg"),
       new object_3d(models.shelf, [197.0, 67.0, -100.0], [0.9, 0.9, 0.9], "textures/funny_dog.png"),
+      new object_3d(models.picture_frame_stand, [0, 0, 10,], [0.9, 0.9, 0.9], "textures/funny_dog.png"),
     ];
     this.object_groups = [
       new group_3d(models.orbee_model, 80.0)
