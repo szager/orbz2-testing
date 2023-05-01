@@ -21,9 +21,11 @@ void main() {
   
   highp vec3 n = normalize(fNormal);
   highp vec3 v = normalize(-fPosition);
-  if(dot(v, n) < 0.0) {
-    n *= -1.0;
-  }
+  
+  
+  n *= sign(dot(v, n));
+  
+  
   highp vec3 h = normalize(up + v);
   
   highp float angle = max(dot(v, n), 0.0);
