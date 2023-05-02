@@ -22,11 +22,11 @@ class scene {
     //];
     
     this.objects = [
-      new object_3d(models.floor, [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, -100.0], [0.125, 0.125, 0.125], "textures/floor_beta.png"),
-      new object_3d(models.walls, [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, -100.0], [0.95, 0.9, 0.8], "textures/walls_beta.png"),
-      new object_3d(models.trim, [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, -100.0], [1.0, 1.0, 1.0], "textures/pug.jpg"),
-      new object_3d(models.ceiling, [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, -100.0], [0.9, 0.9, 0.9], "textures/pug.jpg"),
-      new object_3d(models.shelf, [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 197.0, -147.0, -100.0], [0.9, 0.9, 0.9], "textures/funny_dog.png"),
+      new object_3d(models.floor, [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0], [0.0, 0.0, -100.0]], [0.125, 0.125, 0.125], "textures/floor_beta.png"),
+      new object_3d(models.walls, [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0], [0.0, 0.0, -100.0]], [0.95, 0.9, 0.8], "textures/walls_beta.png"),
+      new object_3d(models.trim, [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0], [0.0, 0.0, -100.0]], [1.0, 1.0, 1.0], "textures/pug.jpg"),
+      new object_3d(models.ceiling, [[1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0], [0.0, 0.0, -100.0]], [0.9, 0.9, 0.9], "textures/pug.jpg"),
+      new object_3d(models.shelf, [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0], [197.0, -147.0, -100.0]], [0.9, 0.9, 0.9], "textures/funny_dog.png"),
       //new object_3d(models.shelf, [197.0, -40.0, -100.0], [0.9, 0.9, 0.9], "textures/scrimbleh.jpg"),
       //new object_3d(models.shelf, [197.0, 67.0, -100.0], [0.9, 0.9, 0.9], "textures/funny_dog.png"),
       new object_3d(models.picture_frame_stand, [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 145, -110, 100], [0.9, 0.9, 0.9], "textures/pug.jpg"),
@@ -326,7 +326,7 @@ class scene {
       camera_translation[2]
     );
     
-    this.gl.uniformMatrix3fv(
+    this.gl.uniformMatrix3x4fv(
       this.textured_object_program_info.uniform_locations.position,
       false,
       object.position
