@@ -22,15 +22,18 @@ class scene {
     //];
     
     this.objects = [
-      new object_3d(models.floor, [0.0, 0.0, -100], mat3.create(), "textures/floor_beta.png"),
-      new object_3d(models.walls, [0.0, 0.0, -100], mat3.create(), "textures/walls_beta.png"),
-      new object_3d(models.trim, [0.0, 0.0, -100], mat3.create(), "textures/pug.jpg"),
-      new object_3d(models.ceiling, [0.0, 0.0, -100], mat3.create(), "textures/pug.jpg"),
-      new object_3d(models.shelf, [197.0, -147.0, -100], mat3.create(), "textures/funny_dog.png"),
+      new object_3d(models.floor, [0.0, 0.0, -100], mat3.create(), "textures/floor_beta.png"), //0
+      new object_3d(models.walls, [0.0, 0.0, -100], mat3.create(), "textures/walls_beta.png"), //1
+      new object_3d(models.trim, [0.0, 0.0, -100], mat3.create(), "textures/pug.jpg"), //2
+      new object_3d(models.ceiling, [0.0, 0.0, -100], mat3.create(), "textures/pug.jpg"), //3
+      new object_3d(models.shelf, [197.0, -147.0, -100], mat3.create(), "textures/funny_dog.png"), //4
       //new object_3d(models.shelf, [197.0, -40.0, -100.0], [0.9, 0.9, 0.9], "textures/scrimbleh.jpg"),
       //new object_3d(models.shelf, [197.0, 67.0, -100.0], [0.9, 0.9, 0.9], "textures/funny_dog.png"),
-      new object_3d(models.picture_frame_stand, [157.1, -121.8, 100], mat3.create(), "textures/pug.jpg"),
+      new object_3d(models.picture_frame_stand, [157.1, -121.8, 100], mat3.create(), "textures/pug.jpg"), //5
     ];
+    
+    mat3.rotate(this.objects[5].transform)
+    
     this.object_groups = [
       new group_3d(models.orbee_model, 80.0)
     ];
