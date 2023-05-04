@@ -32,7 +32,7 @@ class scene {
       new object_3d(models.picture_frame_stand, [157.1, -121.8, 100], mat3.create(), "textures/pug.jpg"), //5
     ];
     
-    mat3.rotate(this.objects[5].transform)
+    
     
     this.object_groups = [
       new group_3d(models.orbee_model, 80.0)
