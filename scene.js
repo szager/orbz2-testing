@@ -22,14 +22,14 @@ class scene {
     //];
     
     this.objects = [
-      new object_3d(models.floor, [0.0, 0.0, -100], [0.125, 0.125, 0.125], "textures/floor_beta.png"),
-      new object_3d(models.walls, [0.0, 0.0, -100], [0.95, 0.9, 0.8], "textures/walls_beta.png"),
-      new object_3d(models.trim, [0.0, 0.0, -100], [1.0, 1.0, 1.0], "textures/pug.jpg"),
-      new object_3d(models.ceiling, [0.0, 0.0, -100], [0.9, 0.9, 0.9], "textures/pug.jpg"),
-      new object_3d(models.shelf, [197.0, -147.0, -100], [0.9, 0.9, 0.9], "textures/funny_dog.png"),
+      new object_3d(models.floor, [0.0, 0.0, -100], mat3.create(), "textures/floor_beta.png"),
+      new object_3d(models.walls, [0.0, 0.0, -100], mat3.create(), "textures/walls_beta.png"),
+      new object_3d(models.trim, [0.0, 0.0, -100], mat3.create(), "textures/pug.jpg"),
+      new object_3d(models.ceiling, [0.0, 0.0, -100], mat3.create(), "textures/pug.jpg"),
+      new object_3d(models.shelf, [197.0, -147.0, -100], mat3.create(), "textures/funny_dog.png"),
       //new object_3d(models.shelf, [197.0, -40.0, -100.0], [0.9, 0.9, 0.9], "textures/scrimbleh.jpg"),
       //new object_3d(models.shelf, [197.0, 67.0, -100.0], [0.9, 0.9, 0.9], "textures/funny_dog.png"),
-      new object_3d(models.picture_frame_stand, [157.1, -121.8, 100], [0.9, 0.9, 0.9], "textures/pug.jpg"),
+      new object_3d(models.picture_frame_stand, [157.1, -121.8, 100], mat3.create(), "textures/pug.jpg"),
     ];
     this.object_groups = [
       new group_3d(models.orbee_model, 80.0)
@@ -119,7 +119,7 @@ class scene {
           vertex_uv: bound_this.gl.getAttribLocation(shader_program, "vertex_uv")
         },
         uniform_locations: {
-          color: bound_this.gl.getUniformLocation(shader_program, "color"),
+          transform: bound_this.gl.getUniformLocation(shader_program, "transform"),
           diffuse_sampler: bound_this.gl.getUniformLocation(shader_program, "diffuse_sampler"),
           position: bound_this.gl.getUniformLocation(shader_program, "position"),
           perspective_matrix: bound_this.gl.getUniformLocation(shader_program, "perspective_matrix"),
@@ -220,7 +220,7 @@ class scene {
       );
       this.gl.bufferData(
         this.gl.ARRAY_BUFFER,
-        new Float32Array(object_group.model.positions),
+        new Float32Array(object_group.positions),
         this.gl.DYNAMIC_DRAW
       );
       object_group.color_buffer = this.gl.createBuffer();
@@ -230,7 +230,7 @@ class scene {
       );
       this.gl.bufferData(
         this.gl.ARRAY_BUFFER,
-        new Float32Array(object_group.model.colors),
+        new Float32Array(object_group.colors),
         this.gl.STATIC_DRAW
       );
       
@@ -332,11 +332,10 @@ class scene {
       object.position[2]
     );
     
-    this.gl.uniform3f(
-      this.textured_object_program_info.uniform_locations.color,
-      object.color[0],
-      object.color[1],
-      object.color[2]
+    this.gl.uniformMatrix3fv(
+      this.textured_object_program_info.uniform_locations.transform,
+      false,
+      object.transform
     );
     
   
@@ -459,7 +458,7 @@ class scene {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.position_buffer);
     this.gl.bufferData(
       this.gl.ARRAY_BUFFER,
-      new Float32Array(object_group.model.positions),
+      new Float32Array(object_group.positions),
       this.gl.DYNAMIC_DRAW
     );
     this.gl.enableVertexAttribArray(this.object_group_program_info.attribute_locations.position);
@@ -474,7 +473,7 @@ class scene {
       Math.round(object_group.model.faces.length),
       this.gl.UNSIGNED_SHORT,
       0,
-      Math.round(object_group.positions.length / 3)
+      Math.round(object_group.count)
     );
   }
 }
