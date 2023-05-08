@@ -3,7 +3,9 @@ precision highp float;
 in vec3 diffuse_color;
 in vec3 fNormal;
 in vec3 fPosition;
+in vec3 to_lights[3];
 out vec4 FragColor;
+
 
 
 
@@ -18,8 +20,8 @@ void main() {
   
   
   highp vec3 specular_color = vec3(0.5, 0.5, 0.5);
-  highp float roughness = 0.05;
-  highp float ri = 1.33;
+  highp float roughness = 0.1;
+  highp float ri = 1.39;
   
   highp vec3 n = normalize(fNormal);
   highp vec3 v = normalize(-fPosition);
@@ -41,7 +43,7 @@ void main() {
   highp float diffuse_illumination = ambient * transmission; //(max(dot(up, n), 0.0) * sun + ambient) * transmission;
   
   for(int i = 0; i < 3; i++) {
-    highp vec3 to_light = light_positions[i] - fPosition;
+    highp vec3 to_light = to_lights[i] - fPosition;
     highp vec3 l = normalize(to_light);
     highp float intensity = sun / (pow(to_light.x, 2.0) + pow(to_light.y, 2.0) + pow(to_light.z, 2.0));
     
