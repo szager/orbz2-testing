@@ -13,15 +13,15 @@ void main() {
   //cook-torance 
   highp float pi = 3.14159265359; //nah bro it's 4
   
-  highp float ambient = 0.5;
+  highp float ambient = 0.667;
    
   highp float sun = 10000.0;
   highp vec3 up = vec3(0.5, 0.25, 1.0);
   
   
   highp vec3 specular_color = vec3(0.5, 0.5, 0.5);
-  highp float roughness = 0.1;
-  highp float ri = 1.39;
+  highp float roughness = 0.125;
+  highp float ri = 1.33;
   
   highp vec3 n = normalize(fNormal);
   highp vec3 v = normalize(-fPosition);
@@ -36,7 +36,7 @@ void main() {
   highp float fresnel = reflectance + (1.0 - reflectance) * pow(1.0 - angle, 5.0);
   highp float transmission = 1.0 - fresnel;
   
-  highp float specular_illumination = ambient * fresnel;//d * fresnel * g * sun / (4.0 * dot(v, n) * dot(n, up)) + ambient * fresnel;
+  highp float specular_illumination = ambient * fresnel * 1.0;//d * fresnel * g * sun / (4.0 * dot(v, n) * dot(n, up)) + ambient * fresnel;
   
   
   
