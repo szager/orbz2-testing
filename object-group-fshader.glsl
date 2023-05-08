@@ -19,6 +19,7 @@ void main() {
   
   
   highp vec3 specular_color = vec3(0.8, 0.8, 0.8);
+  highp float roughness = 0.05;
   highp float ri = 1.33;
   
   highp vec3 n = normalize(fNormal);
@@ -27,21 +28,26 @@ void main() {
     n *= -1.0;
   }
   
-  highp float specular_illumination = 0.0;//d * fresnel * g * sun / (4.0 * dot(v, n) * dot(n, up)) + ambient * fresnel;
+  highp float angle = max(dot(v, n), 0.0);
+
+  highp float sqrt_reflectance = (ri - 1.0) / (ri + 1.0);
+  highp float reflectance = sqrt_reflectance * sqrt_reflectance;
+  highp float fresnel = reflectance + (1.0 - reflectance) * pow(1.0 - angle, 5.0);
+  highp float transmission = 1.0 - fresnel;
   
-  highp float diffuse_illumination = 0.0;//(max(dot(up, n), 0.0) * sun + ambient) * transmission
+  highp float specular_illumination = ambient * fresnel;//d * fresnel * g * sun / (4.0 * dot(v, n) * dot(n, up)) + ambient * fresnel;
+  
+  
+  
+  highp float diffuse_illumination = ambient * transmission; (max(dot(up, n), 0.0) * sun + ambient) * transmission
   
   for(let i = 0; i < light_positions.length; i++) {
+    highp vec3 to_light = fPosition - light_positions[i];
+    highp vec3 l = normalize(to_light);
+    highp vec3 intensity = 1.0 / (Pow(to_light.x, 2.0) + Pow(to_light.y, 2.0) + Pow(to_light.z, 2.0));
     
-    highp vec3 h = normalize(up + v);
-  
-    highp float angle = max(dot(v, n), 0.0);
-
-    highp float sqrt_reflectance = (ri - 1.0) / (ri + 1.0);
-    highp float reflectance = sqrt_reflectance * sqrt_reflectance;
-    highp float fresnel = reflectance + (1.0 - reflectance) * pow(1.0 - angle, 5.0);
-    highp float transmission = 1.0 - fresnel;
-  
+    
+    highp vec3 h = normalize(l + v);
   //highp float d = 0.4;
   
     highp float fish = acos(dot(n, h)); //the symbol in the equation on wikipedia looks like a fish
@@ -50,8 +56,11 @@ void main() {
   
     highp float g = min(1.0, min(
       2.0 * dot(h, n) * dot(v, n) / dot(v, h),
-      2.0 * dot(h, n) * dot(up, n) / dot(v, h)
+      2.0 * dot(h, n) * dot(l, n) / dot(v, h)
     ));
+    
+    specular_illumination += d * fresnel * g * sun / (4.0 * dot(v, n) * dot(n, up));
+    highp float diffuse_illumination = ambient * transmission; (max(dot(up, n), 0.0) * sun + ambient) * transmission
   }
   
   highp vec3 illumination = specular_illumination * specular_color + diffuse_illumination * diffuse_color;
