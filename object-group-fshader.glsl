@@ -4,7 +4,6 @@ in vec3 diffuse_color;
 in vec3 fNormal;
 in vec3 fPosition;
 out vec4 FragColor;
-uniform vec3 light_positions[3];
 
 
 
@@ -14,11 +13,11 @@ void main() {
   
   highp float ambient = 0.5;
    
-  highp float sun = 0.5;
+  highp float sun = 10000.0;
   highp vec3 up = vec3(0.5, 0.25, 1.0);
   
   
-  highp vec3 specular_color = vec3(0.8, 0.8, 0.8);
+  highp vec3 specular_color = vec3(0.5, 0.5, 0.5);
   highp float roughness = 0.05;
   highp float ri = 1.33;
   
@@ -39,12 +38,12 @@ void main() {
   
   
   
-  highp float diffuse_illumination = ambient * transmission; (max(dot(up, n), 0.0) * sun + ambient) * transmission
+  highp float diffuse_illumination = ambient * transmission; //(max(dot(up, n), 0.0) * sun + ambient) * transmission;
   
-  for(let i = 0; i < light_positions.length; i++) {
-    highp vec3 to_light = fPosition - light_positions[i];
+  for(int i = 0; i < 3; i++) {
+    highp vec3 to_light = light_positions[i] - fPosition;
     highp vec3 l = normalize(to_light);
-    highp vec3 intensity = 1.0 / (Pow(to_light.x, 2.0) + Pow(to_light.y, 2.0) + Pow(to_light.z, 2.0));
+    highp float intensity = sun / (pow(to_light.x, 2.0) + pow(to_light.y, 2.0) + pow(to_light.z, 2.0));
     
     
     highp vec3 h = normalize(l + v);
@@ -59,8 +58,8 @@ void main() {
       2.0 * dot(h, n) * dot(l, n) / dot(v, h)
     ));
     
-    specular_illumination += d * fresnel * g * sun / (4.0 * dot(v, n) * dot(n, up));
-    highp float diffuse_illumination = ambient * transmission; (max(dot(up, n), 0.0) * sun + ambient) * transmission
+    specular_illumination += d * fresnel * g * intensity / (4.0 * dot(v, n) * dot(n, l));
+    diffuse_illumination += (max(dot(l, n), 0.0) * intensity) * transmission;
   }
   
   highp vec3 illumination = specular_illumination * specular_color + diffuse_illumination * diffuse_color;
