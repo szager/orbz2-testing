@@ -44,9 +44,9 @@ class scene {
     this.focus = [0, 0, 8];
     
     this.light_positions = [
-      100, 200, 0,
-      -100, 200, 0,
-      0, 0, 125,
+      100, 250, 50,
+      -100, 250, 50,
+      0, 0, 140,
     ];
     
     //this.object_group_program_info = this.create_object_group_program_old();

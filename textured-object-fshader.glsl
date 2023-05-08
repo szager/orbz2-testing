@@ -24,7 +24,7 @@ void main() {
   
   highp vec3 specular_color = vec3(0.5, 0.5, 0.5);
   highp float roughness = 0.125;
-  highp float ri = 1.33;
+  highp float ri = 1.5;
   
   highp vec3 n = normalize(fNormal);
   highp vec3 v = normalize(-fPosition);
