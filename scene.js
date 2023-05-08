@@ -43,6 +43,12 @@ class scene {
     this.view_distance = 80;
     this.focus = [0, 0, 8];
     
+    this.light_positions = [
+      100, 200, 0,
+      -100, 200, 0,
+      0, 0, 125,
+    ];
+    
     //this.object_group_program_info = this.create_object_group_program_old();
     //this.textured_object_program_info = this.create_textured_object_program_old();
   }
@@ -90,6 +96,7 @@ class scene {
           perspective_matrix: bound_this.gl.getUniformLocation(shader_program, "perspective_matrix"),
           view_matrix: bound_this.gl.getUniformLocation(shader_program, "view_matrix"),
           camera_translation: bound_this.gl.getUniformLocation(shader_program, "camera_translation"),
+          light_positions: bound_this.gl.getUniformLocation(shader_program, "light_positions"),
         },
       };
       return program_info;
@@ -127,7 +134,8 @@ class scene {
           position: bound_this.gl.getUniformLocation(shader_program, "position"),
           perspective_matrix: bound_this.gl.getUniformLocation(shader_program, "perspective_matrix"),
           view_matrix: bound_this.gl.getUniformLocation(shader_program, "view_matrix"),
-          camera_translation: bound_this.gl.getUniformLocation(shader_program, "camera_translation")
+          camera_translation: bound_this.gl.getUniformLocation(shader_program, "camera_translation"),
+          light_positions: bound_this.gl.getUniformLocation(shader_program, "light_positions"),
         }
       };
     
@@ -335,6 +343,11 @@ class scene {
       object.position[2]
     );
     
+    this.gl.uniform3fv(
+      this.textured_object_program_info.uniform_locations.light_positions,
+      this.light_positions
+    );
+    
     this.gl.uniformMatrix3fv(
       this.textured_object_program_info.uniform_locations.transform,
       false,
@@ -428,6 +441,12 @@ class scene {
       false,
       view_matrix
     );
+    
+    this.gl.uniform3fv(
+      this.object_group_program_info.uniform_locations.light_positions,
+      this.light_positions,
+    );
+    
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.vertex_position_buffer);
     this.gl.enableVertexAttribArray(this.object_group_program_info.attribute_locations.vertex_position);
     this.gl.vertexAttribPointer(
