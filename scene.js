@@ -288,7 +288,6 @@ class scene {
   draw_everything(time) {
     if (!this.object_group_program_info || !this.textured_object_program_info)
       return;
-    this.gl.useProgram(this.object_group_program_info.program);
     
     this.gl.clearColor(0.1, 0.2, 0.95, 1.0);
     this.gl.clearDepth(1.0);
@@ -422,6 +421,7 @@ class scene {
   
   
   draw_object_group(object_group, camera_translation, view_matrix, perspective_matrix) {
+    this.gl.useProgram(this.object_group_program_info.program);
     this.gl.uniform3f(
       this.object_group_program_info.uniform_locations.camera_translation,
       camera_translation[0],
@@ -478,13 +478,11 @@ class scene {
     //alert(String(object_group.positions));
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.position_buffer);
-    
     this.gl.bufferData(
       this.gl.ARRAY_BUFFER,
       new Float32Array(object_group.positions),
       this.gl.DYNAMIC_DRAW
     );
-    
     this.gl.enableVertexAttribArray(this.object_group_program_info.attribute_locations.position);
     this.gl.vertexAttribPointer(this.object_group_program_info.attribute_locations.position, 3, this.gl.FLOAT, false, 0, 0);
     this.gl.vertexAttribDivisor(this.object_group_program_info.attribute_locations.position, 1);
