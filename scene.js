@@ -326,7 +326,6 @@ class scene {
   
   
   draw_object(object, camera_translation, view_matrix, perspective_matrix) {
-    this.gl.useProgram(this.textured_object_program_info.program);
     
     this.gl.uniform3f(
       this.textured_object_program_info.uniform_locations.camera_translation,
@@ -410,7 +409,7 @@ class scene {
     
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object.face_buffer);
     //alert(object_group.position_buffer.toString());
-    
+    this.gl.useProgram(this.object_group_program_info.program);
     this.gl.drawElements(
       this.gl.TRIANGLES,
       Math.round(object.model.faces.length),
@@ -421,7 +420,6 @@ class scene {
   
   
   draw_object_group(object_group, camera_translation, view_matrix, perspective_matrix) {
-    this.gl.useProgram(this.object_group_program_info.program);
     this.gl.uniform3f(
       this.object_group_program_info.uniform_locations.camera_translation,
       camera_translation[0],
@@ -490,6 +488,7 @@ class scene {
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
     //alert(object_group.position_buffer.toString());
     
+    this.gl.useProgram(this.object_group_program_info.program);
     this.gl.drawElementsInstanced(
       this.gl.TRIANGLES,
       Math.round(object_group.model.faces.length),
