@@ -478,11 +478,13 @@ class scene {
     //alert(String(object_group.positions));
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.position_buffer);
+    
     this.gl.bufferData(
       this.gl.ARRAY_BUFFER,
       new Float32Array(object_group.positions),
       this.gl.DYNAMIC_DRAW
     );
+    
     this.gl.enableVertexAttribArray(this.object_group_program_info.attribute_locations.position);
     this.gl.vertexAttribPointer(this.object_group_program_info.attribute_locations.position, 3, this.gl.FLOAT, false, 0, 0);
     this.gl.vertexAttribDivisor(this.object_group_program_info.attribute_locations.position, 1);
