@@ -286,8 +286,7 @@ class scene {
   
   
   draw_everything(time) {
-    if (!this.object_group_program_info || !this.textured_object_program_info)
-      return;
+    if (!this.object_group_program_info || !this.textured_object_program_info) return;
     
     this.gl.clearColor(0.1, 0.2, 0.95, 1.0);
     this.gl.clearDepth(1.0);
@@ -314,10 +313,15 @@ class scene {
       camera_matrix[10] * this.view_distance + this.focus[2]
     ];
     
+    this.gl.useProgram(this.object_group_program_info.program);
+    
     for(let i = 0; i < this.object_groups.length; i++) {
       let object_group = this.object_groups[i];
       this.draw_object_group(object_group, camera_translation, view_matrix, perspective_matrix);
     }
+    
+    this.gl.useProgram(this.textured_object_program_info.program);
+    
     for(let i = 0; i < this.objects.length; i++) {
       let object = this.objects[i];
       this.draw_object(object, camera_translation, view_matrix, perspective_matrix);
@@ -409,7 +413,7 @@ class scene {
     
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object.face_buffer);
     //alert(object_group.position_buffer.toString());
-    this.gl.useProgram(this.textured_object_program_info.program);
+    //this.gl.useProgram(this.textured_object_program_info.program);
     
     this.gl.drawElements(
       this.gl.TRIANGLES,
@@ -489,7 +493,6 @@ class scene {
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
     //alert(object_group.position_buffer.toString());
     
-    this.gl.useProgram(this.object_group_program_info.program);
     this.gl.drawElementsInstanced(
       this.gl.TRIANGLES,
       Math.round(object_group.model.faces.length),
