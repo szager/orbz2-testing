@@ -3,6 +3,7 @@ in vec3 vertex_position;
 in vec3 vertex_normal;
 in vec2 vertex_uv;
 
+uniform sampler2D diffuse_sampler;
 uniform mat3 transform;
 uniform vec3 position;
 uniform vec3 light_positions[3];

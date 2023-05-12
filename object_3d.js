@@ -14,9 +14,9 @@ class group_3d {
     this.colors = [];
     this.count = count;
     for(let i = 0; i < this.count; i++) {
-      this.positions.push(Math.random() * 100 - 50);
-      this.positions.push(Math.random() * 100 - 50);
-      this.positions.push(Math.random() * 100 - 50);
+      this.positions.push(Math.random() * 400 - 200);
+      this.positions.push(Math.random() * 400 - 200);
+      this.positions.push(Math.random() * 250 - 100);
       this.colors.push(Math.random());
       this.colors.push(Math.random());
       this.colors.push(Math.random());
