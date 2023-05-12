@@ -201,15 +201,15 @@ class game {
       this.orbeez.forEach(orbie => {
         orbie.move();
       });
-      //for(let i = 0; i < 12; i++) {
-        //this.orbee_interactions();
-      //}
+      for(let i = 0; i < 12; i++) {
+        this.orbee_interactions();
+      }
       
       this.orbeez.forEach(orbie => {
         orbie.update();
       });
+      this.scene.object_groups[0].copy_orbee_positions(this.orbeez);
     }
-    this.scene.object_groups[0].copy_orbee_positions(this.orbeez);
     
     this.scene.draw_everything(this.time);
     
