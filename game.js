@@ -62,12 +62,9 @@ class game {
     this.scene = new scene(canvas, 1002);
     this.mouse_down = false;
     this.orbeez = [];
-    for(let x = -5; x < 5; x++) {
-      for(let y = -5; y < 5; y++) {
-        for(let z = 1; z < 11; z++) {
-          this.orbeez.push(new orbee(x * 14, y * 14, z * 14, x * 14 + 14, y * 14 + 14, z * 14 + 14, this.scene));
-        }
-      }
+    this.orbee_count = 100;
+    for(let i = 0; i < this.orbee_count; i++) {
+      this.orbeez.push(new orbee(-10, -10, 0, 10, 10, 10, this.scene));
     }
     
     this.stopping = false;
