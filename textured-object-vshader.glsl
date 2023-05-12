@@ -3,16 +3,16 @@ in vec3 vertex_position;
 in vec3 vertex_normal;
 in vec2 vertex_uv;
 
-uniform sampler2D diffuse_sampler;
 uniform mat3 transform;
 uniform vec3 position;
 uniform vec3 light_positions[3];
 
 uniform mat4 perspective_matrix;
 uniform mat4 view_matrix;
-
 uniform vec3 camera_translation;
+
 //out vec3 diffuse_color;
+
 out vec3 fNormal;
 out vec3 fPosition;
 out vec2 uv;
@@ -28,7 +28,7 @@ void main() {
     to_lights[i] = light_positions[i] - camera_translation;
   }
   uv = vertex_uv;
-  //fPosition = (transform * (vertex_position + position)) - camera_translation;
-  fPosition = vertex_position + position - camera_translation;
+  fPosition = (transform * (vertex_position + position)) - camera_translation;
+  //fPosition = vertex_position + position - camera_translation;
   gl_Position = perspective_matrix * view_matrix * vec4(fPosition, 1.0);
 }
