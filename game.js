@@ -63,7 +63,7 @@ class game {
     this.mouse_down = false;
     this.orbeez = [];
     for(let i = 0; i < constants.orbee_count; i++) {
-      this.orbeez.push(new orbee(-10, -10, 0, 10, 10, 100, this.scene));
+      this.orbeez.push(new orbee(-10, -10, 5, 10, 10, 15, this.scene));
     }
     
     this.stopping = false;
@@ -133,7 +133,7 @@ class game {
       }
     }
     interactions.forEach(interaction => {
-      let acc_ratio = (radius - interaction.d)/(interaction.d) * 0.0625;
+      let acc_ratio = (radius - interaction.d)/(interaction.d) * 0.03125;
       let dx = interaction.dx * acc_ratio;
       let dy = interaction.dy * acc_ratio;
       let dz = interaction.dz * acc_ratio;
@@ -205,7 +205,7 @@ class game {
       this.orbeez.forEach(orbie => {
         orbie.move();
       });
-      for(let i = 0; i < 8; i++) {
+      for(let i = 0; i < 17; i++) {
         this.orbee_interactions();
       }
       
