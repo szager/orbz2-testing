@@ -15,7 +15,7 @@ class orbee {
     this.dy = (Math.random() - 0.5) * 8;
     this.dz = (Math.random()) * 8;
     this.scene = scene;
-    models.orbee_model.add_to_scene(this.scene);
+    //models.orbee_model.add_to_scene(this.scene);
   }
   move() {
     let damping_ratio = 1 - constants.damping;

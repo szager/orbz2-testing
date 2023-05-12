@@ -35,7 +35,7 @@ class scene {
     
     
     this.object_groups = [
-      new group_3d(models.orbee_model, 2000.0)
+      new group_3d(models.orbee_model, constants.orbee_count)
     ];
     
     this.pitch = .8;

@@ -62,9 +62,8 @@ class game {
     this.scene = new scene(canvas, 1002);
     this.mouse_down = false;
     this.orbeez = [];
-    this.orbee_count = 100;
-    for(let i = 0; i < this.orbee_count; i++) {
-      this.orbeez.push(new orbee(-10, -10, 0, 10, 10, 10, this.scene));
+    for(let i = 0; i < constants.orbee_count; i++) {
+      this.orbeez.push(new orbee(-10, -10, 0, 10, 10, 100, this.scene));
     }
     
     this.stopping = false;
@@ -210,6 +209,7 @@ class game {
         orbie.update();
       });
     }
+    this.scene.object_groups[0].copy_orbee_positions(this.orbeez);
     
     this.scene.draw_everything(this.time);
     
