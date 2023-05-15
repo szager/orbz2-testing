@@ -106,8 +106,8 @@ class game {
   orbee_interactions() {
     let interactions = [];
     let orbee_count = constants.orbee_count;
-    let radius = constants.orbee_radius;
-    let radius_squared = constants.orbee_radius**2;
+    let diameter = constants.orbee_radius * 2;
+    let diameter_squared = diameter**2;
     for(let i = 0; i < orbee_count; i++) {
       for(let j = i; j < orbee_count; j++) {
         let orbee_a = this.orbeez[i];
@@ -115,9 +115,9 @@ class game {
         let dx = orbee_a.x - orbee_b.x;
         let dy = orbee_a.y - orbee_b.y;
         let dz = orbee_a.z - orbee_b.z;
-        if (Math.abs(dx) < radius && Math.abs(dy) < radius && Math.abs(dz) < radius) { //before checking if the orbeez are touching, check if these cubes are touching
+        if (Math.abs(dx) < diameter && Math.abs(dy) < diameter && Math.abs(dz) < diameter) { //before checking if the orbeez are touching, check if these cubes are touching
           let d_squared = (dx**2 + dy**2 + dz**2);
-          if(d_squared < radius_squared && d_squared > 0) {
+          if(d_squared < diameter_squared && d_squared > 0) {
             interactions.push(
               {
                 orbee_a: orbee_a,
@@ -133,7 +133,7 @@ class game {
       }
     }
     interactions.forEach(interaction => {
-      let acc_ratio = (radius - interaction.d)/(interaction.d) * 0.03125;
+      let acc_ratio = (diameter - interaction.d)/(interaction.d) * 0.03125;
       let dx = interaction.dx * acc_ratio;
       let dy = interaction.dy * acc_ratio;
       let dz = interaction.dz * acc_ratio;
