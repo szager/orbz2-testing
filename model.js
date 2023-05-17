@@ -8,10 +8,10 @@ class model {
       for(let i = 0; i < this.uv_map.length; i++) {
         this.uv_map[i] *= 1;
       }
-      alert(`there is a uv map :)${(Math.round(this.uv_map.length/2)==Math.round(this.vertex_positions.length/3))?"and it's good":"but it's bad"}`);
+      //alert(`there is a uv map :)${(Math.round(this.uv_map.length/2)==Math.round(this.vertex_positions.length/3))?"and it's good":"but it's too long " + String(this.uv_map.length/2 - this.vertex_positions.length/3)}`);
     } else {
       this.uv_map = "This model does not have a UV map." // abusing javascript
-      alert("no uv map :(");
+      //alert("no uv map :(");
     }
   }
   add_to_scene(scene) {
