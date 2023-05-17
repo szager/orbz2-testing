@@ -286,7 +286,11 @@ class scene {
   
   
   draw_everything(time) {
-    if (!this.object_group_program_info || !this.textured_object_program_info) return;
+    if (!this.object_group_program_info || !this.textured_object_program_info) {
+      return;
+    }
+    
+    //this.gl.useProgram(this.textured_object_program_info.program);
     
     this.gl.clearColor(0.1, 0.2, 0.95, 1.0);
     this.gl.clearDepth(1.0);
