@@ -62,12 +62,8 @@ class game {
     this.scene = new scene(canvas, 1002);
     this.mouse_down = false;
     this.orbeez = [];
-    for(let x = -5; x < 5; x++) {
-      for(let y = -5; y < 5; y++) {
-        for(let z = 1; z < 11; z++) {
-          this.orbeez.push(new orbee(x * 14, y * 14, z * 14, x * 14 + 14, y * 14 + 14, z * 14 + 14, this.scene));
-        }
-      }
+    for(let i = 0; i < constants.orbee_count; i++) {
+      this.orbeez.push(new orbee(-10, -10, 5, 10, 10, 15, this.scene));
     }
     
     this.stopping = false;
@@ -86,7 +82,7 @@ class game {
   
   async complete_scene() {
     this.scene.initialize_buffers();
-    return Promise.all([
+    await Promise.all([
       this.scene.load_textures(),
       this.scene.load_shaders()
     ]);
@@ -109,8 +105,9 @@ class game {
   
   orbee_interactions() {
     let interactions = [];
-    let orbee_count = this.orbeez.length;
-    let radius = constants.orbee_radius;
+    let orbee_count = constants.orbee_count;
+    let diameter = constants.orbee_radius * 2;
+    let diameter_squared = diameter**2;
     for(let i = 0; i < orbee_count; i++) {
       for(let j = i; j < orbee_count; j++) {
         let orbee_a = this.orbeez[i];
@@ -118,9 +115,9 @@ class game {
         let dx = orbee_a.x - orbee_b.x;
         let dy = orbee_a.y - orbee_b.y;
         let dz = orbee_a.z - orbee_b.z;
-        if (Math.abs(dx) < radius && Math.abs(dy) < radius && Math.abs(dz) < radius) { //before checking if the orbeez are touching, check if these cubes are touching
-          let d = (dx**2 + dy**2 + dz**2)**0.5;
-          if(d < radius && d > 0) {
+        if (Math.abs(dx) < diameter && Math.abs(dy) < diameter && Math.abs(dz) < diameter) { //before checking if the orbeez are touching, check if these cubes are touching
+          let d_squared = (dx**2 + dy**2 + dz**2);
+          if(d_squared < diameter_squared && d_squared > 0) {
             interactions.push(
               {
                 orbee_a: orbee_a,
@@ -128,7 +125,7 @@ class game {
                 dx: dx,
                 dy: dy,
                 dz: dz,
-                d: d
+                d: d_squared**0.5
               }
             );
           }
@@ -136,21 +133,24 @@ class game {
       }
     }
     interactions.forEach(interaction => {
-      let acc_ratio = (radius - interaction.d)/(interaction.d) * 0.0625;
-      interaction.orbee_a.dx += interaction.dx * acc_ratio;
-      interaction.orbee_a.dy += interaction.dy * acc_ratio;
-      interaction.orbee_a.dz += interaction.dz * acc_ratio;
-      interaction.orbee_b.dx -= interaction.dx * acc_ratio;
-      interaction.orbee_b.dy -= interaction.dy * acc_ratio;
-      interaction.orbee_b.dz -= interaction.dz * acc_ratio;
+      let acc_ratio = (diameter - interaction.d)/(interaction.d) * 0.03125;
+      let dx = interaction.dx * acc_ratio;
+      let dy = interaction.dy * acc_ratio;
+      let dz = interaction.dz * acc_ratio;
+      interaction.orbee_a.dx += dx;
+      interaction.orbee_a.dy += dy;
+      interaction.orbee_a.dz += dz;
+      interaction.orbee_b.dx -= dx;
+      interaction.orbee_b.dy -= dy;
+      interaction.orbee_b.dz -= dz;
       
-      interaction.orbee_a.x += interaction.dx * acc_ratio;
-      interaction.orbee_a.y += interaction.dy * acc_ratio;
-      interaction.orbee_a.z += interaction.dz * acc_ratio;
-      interaction.orbee_b.x -= interaction.dx * acc_ratio;
-      interaction.orbee_b.y -= interaction.dy * acc_ratio;
-      interaction.orbee_b.z -= interaction.dz * acc_ratio;
-    })
+      interaction.orbee_a.x += dx;
+      interaction.orbee_a.y += dy;
+      interaction.orbee_a.z += dz;
+      interaction.orbee_b.x -= dx;
+      interaction.orbee_b.y -= dy;
+      interaction.orbee_b.z -= dz;
+    });
   }
   
   update() {
@@ -205,13 +205,14 @@ class game {
       this.orbeez.forEach(orbie => {
         orbie.move();
       });
-      //for(let i = 0; i < 12; i++) {
-        //this.orbee_interactions();
-      //}
+      for(let i = 0; i < 17; i++) {
+        this.orbee_interactions();
+      }
       
       this.orbeez.forEach(orbie => {
         orbie.update();
       });
+      this.scene.object_groups[0].copy_orbee_positions(this.orbeez);
     }
     
     this.scene.draw_everything(this.time);
