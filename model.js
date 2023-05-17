@@ -8,7 +8,7 @@ class model {
       for(let i = 0; i < this.uv_map.length; i++) {
         this.uv_map[i] *= 1;
       }
-      alert(`there is a uv map :)${(Math.round(this.uv_map.length/2)<Math.round(this.vertex_positions.length/3))?"but it's bad":"and it's pretty good"}`);
+      alert(`there is a uv map :)${(Math.round(this.uv_map.length/2)==Math.round(this.vertex_positions.length/3))?"and it's good":"but it's bad"}`);
     } else {
       this.uv_map = "This model does not have a UV map." // abusing javascript
       alert("no uv map :(");
