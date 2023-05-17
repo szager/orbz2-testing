@@ -35,18 +35,18 @@ class scene {
     
     
     this.object_groups = [
-      new group_3d(models.orbee_model, constants.orbee_count)
+      new group_3d(models.orbee_model, 80.0)
     ];
     
     this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 40;
-    this.focus = [0, 0, 4];
+    this.view_distance = 80;
+    this.focus = [0, 0, 8];
     
     this.light_positions = [
-      100, 225, 50,
-      -100, 225, 50,
-      0, 0, 140,
+      100, 200, 0,
+      -100, 200, 0,
+      0, 0, 125,
     ];
     
     //this.object_group_program_info = this.create_object_group_program_old();
@@ -286,7 +286,9 @@ class scene {
   
   
   draw_everything(time) {
-    if (!this.object_group_program_info || !this.textured_object_program_info) return;
+    if (!this.object_group_program_info || !this.textured_object_program_info)
+      return;
+    this.gl.useProgram(this.object_group_program_info.program);
     
     this.gl.clearColor(0.1, 0.2, 0.95, 1.0);
     this.gl.clearDepth(1.0);
@@ -313,22 +315,11 @@ class scene {
       camera_matrix[10] * this.view_distance + this.focus[2]
     ];
     
-    
     for(let i = 0; i < this.object_groups.length; i++) {
-      
-      this.gl.useProgram(this.object_group_program_info.program);
-      //this.gl.useProgram(this.textured_object_program_info.program);
-      
       let object_group = this.object_groups[i];
       this.draw_object_group(object_group, camera_translation, view_matrix, perspective_matrix);
     }
-    
-    
-    
     for(let i = 0; i < this.objects.length; i++) {
-      
-      this.gl.useProgram(this.textured_object_program_info.program);
-      
       let object = this.objects[i];
       this.draw_object(object, camera_translation, view_matrix, perspective_matrix);
     }
@@ -336,6 +327,7 @@ class scene {
   
   
   draw_object(object, camera_translation, view_matrix, perspective_matrix) {
+    this.gl.useProgram(this.textured_object_program_info.program);
     
     this.gl.uniform3f(
       this.textured_object_program_info.uniform_locations.camera_translation,
@@ -419,7 +411,6 @@ class scene {
     
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object.face_buffer);
     //alert(object_group.position_buffer.toString());
-    //this.gl.useProgram(this.textured_object_program_info.program);
     
     this.gl.drawElements(
       this.gl.TRIANGLES,

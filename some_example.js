@@ -1,4 +1,4 @@
-//'use strict';
+'use strict';
 
 const vertexShaderSource = `#version 300 es
 in vec4 a_position;
@@ -8,7 +8,7 @@ out vec4 v_color;
 
 void main() {
   // Multiply the position by the matrix.
-  gl_Position = a_position + color * 0.7;
+  gl_Position = a_position;
 
   // Pass the vertex color to the fragment shader.
   v_color = color;
@@ -42,7 +42,7 @@ function load_shader(type, source, gl) {
 
 function create_shader_program(vss, fss, gl) {
   let vs = load_shader(gl.VERTEX_SHADER, vss, gl);
-  let fs = load_shader(gl.FRAGMENT_SHADER, fss, gl);
+  let fs = load_shader(gl.VERTEX_SHADER, fss, gl);
   let shader_program = gl.createProgram();
   gl.attachShader(shader_program, vs);
   gl.attachShader(shader_program, fs);
