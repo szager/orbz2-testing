@@ -28,7 +28,7 @@ void main() {
     to_lights[i] = light_positions[i] - camera_translation;
   }
   uv = vertex_uv;
-  fPosition = (transform * (vertex_position + position)) - camera_translation;
+  fPosition = ((vertex_position + position)) - camera_translation;
   //fPosition = vertex_position + position - camera_translation;
   gl_Position = perspective_matrix * view_matrix * vec4(fPosition, 1.0);
 }

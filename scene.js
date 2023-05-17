@@ -313,16 +313,20 @@ class scene {
       camera_matrix[10] * this.view_distance + this.focus[2]
     ];
     
-    this.gl.useProgram(this.object_group_program_info.program);
     
     for(let i = 0; i < this.object_groups.length; i++) {
+      
+      this.gl.useProgram(this.object_group_program_info.program);
+      
       let object_group = this.object_groups[i];
       this.draw_object_group(object_group, camera_translation, view_matrix, perspective_matrix);
     }
     
+    
     this.gl.useProgram(this.textured_object_program_info.program);
     
     for(let i = 0; i < this.objects.length; i++) {
+      
       let object = this.objects[i];
       this.draw_object(object, camera_translation, view_matrix, perspective_matrix);
     }
