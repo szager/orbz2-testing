@@ -40,7 +40,7 @@ class scene {
     
     this.pitch = .8;
     this.yaw = 0;
-    this.view_distance = 80;
+    this.view_distance = 42;
     this.focus = [0, 0, 8];
     
     this.light_positions = [
@@ -323,9 +323,10 @@ class scene {
     }
     
     
-    this.gl.useProgram(this.textured_object_program_info.program);
     
     for(let i = 0; i < this.objects.length; i++) {
+      
+      this.gl.useProgram(this.textured_object_program_info.program);
       
       let object = this.objects[i];
       this.draw_object(object, camera_translation, view_matrix, perspective_matrix);

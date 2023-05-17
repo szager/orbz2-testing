@@ -22,7 +22,7 @@ void main() {
   highp vec3 up = vec3(0.5, 0.25, 1.0);
   
   
-  highp vec3 specular_color = vec3(0.5, 0.5, 0.5);
+  highp vec3 specular_color = vec3(1.0, 1.0, 1.0);
   highp float roughness = 0.125;
   highp float ri = 1.5;
   
