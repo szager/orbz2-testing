@@ -508,6 +508,9 @@ class scene {
       0,
       Math.round(object_group.count)
     );
+    
+    this.gl.vertexAttribDivisor(this.object_group_program_info.attribute_locations.color, 0);
+    this.gl.vertexAttribDivisor(this.object_group_program_info.attribute_locations.position, 0);
   }
 }
 
