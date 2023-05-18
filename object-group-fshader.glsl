@@ -26,11 +26,11 @@ void main() {
   highp vec3 n = normalize(fNormal);
   highp vec3 v = normalize(-fPosition);
   
-  highp float alpha = 1.0;
+  //highp float alpha = 1.0;
   
   if(dot(v, n) < 0.0) {
     n *= -1.0;
-    alpha = 0.0;
+    //alpha = 0.0;
   }
   
   highp float angle = max(dot(v, n), 0.0);
@@ -72,9 +72,9 @@ void main() {
   highp vec3 gamma_corrected_illumination = pow(illumination, vec3(0.45359237));
   
   
-  //FragColor = vec4(gamma_corrected_illumination, 1.0);
+  FragColor = vec4(gamma_corrected_illumination, 1.0);
   
-  FragColor = vec4(vec3(specular_illumination / (1.0 - transmission)
+  //FragColor = vec4(vec3(specular_illumination / (1.0 - transmission)
 ), (1.0 - transmission) * alpha);
   
 }
