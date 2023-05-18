@@ -296,6 +296,8 @@ class scene {
     
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.depthFunc(this.gl.LEQUAL);
+    this.gl.enable(this.gl.BLEND);
+    this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     let perspective_matrix = mat4.create();
     mat4.perspective(
@@ -324,7 +326,6 @@ class scene {
       let object = this.objects[i];
       this.draw_object(object, camera_translation, view_matrix, perspective_matrix);
     }
-    
     
     for(let i = 0; i < this.object_groups.length; i++) {
       
