@@ -334,7 +334,6 @@ class scene {
     }
   }
   
-  
   draw_object(object, camera_translation, view_matrix, perspective_matrix) {
     
     //this.gl.useProgram(this.object_group_program_info.program);

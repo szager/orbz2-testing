@@ -18,6 +18,8 @@ class group_3d {
       this.positions.push(Math.random() * 48 + 145);
       this.positions.push(Math.random() * 96 - 195);
       this.positions.push(Math.random() * 186 - 88);
+      
+      let hue = Math.random();
       this.colors.push(Math.random());
       this.colors.push(Math.random());
       this.colors.push(Math.random());
