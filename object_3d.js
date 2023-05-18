@@ -19,10 +19,14 @@ class group_3d {
       this.positions.push(Math.random() * 96 - 195);
       this.positions.push(Math.random() * 186 - 88);
       
-      let hue = Math.random();
-      this.colors.push(Math.random());
-      this.colors.push(Math.random());
-      this.colors.push(Math.random());
+      let orbee_colors = [
+        [1, 0, 0],
+        [1, 1, 0],
+        [0, 1, 0],
+        [0, 0.2, 1],
+        [1, 1, 1,]
+      ];
+      this.colors = this.colors.concat(orbee_colors[i % orbee_colors.length]);
     }
   }
   
