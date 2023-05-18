@@ -74,7 +74,7 @@ void main() {
   
   //FragColor = vec4(gamma_corrected_illumination, 1.0);
   
-  FragColor = vec4(vec3(pow(specular_illumination / (1.0 - transmission), 0.45454545454
-)), (1.0 - transmission) * alpha);
+  FragColor = vec4(vec3(specular_illumination / (1.0 - transmission)
+), (1.0 - transmission) * alpha);
   
 }
