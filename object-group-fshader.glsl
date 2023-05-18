@@ -68,6 +68,6 @@ void main() {
   highp vec3 gamma_corrected_illumination = pow(illumination, vec3(0.45359237));
   
   
-  FragColor = vec4(gamma_corrected_illumination, 1.0);
+  FragColor = vec4(gamma_corrected_illumination, 0.1);
   
 }
