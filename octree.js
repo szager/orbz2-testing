@@ -9,10 +9,10 @@ class octree { //it's O(nlogn)
 class octree_branch {
   constructor(corner_a, corner_b, depth, possible_orbeez, parent) {
     
-    if(parent && depth > 0) {
+    if(parent) {
       this.parent = parent;
     } else {
-      this.parent = "i forgor ";
+      this.parent = "i forgor ☠"; // I am causing physical pain 👍
     }
     
     
