@@ -7,10 +7,23 @@ class octree { //it's O(nlogn)
 }
 
 class octree_branch {
-  constructor(corner_a, corner_b, parent, depth) {
-    this.parent = parent;
+  constructor(corner_a, corner_b, depth, possible_orbeez, parent) {
+    
+    if(parent && depth > 0) {
+      this.parent = parent;
+    } else {
+      this.parent = "i forgor ";
+    }
+    
+    
     this.corner_a = corner_a;
     this.corner_b = corner_b;
+    
+    let midpoint = [0, 0, 0];
+    for(let i = 0; i < 3; i++) {
+      midpoint[i] = (corner_a[i] + corner_b[i]) / 2;
+    }
+    
     
   }
 }
