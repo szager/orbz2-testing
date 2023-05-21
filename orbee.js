@@ -11,9 +11,9 @@ class orbee {
     this.x = x1 + Math.random() * (x2 - x1);
     this.y = y1 + Math.random() * (y2 - y1);
     this.z = z1 + Math.random() * (z2 - z1);
-    this.dx = (Math.random() - 0.5) * 1;
-    this.dy = (Math.random() - 0.5) * 1;
-    this.dz = (Math.random()) * 2;
+    this.dx = (Math.random() - 0.5) * .1;
+    this.dy = (Math.random() - 0.5) * .1;
+    this.dz = (Math.random()) * .2;
     //this.scene = scene;
     //models.orbee_model.add_to_scene(this.scene);
   }

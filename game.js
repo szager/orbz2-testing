@@ -11,6 +11,37 @@ function modulo(a, b) {
 
 class game {
   
+  constructor(canvas, perf_canvas) {
+    this.frame_timestamps = [];
+    this.framerate = -1;
+    for(let i = 0; i < constants.frame_timestamps; i++) {
+      this.frame_timestamps.push(performance.now());
+    }
+    this.fps_counter = document.querySelector("p");
+    this.canvas = canvas;
+    this.perf_canvas = perf_canvas;
+    this.framerate_displayer = new graph_displayer(this.perf_canvas);
+    this.scene = new scene(canvas, 1002);
+    this.mouse_down = false;
+    this.orbeez = [];
+    for(let i = 0; i < constants.orbee_count; i++) {
+      this.orbeez.push(new orbee(-4, 4, -4, 4, 1, 100, this.scene));
+    }
+    
+    this.stopping = false;
+    this.paused = false;
+    this.frame_time = 1 / 60;
+    this.time = 0;
+    
+    this.bound_update_method = this.update_and_stuff.bind(this);
+    let bound_this = this;
+    document.addEventListener("mousedown", bound_this.handle_mousedown.bind(bound_this));
+    document.addEventListener("mouseup", bound_this.handle_mouseup.bind(bound_this));
+    document.addEventListener("mousemove", bound_this.handle_mousemove.bind(bound_this));    
+    
+    this.complete_scene().then(() => { requestAnimationFrame(bound_this.bound_update_method); });
+  }
+  
   pause() {
     this.paused = true;
   }
@@ -49,36 +80,6 @@ class game {
     }
   }
   
-  constructor(canvas, perf_canvas) {
-    this.frame_timestamps = [];
-    this.framerate = -1;
-    for(let i = 0; i < constants.frame_timestamps; i++) {
-      this.frame_timestamps.push(performance.now());
-    }
-    this.fps_counter = document.querySelector("p");
-    this.canvas = canvas;
-    this.perf_canvas = perf_canvas;
-    this.framerate_displayer = new graph_displayer(this.perf_canvas);
-    this.scene = new scene(canvas, 1002);
-    this.mouse_down = false;
-    this.orbeez = [];
-    for(let i = 0; i < constants.orbee_count; i++) {
-      this.orbeez.push(new orbee(-10, -10, 5, 10, 10, 15, this.scene));
-    }
-    
-    this.stopping = false;
-    this.paused = false;
-    this.frame_time = 1 / 60;
-    this.time = 0;
-    
-    this.bound_update_method = this.update_and_stuff.bind(this);
-    let bound_this = this;
-    document.addEventListener("mousedown", bound_this.handle_mousedown.bind(bound_this));
-    document.addEventListener("mouseup", bound_this.handle_mouseup.bind(bound_this));
-    document.addEventListener("mousemove", bound_this.handle_mousemove.bind(bound_this));    
-    
-    this.complete_scene().then(() => { requestAnimationFrame(bound_this.bound_update_method); });
-  }
   
   async complete_scene() {
     this.scene.initialize_buffers();
