@@ -13,21 +13,22 @@ class octree { //it's O(nlogn)
     }
     
     
-    for (let x = 0; x < 1; x++) { //add up to 8 branches
-      for(let y = 0; y < 1; y++) {
-        for(let z = 0; z < 1; z++) {
+    for (let x = 0; x < 2; x++) { //add up to 8 branches
+      for(let y = 0; y < 2; y++) {
+        for(let z = 0; z < 2; z++) {
           this.branches.push(
             new octree_branch(
               [
-                this.corner_a[0] + this.half_space_diagonal[0] * x,
-                this.corner_a[1] + this.half_space_diagonal[1] * y,
-                this.corner_a[2] + this.half_space_diagonal[2] * z,
+                this.corner_a[0] + half_space_diagonal[0] * x,
+                this.corner_a[1] + half_space_diagonal[1] * y,
+                this.corner_a[2] + half_space_diagonal[2] * z,
               ],
               [
-                this.corner_b[0] - this.half_space_diagonal[0] * x,
-                this.corner_b[1] - this.half_space_diagonal[1] * y,
-                this.corner_b[2] - this.half_space_diagonal[2] * z,
+                this.corner_a[0] + half_space_diagonal[0] * (x + 1),
+                this.corner_a[1] + half_space_diagonal[1] * (y + 1),
+                this.corner_a[2] + half_space_diagonal[2] * (z + 1),
               ],
+              0,
               this.orbeez_inside,
               this
             )
@@ -35,8 +36,6 @@ class octree { //it's O(nlogn)
         }
       }
     }
-    
-    
     
   }
 }
