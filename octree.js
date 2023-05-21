@@ -3,6 +3,8 @@ class octree { //it's O(nlogn)
     this.orbeez_inside = orbeez;
     this.corner_a = [-512, -512, -512];
     this.corner_b = [512, 512, 512];
+    
+    this.branches = [];
   }
 }
 
@@ -12,7 +14,7 @@ class octree_branch {
     if(parent) {
       this.parent = parent;
     } else {
-      this.parent = "i forgor ☠"; // I am causing physical pain 👍
+      this.parent = null; //i forgor ☠
     }
     
     
@@ -23,7 +25,5 @@ class octree_branch {
     for(let i = 0; i < 3; i++) {
       midpoint[i] = (corner_a[i] + corner_b[i]) / 2;
     }
-    
-    
   }
 }
