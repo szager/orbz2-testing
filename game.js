@@ -3,6 +3,7 @@ import {models} from "./models.js";
 import {orbee} from "./orbee.js";
 import {constants} from "./constants.js";
 import {graph_displayer} from "./graph_displayer.js";
+import {octree} from "./octree.js";
 
 function modulo(a, b) {
   return a - Math.floor(a / b) * b;
@@ -27,6 +28,10 @@ class game {
     for(let i = 0; i < constants.orbee_count; i++) {
       this.orbeez.push(new orbee(-4, 4, -4, 4, 1, 100, this.scene));
     }
+    
+    
+    console.log(new octree(this.orbeez));
+    
     
     this.stopping = false;
     this.paused = false;
