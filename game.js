@@ -215,7 +215,7 @@ class game {
         orbie.move();
       });
       
-      for(let i = 0; i < 17; i++) {
+      for(let i = 0; i < 8; i++) {
         this.orbee_interactions();
       }
       

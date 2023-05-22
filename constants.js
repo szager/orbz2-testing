@@ -10,8 +10,8 @@ let constants = {
   frame_timestamps: 30,
   
   //1 centimetre per frame squared is 3.6 metres per second squared
-  gravity: .2725, //this is 1 g of acceleration
-  //gravity: 0.068125, //floaty gravity!
+  //gravity: .2725, //this is 1 g of acceleration
+  gravity: 0.06810173611, //floaty gravity!
   
   
   damping: .01  //the orbeez will have their real-life terminal velocity
