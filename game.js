@@ -31,7 +31,6 @@ class game {
     
     
     let some_octree = new octree(this.orbeez);
-    alert(String(some_octr)
     
     this.stopping = false;
     this.paused = false;
