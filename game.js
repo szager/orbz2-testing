@@ -30,7 +30,7 @@ class game {
     }
     
     
-    let some_octree = new octree(this.orbeez);
+    
     
     this.stopping = false;
     this.paused = false;
@@ -206,6 +206,10 @@ class game {
         //orbie.dz += 2.7;
      // })
     //}
+    
+    //let some_octree = new octree(this.orbeez);
+    
+    
     if(this.time > 1) {
       this.orbeez.forEach(orbie => {
         orbie.move();
