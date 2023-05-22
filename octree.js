@@ -27,26 +27,27 @@ class octree_branch {
     this.orbeez = orbeez;
     this.depth = depth;
     
-    for (let x = 0; x <= 1; x++) { //add up to 8 branches
+    this.branches = [];
+    if(this.depth > 0) {
+      for (let x = 0; x <= 1; x++) { //add up to 8 branches
       for(let y = 0; y <= 1; y++) {
         for(let z = 0; z <= 1; z++) {
           this.branches.push(
-            new octree_branch(
+            this.generate_content(
               [
                 this.corner_a[0] + half_space_diagonal[0] * x,
                 this.corner_a[1] + half_space_diagonal[1] * y,
                 this.corner_a[2] + half_space_diagonal[2] * z,
               ],
               [
-                this.corner_a[0] + half_space_diagonal[0] * (x + 1),
+                  this.corner_a[0] + half_space_diagonal[0] * (x + 1),
                 this.corner_a[1] + half_space_diagonal[1] * (y + 1),
-                this.corner_a[2] + half_space_diagonal[2] * (z + 1),
-              ],
-              0,
-              this.orbeez,
-              this
-            )
-          );
+                  this.corner_a[2] + half_space_diagonal[2] * (z + 1),
+                ],
+                this.orbeez,
+              )
+            );
+          }
         }
       }
     }
@@ -58,20 +59,35 @@ class octree_branch {
       let is_in_box = true;
       let orbee = orbeez_outside[i];
       
+      let coordinate = [orbee.orbee.x, orbee.orbee.y, orbee.orbee.z]
+      
       let corners = [corner_a, corner_b];
       
-      for(let j = 0; j <= 3; x++) {
-        for(let y = 0; y <= 1; y++) {
-          for(let z = 0; z <= 1; z++) {
-            if(orbee.x  ) {
-              
-            }
-          }
-        } 
+      for(let j = 0; j < 3; j++) {
+        if(coordinate[j] > corner_a[j] && coordinate[j] <= corner_b[j]) {
+          orbeez.push(orbee);
+        }
       }
       
     }
     
+    if(orbeez.length == 0) {
+      return null;
+    } else if(orbeez.length == 1) {
+      orbeez[0].parent = this;
+      return orbeez[0];
+    } else {
+      let branch = new octree_branch(corner_a, corner_b, this.depth - 1, orbeez, this);
+      if(branch.branches.length == 0) {
+        alert("a photon has entered your computer!");
+        return;
+      } else if (branch.branches.length == 1) {
+        branch.branches[0].parent = this;
+        return branch.branches[0];
+      } else {
+        return branch;
+      }
+    }
   }
 }
 
