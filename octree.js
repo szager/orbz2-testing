@@ -32,21 +32,25 @@ class octree_branch {
       for (let x = 0; x <= 1; x++) { //add up to 8 branches
         for(let y = 0; y <= 1; y++) {
           for(let z = 0; z <= 1; z++) {
-            this.branches.push(
-              this.generate_content(
-                [
-                  this.corner_a[0] + half_space_diagonal[0] * x,
-                  this.corner_a[1] + half_space_diagonal[1] * y,
-                  this.corner_a[2] + half_space_diagonal[2] * z,
-                ],
-                [
-                  this.corner_a[0] + half_space_diagonal[0] * (x + 1),
-                  this.corner_a[1] + half_space_diagonal[1] * (y + 1),
-                  this.corner_a[2] + half_space_diagonal[2] * (z + 1),
-                ],
-                this.orbeez,
-              )
+            let new_branch = this.generate_content(
+              [
+                this.corner_a[0] + half_space_diagonal[0] * x,
+                this.corner_a[1] + half_space_diagonal[1] * y,
+                this.corner_a[2] + half_space_diagonal[2] * z,
+              ],
+              [
+                this.corner_a[0] + half_space_diagonal[0] * (x + 1),
+                this.corner_a[1] + half_space_diagonal[1] * (y + 1),
+                this.corner_a[2] + half_space_diagonal[2] * (z + 1),
+              ],
+              this.orbeez,
             );
+            if(new_branch != null) {
+              this.branches.push(
+                new_branch
+              );
+            }
+            
           }
         }
       }
@@ -67,9 +71,12 @@ class octree_branch {
       let coordinate = [orbee.orbee.x, orbee.orbee.y, orbee.orbee.z]
       
       for(let j = 0; j < 3; j++) {
-        if(coordinate[j] > corner_a[j] && coordinate[j] <= corner_b[j]) {
-          orbeez.push(orbee);
+        if(coordinate[j] < corner_a[j] || coordinate[j] >= corner_b[j]) {
+          is_in_box = false;
         }
+      }
+      if(is_in_box) {
+        orbeez.push(orbee);
       }
       
     }
@@ -83,7 +90,7 @@ class octree_branch {
       let branch = new octree_branch(corner_a, corner_b, this.depth - 1, orbeez, this);
       if(branch.branches.length == 0) {
         alert("a photon has entered your computer!");
-        return;
+        return null;
       } else if (branch.branches.length == 1) {
         branch.branches[0].parent = this;
         return branch.branches[0];
@@ -104,11 +111,15 @@ class octree {
       let orbee = orbeez[i]
       
       let coordinate = [orbee.x, orbee.y, orbee.z]
+      let is_where_orbeez_are_supposed_to_be = true;
       
       for(let j = 0; j < 3; j++) {
-        if(coordinate[j] > this.corner_a[j] && coordinate[j] <= this.corner_b[j]) {
-          this.orbeez_inside.push(new orbee_in_octree(orbee));
+        if(coordinate[j] < this.corner_a[j] || coordinate[j] >= this.corner_b[j]) {
+          is_where_orbeez_are_supposed_to_be = false;
         }
+      }
+      if(is_where_orbeez_are_supposed_to_be) {
+        this.orbeez_inside.push(new orbee_in_octree(orbee));
       }
     }
     this.branch = new octree_branch(this.corner_a, this.corner_b, this.max_depth, this.orbeez_inside);
