@@ -124,6 +124,13 @@ class octree {
     }
     this.branch = new octree_branch(this.corner_a, this.corner_b, this.max_depth, this.orbeez_inside);
   }
+  
+  adjust_walls() {
+    
+  }
+  self_query() {
+    
+  }
 }
 
 
