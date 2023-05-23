@@ -1,3 +1,5 @@
+
+
 class orbee_in_octree {
   constructor(orbee) {
     this.orbee = orbee;
@@ -118,12 +120,18 @@ class octree_branch {
     let walls_changed = false;
     for(let i = 0; i < 3; i++) {
       if(this.corner_a[i] > position[i] - radius) {
-        
+        walls_changed = true;
+        this.corner_a[i] = position[i] - radius;
       }
-      this.corner_a[i] = Math.min(this.corner_a[i], position[i] - radius);
-      this.corner_b[i] = Math.max(this.corner_b[i], position[i] + radius);
+      if(this.corner_b[i] < position[i] + radius) {
+        walls_changed = true;
+        this.corner_b[i] = position[i] + radius;
+      }
     }
     
+    if(walls_changed && this.parent) {
+      this.parent.extend_walls(position, radius);
+    }
   }
 }
 
@@ -151,8 +159,12 @@ class octree {
     this.branch = new octree_branch(this.corner_a, this.corner_b, this.max_depth, this.orbeez_inside);
   }
   
-  adjust_walls() {
-    
+  adjust_walls(radius) {
+    this.branch.reset_walls();
+    for(let i = 0; i < this.orbeez_inside.length; i++) {
+      let orbee = this.orbeez_inside[i];
+      orbee.parent.extend_walls([orbee.orbee.x, orbee.orbee.y, orbee.orbee.z, radius]);
+    }
   }
   self_query() {
     
