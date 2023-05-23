@@ -140,6 +140,13 @@ class octree_branch {
     let result = [];
     return result;
   }
+  hit_test(branch) {
+    return false;
+  }
+  orbee_query(orbee) {
+    let result = [];
+    return result;
+  }
   self_query() {
     let result = [];
     return result;
