@@ -38,7 +38,6 @@ class game {
     this.time = 0;
     
     this.bound_update_method = this.update_and_stuff.bind(this);
-    this.bound_update_in_one_frame_method = this.update_in_one_frame.bind(this);
     
     let bound_this = this;
     document.addEventListener("mousedown", bound_this.handle_mousedown.bind(bound_this));
@@ -60,11 +59,15 @@ class game {
     this.stopping = true;
   }
   
-  update_in_one_frame() {
-    requestAnimationFrame(this.bound_update_method);
-  }
+
   
   update_and_stuff(now) {
+    if(!this.stopping) {
+      if(!this.paused) {
+        this.update();
+      }
+      requestAnimationFrame(this.bound_update_method);
+    }
     //let now = performance.now();
     if(this.frame_timestamps.length <= constants.frame_timestamps) { //paranoia
       this.frame_timestamps.push(now);
@@ -84,12 +87,7 @@ class game {
       //this.alert_cooldown = 60;
       //this.enable_alerts = confirm(`wyh is the framerate so fadst? it is ${Math.round(1000 / (now - this.then)) || "???"} hertz`);
     //}
-    if(!this.stopping) {
-      if(!this.paused) {
-        this.update();
-      }
-      requestAnimationFrame(this.bound_update_in_one_frame_method);
-    }
+    
   }
   
   
