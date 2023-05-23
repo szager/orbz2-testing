@@ -99,6 +99,32 @@ class octree_branch {
       }
     }
   }
+  reset_walls() {
+    for(let i = 0; i < 3; i++) {
+      this.corner_a[i] = Infinity; //cursed programming
+      this.corner_b[i] = -Infinity;
+    }
+    
+    for(let i = 0; i < this.branches.length; i++) {
+      let branch = this.branches[i];
+      if(branch.corner_a) { //make sure that it is not just a loose orbee
+        branch.reset_walls();
+      }
+    }
+    
+  }
+  
+  extend_walls(position, radius) {
+    let walls_changed = false;
+    for(let i = 0; i < 3; i++) {
+      if(this.corner_a[i] > position[i] - radius) {
+        
+      }
+      this.corner_a[i] = Math.min(this.corner_a[i], position[i] - radius);
+      this.corner_b[i] = Math.max(this.corner_b[i], position[i] + radius);
+    }
+    
+  }
 }
 
 class octree {
