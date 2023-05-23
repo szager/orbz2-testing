@@ -38,6 +38,8 @@ class game {
     this.time = 0;
     
     this.bound_update_method = this.update_and_stuff.bind(this);
+    this.bound_update_in_one_frame_method = this.update_in_one_frame.bind(this);
+    
     let bound_this = this;
     document.addEventListener("mousedown", bound_this.handle_mousedown.bind(bound_this));
     document.addEventListener("mouseup", bound_this.handle_mouseup.bind(bound_this));
@@ -56,6 +58,10 @@ class game {
   
   stop() {
     this.stopping = true;
+  }
+  
+  update_in_one_frame() {
+    requestAnimationFrame(this.bound_update_method);
   }
   
   update_and_stuff(now) {
@@ -82,7 +88,7 @@ class game {
       if(!this.paused) {
         this.update();
       }
-      requestAnimationFrame(this.bound_update_method);
+      requestAnimationFrame(this.bound_update_in_one_frame_method);
     }
   }
   
