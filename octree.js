@@ -167,7 +167,7 @@ class octree {
     }
   }
   self_query() {
-    
+    //um...
   }
 }
 
