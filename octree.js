@@ -4,6 +4,7 @@ class orbee_in_octree {
   constructor(orbee) {
     this.orbee = orbee;
     this.parent = null;
+    this.is_octree = false;
   }
 }
 
@@ -17,6 +18,7 @@ class octree_branch {
       this.parent = null; //i forgor ☠
     }
     
+    this.is_octree = true;
     
     this.corner_a = corner_a;
     this.corner_b = corner_b;
@@ -109,7 +111,7 @@ class octree_branch {
     
     for(let i = 0; i < this.branches.length; i++) {
       let branch = this.branches[i];
-      if(branch.corner_a) { //make sure that it is not just a loose orbee
+      if(branch.is_octree) {
         branch.reset_walls();
       }
     }
@@ -132,6 +134,15 @@ class octree_branch {
     if(walls_changed && this.parent) {
       this.parent.extend_walls(position, radius);
     }
+  }
+  
+  query_another_branch(branch) {
+    let result = [];
+    return result;
+  }
+  self_query() {
+    let result = [];
+    return result;
   }
 }
 
@@ -167,7 +178,7 @@ class octree {
     }
   }
   self_query() {
-    //um...
+    return this.branch.self_query
   }
 }
 
