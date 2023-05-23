@@ -63,7 +63,7 @@ class game {
     if(this.frame_timestamps.length <= constants.frame_timestamps) { //paranoia
       this.frame_timestamps.push(now);
     }
-    for(let i = 0; i < 4; i++) {
+    for(let i = 0; i < 2; i++) {
       if(this.frame_timestamps.length > constants.frame_timestamps) {
         this.frame_timestamps.shift();
       }
@@ -219,7 +219,7 @@ class game {
       
       
       let some_octree = new octree(this.orbeez);
-      for(let i = 0; i < 17; i++) {
+      for(let i = 0; i < 12; i++) {
         some_octree.adjust_walls(constants.orbee_radius);
       }
       
