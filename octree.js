@@ -178,7 +178,7 @@ class octree {
     }
   }
   self_query() {
-    return this.branch.self_query
+    return this.branch.self_query();
   }
 }
 
