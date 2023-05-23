@@ -63,8 +63,10 @@ class game {
     if(this.frame_timestamps.length <= constants.frame_timestamps) { //paranoia
       this.frame_timestamps.push(now);
     }
-    if(this.frame_timestamps.length > constants.frame_timestamps) {
-      this.frame_timestamps.shift();
+    for(let i = 0; i < 4; i++) {
+      if(this.frame_timestamps.length > constants.frame_timestamps) {
+        this.frame_timestamps.shift();
+      }
     }
     if(this.frame_timestamps.length == constants.frame_timestamps) {
       this.framerate = (constants.frame_timestamps - 1) * 1000 / (this.frame_timestamps[constants.frame_timestamps - 1] - this.frame_timestamps[0]);
