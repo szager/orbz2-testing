@@ -123,7 +123,6 @@ class octree_branch {
         branch.reset_walls();
       }
     }
-    
   }
   
   extend_walls(position, radius) {
@@ -228,7 +227,7 @@ class octree_branch {
   hit_test(branch) {
     let hit_conditions = [false, false, false];
     for(let i = 0; i < 3; i++) {
-      hit_conditions[i] = branch.corner_a[i] > this.corner_b[i] || branch.corner_b[i] < this.corner_a[i];
+      hit_conditions[i] = (branch.corner_a[i] > this.corner_b[i] && branch.corner_a[i] < this.corner_a[i]) || (branch.corner_b[i] > this.corner_a[i] && branch.corner_b[i] < this.corner_a[i]);
     }
     return (hit_conditions[0] && hit_conditions[1] && hit_conditions[2]);
   }
@@ -254,7 +253,7 @@ class orbee_overlap {
     this.dx = this.orbee_b.x - this.orbee_a.x;
     this.dy = this.orbee_b.y - this.orbee_a.y;
     this.dz = this.orbee_b.z - this.orbee_a.z;
-    this.distance = Math.sqrt(this.dx**2 + this.dy**2 + this.dz**2);
+    this.d = Math.sqrt(this.dx**2 + this.dy**2 + this.dz**2);
   }
   correct(stiffness, diameter) {
     let acc_ratio = (diameter - this.d)/(this.d) * 0.03125;

@@ -224,10 +224,12 @@ class game {
       
       let some_octree = new octree(this.orbeez);
       
+      some_octree.branch.reset_walls();
       some_octree.adjust_walls(constants.orbee_radius);
       
       if(this.time > 2 && this.time < 2.02) {
-        document.querySelector("b").innerText = JSON.stringify(some_octree.self_query(constants.orbee_radius, constants.orbee_radius**2));
+        //document.querySelector("b").innerText = JSON.stringify(some_octree.self_query(constants.orbee_radius, constants.orbee_radius**2));
+        document.querySelector("b").innerText = String(some_octree.self_query(constants.orbee_radius, constants.orbee_radius**2).length);
       }
       
       //for(let i = 0; i < 8; i++) {
