@@ -227,7 +227,7 @@ class octree_branch {
   hit_test(branch) {
     let hit_conditions = [false, false, false];
     for(let i = 0; i < 3; i++) {
-      hit_conditions[i] = (branch.corner_a[i] > this.corner_b[i] && branch.corner_a[i] < this.corner_a[i]) || (branch.corner_b[i] > this.corner_a[i] && branch.corner_b[i] < this.corner_a[i]);
+      hit_conditions[i] = (branch.corner_a[i] < this.corner_b[i] && branch.corner_a[i] > this.corner_a[i]) || (branch.corner_b[i] < this.corner_b[i] && branch.corner_b[i] > this.corner_b[i]);
     }
     return (hit_conditions[0] && hit_conditions[1] && hit_conditions[2]);
   }
@@ -256,7 +256,7 @@ class orbee_overlap {
     this.d = Math.sqrt(this.dx**2 + this.dy**2 + this.dz**2);
   }
   correct(radius) {
-    let acc_ratio = (((radius - this.d)/(this.d)) || 0) * 0.0625;
+    let acc_ratio = (((radius * 2 - this.d)/(this.d)) || 0) * 0.0625;
     let dx = this.dx * acc_ratio;
     let dy = this.dy * acc_ratio;
     let dz = this.dz * acc_ratio;
@@ -304,7 +304,7 @@ class octree {
     this.branch.reset_walls();
     for(let i = 0; i < this.orbeez_inside.length; i++) {
       let orbee = this.orbeez_inside[i];
-      orbee.parent.extend_walls([orbee.orbee.x, orbee.orbee.y, orbee.orbee.z, radius]);
+      orbee.parent.extend_walls([orbee.orbee.x, orbee.orbee.y, orbee.orbee.z], radius);
     }
   }
   self_query(radius, radius_squared) {
