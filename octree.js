@@ -8,7 +8,7 @@ class orbee_in_octree {
   }
   collision_detection(orbee, radius) {
     let possible_interaction = new orbee_overlap(this.orbee, orbee.orbee);
-    if(possible_interaction.d < radius) {
+    if(possible_interaction.d < radius * 2) {
       return possible_interaction;
     } else {
       return null;
@@ -255,8 +255,8 @@ class orbee_overlap {
     this.dz = this.orbee_b.z - this.orbee_a.z;
     this.d = Math.sqrt(this.dx**2 + this.dy**2 + this.dz**2);
   }
-  correct(stiffness, diameter) {
-    let acc_ratio = (diameter - this.d)/(this.d) * 0.03125;
+  correct(stiffness, radius) {
+    let acc_ratio = (radius * 2 - this.d)/(this.d) * 0.03125;
     let dx = this.dx * acc_ratio;
     let dy = this.dy * acc_ratio;
     let dz = this.dz * acc_ratio;

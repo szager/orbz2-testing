@@ -223,9 +223,17 @@ class game {
       
       
       let some_octree = new octree(this.orbeez);
-      
-      some_octree.branch.reset_walls();
-      some_octree.adjust_walls(constants.orbee_radius);
+      let radius = constants.orbee_radius;
+      let diameter = constants.orbee_radius * 2;
+      let radius_squared = constants.orbee_radius**2;
+      for(let i = 0; i < 2; i++) {
+        some_octree.branch.reset_walls();
+        some_octree.adjust_walls(constants.orbee_radius);
+        let orbee_overlaps = some_octree.self_query(constants.orbee_radius, constants.orbee_radius**2);
+        orbee_overlaps.forEach(overlap => {
+          overlap.correct(.03125, radius);
+        });
+      }
       
       if(this.time > 2 && this.time < 2.02) {
         //document.querySelector("b").innerText = JSON.stringify(some_octree.self_query(constants.orbee_radius, constants.orbee_radius**2));
