@@ -8,7 +8,7 @@ class orbee_in_octree {
   }
   collision_detection(orbee, radius) {
     let possible_interaction = new orbee_overlap(this.orbee, orbee.orbee);
-    if(possible_interaction.d < radius * 2 && possible_interaction.d > 0) {
+    if(possible_interaction.d < radius * 2) {
       return possible_interaction;
     } else {
       return null;
@@ -236,7 +236,7 @@ class octree_branch {
     let distance_squared = 0;
     let orbee_position = [orbee.orbee.x, orbee.orbee.y, orbee.orbee.z];
     for(let i = 0; i < 3; i++) {
-      let component_squared = Math.min((this.branch_b[i] - orbee_position[i])**2, Math.max((this.branch_a[i] - orbee_position[i])**2, 0));
+      let component_squared = Math.max(Math.min(this.corner_b[i] - orbee_position[i], 0)**2, Math.max(this.corner_a[i] - orbee_position[i], 0)**2);
       if(component_squared > radius_squared) {
         return false;
       }
