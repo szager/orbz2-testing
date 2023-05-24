@@ -156,18 +156,73 @@ class octree_branch {
           if(branch_a.hit_test(branch_b)) {
             result.push.apply(result, branch_a.branch_query(branch_b));
           }
-        } else if()
-        
+        } else if(a_is_octree && !b_is_octree) {
+          if(branch_a.orbee_hit_test(branch_b)) {
+            result.push.apply(result, branch_a.orbee_query(branch_b));
+          }
+        } else if(!a_is_octree && b_is_octree) {
+          if(branch_b.orbee_hit_test(branch_a)) {
+            result.push.apply(result, branch_b.orbee_query(branch_a));
+          }
+        } else if(!a_is_octree && !b_is_octree) {
+          let collision_result = branch_a.collision_detection(branch_b)
+          if(collision_result) {
+            result.push(collision_result);
+          }
+        }
       }
     }
     return result;
   }
-  orbee_query(orbee) {
+  orbee_query(orbee, radius, radius_squared) {
     let result = [];
+    for(let i = 0; i < this.branches.length; i++) {
+      let branch = this.branches[i];
+      let is_octree = branch.is_octree;
+      if(is_octree) {
+        if(branch.orbee_hit_test(orbee, radius_squared)) {
+          result.push.apply(branch.orbee_query(orbee, radius, radius_squared));
+        }
+      } else {
+        let collision_result = branch.collision_detection(orbee, radius)
+        if(collision_result) {
+          result.push(collision_result);
+        }
+      }
+    }
     return result;
   }
-  self_query() {
+  self_query(radius, radius_squared) {
     let result = [];
+    for(let i = 0; i < this.branches.length; i++) {
+      let branch_a = this.branches[i];
+      let a_is_octree = branch_a.is_octree;
+      if(a_is_octree) {
+        result.push.apply(result, branch_a.self_query)
+      }
+      for(let j = i + 1; j < this.branches.length; j++) {
+        let branch_b = this.branches[i];
+        let b_is_octree = branch_b.is_octree;
+        if(a_is_octree && b_is_octree) {
+          if(branch_a.hit_test(branch_b)) {
+            result.push.apply(result, branch_a.branch_query(branch_b));
+          }
+        } else if(a_is_octree && !b_is_octree) {
+          if(branch_a.orbee_hit_test(branch_b, radius_squared)) {
+            result.push.apply(result, branch_a.orbee_query(branch_b, radius, radius_squared));
+          }
+        } else if(!a_is_octree && b_is_octree) {
+          if(branch_b.orbee_hit_test(branch_a)) {
+            result.push.apply(result, branch_b.orbee_query(branch_a, radius, radius_squared));
+          }
+        } else if(!a_is_octree && !b_is_octree) {
+          let collision_result = branch_a.collision_detection(branch_b, radius)
+          if(collision_result) {
+            result.push(collision_result);
+          }
+        }
+      }
+    }
     return result;
   }
   hit_test(branch) {
@@ -183,11 +238,12 @@ class octree_branch {
     let orbee_position = [orbee.orbee.x, orbee.orbee.y, orbee.orbee.z];
     for(let i = 0; i < 3; i++) {
       let component_squared = Math.min((this.branch_b[i] - orbee_position[i])**2, Math.max((this.branch_a[i] - orbee_position[i])**2, 0));
-      if(to_branch > radius) {
+      if(component_squared > radius_squared) {
         return false;
       }
+      distance_squared += component_squared;
     }
-    return Math.sqrt(to_branch[0]**2, to_branch)
+    return distance_squared < radius_squared;
   }
 }
 
