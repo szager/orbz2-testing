@@ -222,14 +222,14 @@ class game {
       });
       
       
-      let some_octree = new octree(this.orbeez);
-      for(let i = 0; i < 12; i++) {
-        some_octree.adjust_walls(constants.orbee_radius);
-      }
-      
-      //for(let i = 0; i < 8; i++) {
-        //this.orbee_interactions();
+      //let some_octree = new octree(this.orbeez);
+      //for(let i = 0; i < 12; i++) {
+        //some_octree.adjust_walls(constants.orbee_radius);
       //}
+      
+      for(let i = 0; i < 8; i++) {
+        this.orbee_interactions();
+      }
       
       this.orbeez.forEach(orbie => {
         orbie.update();
