@@ -152,6 +152,11 @@ class octree_branch {
       for(let j = 0; j < branch.branches.length; j++) {
         let branch_b = branch.branches[i];
         let b_is_octree = branch_b.is_octree;
+        if(a_is_octree && b_is_octree) {
+          if(branch_a.hit_test(branch_b)) {
+            result.push.apply(result, branch_a.branch_query(branch_b));
+          }
+        } else if()
         
       }
     }
@@ -171,6 +176,18 @@ class octree_branch {
       hit_conditions[i] = branch.corner_a[i] > this.corner_b[i] || branch.corner_b[i] < this.corner_a[i];
     }
     return (hit_conditions[0] && hit_conditions[1] && hit_conditions[2]);
+  }
+  orbee_hit_test(orbee, radius_squared) {
+    //let to_branch = [0,0,0];
+    let distance_squared = 0;
+    let orbee_position = [orbee.orbee.x, orbee.orbee.y, orbee.orbee.z];
+    for(let i = 0; i < 3; i++) {
+      let component_squared = Math.min((this.branch_b[i] - orbee_position[i])**2, Math.max((this.branch_a[i] - orbee_position[i])**2, 0));
+      if(to_branch > radius) {
+        return false;
+      }
+    }
+    return Math.sqrt(to_branch[0]**2, to_branch)
   }
 }
 
