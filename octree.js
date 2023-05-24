@@ -149,7 +149,7 @@ class octree_branch {
       let branch_a = this.branches[i];
       let a_is_octree = branch_a.is_octree;
       for(let j = 0; j < branch.branches.length; j++) {
-        let branch_b = branch.branches[i];
+        let branch_b = branch.branches[j];
         let b_is_octree = branch_b.is_octree;
         if(a_is_octree && b_is_octree) {
           if(branch_a.hit_test(branch_b)) {
@@ -200,7 +200,7 @@ class octree_branch {
         result.push.apply(result, branch_a.self_query(radius, radius_squared));
       }
       for(let j = i + 1; j < this.branches.length; j++) {
-        let branch_b = this.branches[i];
+        let branch_b = this.branches[j];
         let b_is_octree = branch_b.is_octree;
         if(a_is_octree && b_is_octree) {
           if(branch_a.hit_test(branch_b)) {
@@ -260,19 +260,19 @@ class orbee_overlap {
     let dx = this.dx * acc_ratio;
     let dy = this.dy * acc_ratio;
     let dz = this.dz * acc_ratio;
-    this.orbee_a.dx += dx;
-    this.orbee_a.dy += dy;
-    this.orbee_a.dz += dz;
-    this.orbee_b.dx -= dx;
-    this.orbee_b.dy -= dy;
-    this.orbee_b.dz -= dz;
+    this.orbee_a.dx -= dx;
+    this.orbee_a.dy -= dy;
+    this.orbee_a.dz -= dz;
+    this.orbee_b.dx += dx;
+    this.orbee_b.dy += dy;
+    this.orbee_b.dz += dz;
       
-    this.orbee_a.x += dx;
-    this.orbee_a.y += dy;
-    this.orbee_a.z += dz;
-    this.orbee_b.x -= dx;
-    this.orbee_b.y -= dy;
-    this.orbee_b.z -= dz;
+    this.orbee_a.x -= dx;
+    this.orbee_a.y -= dy;
+    this.orbee_a.z -= dz;
+    this.orbee_b.x += dx;
+    this.orbee_b.y += dy;
+    this.orbee_b.z += dz;
   }
 }
 

@@ -231,21 +231,21 @@ class game {
         some_octree.branch.reset_walls();
         some_octree.adjust_walls(constants.orbee_radius);
         let orbee_overlaps = some_octree.self_query(constants.orbee_radius, constants.orbee_radius**2);
-        if(i == 0) {
-          this.additional_info.innerText = JSON.stringify(orbee_overlaps);
-        }
+        //if(i == 0) {
+          //this.additional_info.innerText = JSON.stringify(orbee_overlaps);
+        //}
         orbee_overlaps.forEach(overlap => {
           //if(!overlap.dx) {
             //alert("wtf");
           //}
-          //overlap.correct(radius);
+          overlap.correct(radius);
         });
       }
       
       
-      for(let i = 0; i < 8; i++) {
-        this.orbee_interactions();
-      }
+      //for(let i = 0; i < 8; i++) {
+        //this.orbee_interactions();
+      //}
       
       this.orbeez.forEach(orbie => {
         orbie.update();
