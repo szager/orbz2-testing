@@ -12,7 +12,8 @@ function modulo(a, b) {
 
 class game {
   
-  constructor(canvas, perf_canvas) {
+  constructor(canvas, perf_canvas, mode) {
+    this.mode = mode || "AUTO";
     this.frame_timestamps = [];
     this.framerate = -1;
     for(let i = 0; i < constants.frame_timestamps; i++) {
