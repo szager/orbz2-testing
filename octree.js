@@ -6,6 +6,14 @@ class orbee_in_octree {
     this.parent = null;
     this.is_octree = false;
   }
+  collision_detection(orbee, radius) {
+    let possible_interaction = new orbee_overlap(this.orbee, orbee.orbee);
+    if(possible_interaction.d < radius) {
+      return possible_interaction;
+    } else {
+      return null;
+    }
+  }
 }
 
 
@@ -136,12 +144,18 @@ class octree_branch {
     }
   }
   
-  query_another_branch(branch) {
+  branch_query(branch) {
     let result = [];
+    for(let i = 0; i < this.branches.length; i++) {
+      let branch_a = this.branches[i];
+      let a_is_octree = branch_a.is_octree;
+      for(let j = 0; j < branch.branches.length; j++) {
+        let branch_b = branch.branches[i];
+        let b_is_octree = branch_b.is_octree;
+        
+      }
+    }
     return result;
-  }
-  hit_test(branch) {
-    return false;
   }
   orbee_query(orbee) {
     let result = [];
@@ -150,6 +164,13 @@ class octree_branch {
   self_query() {
     let result = [];
     return result;
+  }
+  hit_test(branch) {
+    let hit_conditions = [false, false, false];
+    for(let i = 0; i < 3; i++) {
+      hit_conditions[i] = branch.corner_a[i] > this.corner_b[i] || branch.corner_b[i] < this.corner_a[i];
+    }
+    return (hit_conditions[0] && hit_conditions[1] && hit_conditions[2]);
   }
 }
 
@@ -162,24 +183,24 @@ class orbee_overlap {
     this.dz = this.orbee_b.z - this.orbee_a.z;
     this.distance = Math.sqrt(this.dx**2 + this.dy**2 + this.dz**2);
   }
-  correct(stiffness) {
-    let acc_ratio = (diameter - interaction.d)/(interaction.d) * 0.03125;
-      let dx = interaction.dx * acc_ratio;
-      let dy = interaction.dy * acc_ratio;
-      let dz = interaction.dz * acc_ratio;
-      interaction.orbee_a.dx += dx;
-      interaction.orbee_a.dy += dy;
-      interaction.orbee_a.dz += dz;
-      interaction.orbee_b.dx -= dx;
-      interaction.orbee_b.dy -= dy;
-      interaction.orbee_b.dz -= dz;
+  correct(stiffness, diameter) {
+    let acc_ratio = (diameter - this.d)/(this.d) * 0.03125;
+    let dx = this.dx * acc_ratio;
+    let dy = this.dy * acc_ratio;
+    let dz = this.dz * acc_ratio;
+    this.orbee_a.dx += dx;
+    this.orbee_a.dy += dy;
+    this.orbee_a.dz += dz;
+    this.orbee_b.dx -= dx;
+    this.orbee_b.dy -= dy;
+    this.orbee_b.dz -= dz;
       
-      interaction.orbee_a.x += dx;
-    interaction.orbee_a.y += dy;
-    interaction.orbee_a.z += dz;
-    interaction.orbee_b.x -= dx;
-    interaction.orbee_b.y -= dy;
-    interaction.orbee_b.z -= dz;
+    this.orbee_a.x += dx;
+    this.orbee_a.y += dy;
+    this.orbee_a.z += dz;
+    this.orbee_b.x -= dx;
+    this.orbee_b.y -= dy;
+    this.orbee_b.z -= dz;
   }
 }
 
