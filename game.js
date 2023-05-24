@@ -27,7 +27,7 @@ class game {
     this.orbeez = [];
     this.additional_info = document.querySelector("b");
     for(let i = 0; i < constants.orbee_count; i++) {
-      this.orbeez.push(new orbee(-8, 8, -8, 8, 1, 16));
+      this.orbeez.push(new orbee(-.5, .5, -.5, .5, 10, 100));
     }
     
     
@@ -65,9 +65,9 @@ class game {
   update_and_stuff(now) {
     if(!this.stopping) {
       if(!this.paused) {
+        requestAnimationFrame(this.bound_update_method);
         this.update();
       }
-      requestAnimationFrame(this.bound_update_method);
     }
     //let now = performance.now();
     if(this.frame_timestamps.length <= constants.frame_timestamps) { //paranoia
@@ -88,7 +88,7 @@ class game {
       //this.alert_cooldown = 60;
       //this.enable_alerts = confirm(`wyh is the framerate so fadst? it is ${Math.round(1000 / (now - this.then)) || "???"} hertz`);
     //}
-    
+    //alert("e");
   }
   
   
