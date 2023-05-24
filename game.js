@@ -226,12 +226,15 @@ class game {
       let radius = constants.orbee_radius;
       let diameter = constants.orbee_radius * 2;
       let radius_squared = constants.orbee_radius**2;
-      for(let i = 0; i < 2; i++) {
+      for(let i = 0; i < 1; i++) {
         some_octree.branch.reset_walls();
         some_octree.adjust_walls(constants.orbee_radius);
         let orbee_overlaps = some_octree.self_query(constants.orbee_radius, constants.orbee_radius**2);
         orbee_overlaps.forEach(overlap => {
-          overlap.correct(.03125, radius);
+          //if(!overlap.dx) {
+            //alert("wtf");
+          //}
+          overlap.correct(radius);
         });
       }
       

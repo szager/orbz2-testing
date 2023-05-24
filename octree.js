@@ -184,7 +184,7 @@ class octree_branch {
         }
       } else {
         let collision_result = branch.collision_detection(orbee, radius)
-        if(collision_result) {
+        if(collision_result != null) {
           result.push(collision_result);
         }
       }
@@ -255,8 +255,8 @@ class orbee_overlap {
     this.dz = this.orbee_b.z - this.orbee_a.z;
     this.d = Math.sqrt(this.dx**2 + this.dy**2 + this.dz**2);
   }
-  correct(stiffness, radius) {
-    let acc_ratio = (radius * 2 - this.d)/(this.d) * 0.03125;
+  correct(radius) {
+    let acc_ratio = (((radius * 2 - this.d)/(this.d)) || 0) * 0.03125;
     let dx = this.dx * acc_ratio;
     let dy = this.dy * acc_ratio;
     let dz = this.dz * acc_ratio;
