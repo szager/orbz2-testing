@@ -35,8 +35,8 @@ class orbee {
     this.z += this.dz;
   }
   update() {
-        if(this.z < constants.orbee_radius) {
-      this.z = constants.orbee_radius;
+    if(this.z < constants.orbee_radius - 100) {
+      this.z = constants.orbee_radius - 100;
       let horizontal_speed = Math.hypot(this.dx, this.dy);
       let traction_force = -this.dz * constants.traction * (constants.restitution + 1);
       if(traction_force <= horizontal_speed) {
