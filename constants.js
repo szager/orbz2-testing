@@ -1,5 +1,5 @@
 let constants = {
-  orbee_count: 50,
+  orbee_count: 2000,
   orbee_radius: .7,
   far_distance: 10000,
   near_distance: 1,
