@@ -7,13 +7,13 @@ console.log();// Ad = .47 * .001 * U^2 * 154 mm^2 * .00124 mg
 //Cd = 0.47
 
 class orbee {
-  constructor(x1, y1, z1, x2, y2, z2, scene) {
+  constructor(x1, x2, y1, y2, z1, z2) {
     this.x = x1 + Math.random() * (x2 - x1);
     this.y = y1 + Math.random() * (y2 - y1);
     this.z = z1 + Math.random() * (z2 - z1);
     this.dx = (Math.random() - 0.5) * 1;
     this.dy = (Math.random() - 0.5) * 1;
-    this.dz = (Math.random()) * 2;
+    this.dz = (Math.random() - 0.5) * 1;
     //this.scene = scene;
     //models.orbee_model.add_to_scene(this.scene);
   }
@@ -35,8 +35,8 @@ class orbee {
     this.z += this.dz;
   }
   update() {
-    if(this.z < constants.orbee_radius - 100) {
-      this.z = constants.orbee_radius - 100;
+    if(this.z < constants.orbee_radius) {
+      this.z = constants.orbee_radius;
       let horizontal_speed = Math.hypot(this.dx, this.dy);
       let traction_force = -this.dz * constants.traction * (constants.restitution + 1);
       if(traction_force <= horizontal_speed) {

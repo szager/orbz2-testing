@@ -153,6 +153,36 @@ class octree_branch {
   }
 }
 
+class orbee_overlap {
+  constructor(orbee_a, orbee_b) {
+    this.orbee_a = orbee_a;
+    this.orbee_b = orbee_b;
+    this.dx = this.orbee_b.x - this.orbee_a.x;
+    this.dy = this.orbee_b.y - this.orbee_a.y;
+    this.dz = this.orbee_b.z - this.orbee_a.z;
+    this.distance = Math.sqrt(this.dx**2 + this.dy**2 + this.dz**2);
+  }
+  correct(stiffness) {
+    let acc_ratio = (diameter - interaction.d)/(interaction.d) * 0.03125;
+      let dx = interaction.dx * acc_ratio;
+      let dy = interaction.dy * acc_ratio;
+      let dz = interaction.dz * acc_ratio;
+      interaction.orbee_a.dx += dx;
+      interaction.orbee_a.dy += dy;
+      interaction.orbee_a.dz += dz;
+      interaction.orbee_b.dx -= dx;
+      interaction.orbee_b.dy -= dy;
+      interaction.orbee_b.dz -= dz;
+      
+      interaction.orbee_a.x += dx;
+    interaction.orbee_a.y += dy;
+    interaction.orbee_a.z += dz;
+    interaction.orbee_b.x -= dx;
+    interaction.orbee_b.y -= dy;
+    interaction.orbee_b.z -= dz;
+  }
+}
+
 class octree {
   constructor(orbeez) {
     this.corner_a = [-256, -256, -256];

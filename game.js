@@ -26,7 +26,7 @@ class game {
     this.mouse_down = false;
     this.orbeez = [];
     for(let i = 0; i < constants.orbee_count; i++) {
-      this.orbeez.push(new orbee(-40, 40, -40, 40, constants.orbee_radius - 100, 150 - constants.orbee_radius, this.scene));
+      this.orbeez.push(new orbee(-8, 8, -8, 8, 1, 16));
     }
     
     
