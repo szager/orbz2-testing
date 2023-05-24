@@ -232,14 +232,14 @@ class game {
         some_octree.adjust_walls(constants.orbee_radius);
         let orbee_overlaps = some_octree.self_query(constants.orbee_radius, constants.orbee_radius**2);
         if(i == 0) {
-          this.additional_info.innerText = orbee_overlaps.length;
+          this.additional_info.innerText = JSON.stringify(orbee_overlaps);
         }
-        //orbee_overlaps.forEach(overlap => {
+        orbee_overlaps.forEach(overlap => {
           //if(!overlap.dx) {
             //alert("wtf");
           //}
           //overlap.correct(radius);
-        //});
+        });
       }
       
       

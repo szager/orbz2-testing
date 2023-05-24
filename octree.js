@@ -8,7 +8,7 @@ class orbee_in_octree {
   }
   collision_detection(orbee, radius) {
     let possible_interaction = new orbee_overlap(this.orbee, orbee.orbee);
-    if(possible_interaction.d < radius * 2) {
+    if(possible_interaction.d < radius * 2 && possible_interaction.d > 0) {
       return possible_interaction;
     } else {
       return null;
@@ -156,11 +156,11 @@ class octree_branch {
             result.push.apply(result, branch_a.branch_query(branch_b, radius, radius_squared));
           }
         } else if(a_is_octree && !b_is_octree) {
-          if(branch_a.orbee_hit_test(branch_b)) {
+          if(branch_a.orbee_hit_test(branch_b, radius_squared)) {
             result.push.apply(result, branch_a.orbee_query(branch_b, radius, radius_squared));
           }
         } else if(!a_is_octree && b_is_octree) {
-          if(branch_b.orbee_hit_test(branch_a)) {
+          if(branch_b.orbee_hit_test(branch_a, radius_squared)) {
             result.push.apply(result, branch_b.orbee_query(branch_a, radius, radius_squared));
           }
         } else if(!a_is_octree && !b_is_octree) {
@@ -184,7 +184,7 @@ class octree_branch {
         }
       } else {
         let collision_result = branch.collision_detection(orbee, radius)
-        if(collision_result != null) {
+        if(collision_result) {
           result.push(collision_result);
         }
       }
@@ -211,7 +211,7 @@ class octree_branch {
             result.push.apply(result, branch_a.orbee_query(branch_b, radius, radius_squared));
           }
         } else if(!a_is_octree && b_is_octree) {
-          if(branch_b.orbee_hit_test(branch_a)) {
+          if(branch_b.orbee_hit_test(branch_a, radius_squared)) {
             result.push.apply(result, branch_b.orbee_query(branch_a, radius, radius_squared));
           }
         } else if(!a_is_octree && !b_is_octree) {
