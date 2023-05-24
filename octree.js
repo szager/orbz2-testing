@@ -144,7 +144,7 @@ class octree_branch {
     }
   }
   
-  branch_query(branch) {
+  branch_query(branch, radius, radius_squared) {
     let result = [];
     for(let i = 0; i < this.branches.length; i++) {
       let branch_a = this.branches[i];
@@ -154,18 +154,18 @@ class octree_branch {
         let b_is_octree = branch_b.is_octree;
         if(a_is_octree && b_is_octree) {
           if(branch_a.hit_test(branch_b)) {
-            result.push.apply(result, branch_a.branch_query(branch_b));
+            result.push.apply(result, branch_a.branch_query(branch_b, radius, radius_squared));
           }
         } else if(a_is_octree && !b_is_octree) {
           if(branch_a.orbee_hit_test(branch_b)) {
-            result.push.apply(result, branch_a.orbee_query(branch_b));
+            result.push.apply(result, branch_a.orbee_query(branch_b, radius, radius_squared));
           }
         } else if(!a_is_octree && b_is_octree) {
           if(branch_b.orbee_hit_test(branch_a)) {
-            result.push.apply(result, branch_b.orbee_query(branch_a));
+            result.push.apply(result, branch_b.orbee_query(branch_a, radius, radius_squared));
           }
         } else if(!a_is_octree && !b_is_octree) {
-          let collision_result = branch_a.collision_detection(branch_b)
+          let collision_result = branch_a.collision_detection(branch_b, radius)
           if(collision_result) {
             result.push(collision_result);
           }
@@ -198,14 +198,14 @@ class octree_branch {
       let branch_a = this.branches[i];
       let a_is_octree = branch_a.is_octree;
       if(a_is_octree) {
-        result.push.apply(result, branch_a.self_query)
+        result.push.apply(result, branch_a.self_query(radius, radius_squared));
       }
       for(let j = i + 1; j < this.branches.length; j++) {
         let branch_b = this.branches[i];
         let b_is_octree = branch_b.is_octree;
         if(a_is_octree && b_is_octree) {
           if(branch_a.hit_test(branch_b)) {
-            result.push.apply(result, branch_a.branch_query(branch_b));
+            result.push.apply(result, branch_a.branch_query(branch_b, radius, radius_squared));
           }
         } else if(a_is_octree && !b_is_octree) {
           if(branch_a.orbee_hit_test(branch_b, radius_squared)) {
@@ -308,8 +308,8 @@ class octree {
       orbee.parent.extend_walls([orbee.orbee.x, orbee.orbee.y, orbee.orbee.z, radius]);
     }
   }
-  self_query() {
-    return this.branch.self_query();
+  self_query(radius, radius_squared) {
+    return this.branch.self_query(radius, radius_squared);
   }
 }
 

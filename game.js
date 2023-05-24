@@ -222,14 +222,17 @@ class game {
       });
       
       
-      //let some_octree = new octree(this.orbeez);
-      //for(let i = 0; i < 12; i++) {
-        //some_octree.adjust_walls(constants.orbee_radius);
-      //}
+      let some_octree = new octree(this.orbeez);
       
-      for(let i = 0; i < 8; i++) {
-        this.orbee_interactions();
+      some_octree.adjust_walls(constants.orbee_radius);
+      
+      if(this.time > 2 && this.time < 2.02) {
+        document.querySelector("b").innerText = JSON.stringify(some_octree.self_query(constants.orbee_radius, constants.orbee_radius**2));
       }
+      
+      //for(let i = 0; i < 8; i++) {
+        //this.orbee_interactions();
+      //}
       
       this.orbeez.forEach(orbie => {
         orbie.update();
