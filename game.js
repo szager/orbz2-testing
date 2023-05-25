@@ -250,9 +250,12 @@ class game {
       });
       this.scene.object_groups[0].copy_orbee_positions(this.orbeez);
     }
-    
-    this.scene.draw_everything(this.time);
-    
+
+    this.draw(time);    
+  }
+
+  draw(time) {
+    this.scene.draw_everything(time);
   }
   
 }
