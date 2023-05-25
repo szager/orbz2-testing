@@ -260,12 +260,12 @@ class orbee_overlap {
     let dx = this.dx * acc_ratio;
     let dy = this.dy * acc_ratio;
     let dz = this.dz * acc_ratio;
-    this.orbee_a.dx -= dx;
-    this.orbee_a.dy -= dy;
-    this.orbee_a.dz -= dz;
-    this.orbee_b.dx += dx;
-    this.orbee_b.dy += dy;
-    this.orbee_b.dz += dz;
+    this.orbee_a.dx += dx;
+    this.orbee_a.dy += dy;
+    this.orbee_a.dz += dz;
+    this.orbee_b.dx -= dx;
+    this.orbee_b.dy -= dy;
+    this.orbee_b.dz -= dz;
       
     this.orbee_a.x -= dx;
     this.orbee_a.y -= dy;
