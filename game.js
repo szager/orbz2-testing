@@ -111,6 +111,9 @@ class game {
     if(this.mouse_down) {
       this.scene.yaw = modulo(this.scene.yaw - e.movementX * constants.sensitivity, Math.PI * 2);
       this.scene.pitch = Math.min(Math.PI * 0.5, Math.max(-0.3, this.scene.pitch + e.movementY * constants.sensitivity));
+      if (this.mode == "MANUAL") {
+        this.draw();
+      }
     }
   }
   
@@ -251,13 +254,13 @@ class game {
       this.scene.object_groups[0].copy_orbee_positions(this.orbeez);
     }
 
-    this.draw(time);    
+    this.draw();
   }
 
-  draw(time) {
-    this.scene.draw_everything(time);
+  draw() {
+    this.scene.draw_everything(this.time);
   }
-  
+
 }
 
 export {game};
