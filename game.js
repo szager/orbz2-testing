@@ -30,23 +30,17 @@ class game {
     for(let i = 0; i < constants.orbee_count; i++) {
       this.orbeez.push(new orbee(-.5, .5, -.5, .5, 10, 100));
     }
-    
-    
-    
-    
     this.stopping = false;
     this.paused = false;
     this.frame_time = 1 / 60;
     this.time = 0;
-    
     this.bound_update_method = this.update_and_stuff.bind(this);
+
+    document.addEventListener("mousedown", this.handle_mousedown.bind(this));
+    document.addEventListener("mouseup", this.handle_mouseup.bind(this));
+    document.addEventListener("mousemove", this.handle_mousemove.bind(this));    
     
-    let bound_this = this;
-    document.addEventListener("mousedown", bound_this.handle_mousedown.bind(bound_this));
-    document.addEventListener("mouseup", bound_this.handle_mouseup.bind(bound_this));
-    document.addEventListener("mousemove", bound_this.handle_mousemove.bind(bound_this));    
-    
-    this.complete_scene().then(() => { requestAnimationFrame(bound_this.bound_update_method); });
+    this.complete_scene().then(this.schedule_update.bind(this));
   }
   
   pause() {
@@ -61,12 +55,16 @@ class game {
     this.stopping = true;
   }
   
-
+  schedule_update() {
+    if (this.mode != "MANUAL") {
+      requestAnimationFrame(this.bound_update_method);
+    }
+  }
   
   update_and_stuff(now) {
     if(!this.stopping) {
       if(!this.paused) {
-        requestAnimationFrame(this.bound_update_method);
+        this.schedule_update();
         this.update();
       }
     }
