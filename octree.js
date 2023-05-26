@@ -231,7 +231,7 @@ class octree_branch {
     }
     return (hit_conditions[0] && hit_conditions[1] && hit_conditions[2]);
   }
-  orbee_hit_test(orbee, radius_squared) { //this code 
+  orbee_hit_test(orbee, radius_squared) { //this code is probably broken
     //let to_branch = [0,0,0];
     let distance_squared = 0;
     let orbee_position = [orbee.orbee.x, orbee.orbee.y, orbee.orbee.z];
