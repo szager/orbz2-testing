@@ -8,7 +8,7 @@ class orbee_in_octree {
   }
   collision_detection(orbee, radius) {
     let possible_interaction = new orbee_overlap(this.orbee, orbee.orbee);
-    if(possible_interaction.d < radius * 2) {
+    if(possible_interaction.d < radius * 2 && possible_interaction.d > 0) {
       return possible_interaction;
     } else {
       return null;
@@ -230,10 +230,11 @@ class octree_branch {
   hit_test(branch) {
     let hit_conditions = [false, false, false];
     for(let i = 0; i < 3; i++) {
-      hit_conditions[i] = (branch.corner_a[i] < this.corner_b[i] && branch.corner_a[i] > this.corner_a[i]) || (branch.corner_b[i] < this.corner_b[i] && branch.corner_b[i] > this.corner_b[i]);
+      hit_conditions[i] = (((branch.corner_a[i] < this.corner_b[i]) && (branch.corner_a[i] > this.corner_a[i])) || ((branch.corner_b[i] < this.corner_b[i]) && (branch.corner_b[i] > this.corner_a[i])));
     }
     return (hit_conditions[0] && hit_conditions[1] && hit_conditions[2]);
   }
+  
   orbee_hit_test(orbee, radius_squared) { //this code is probably broken
     //let to_branch = [0,0,0];
     let distance_squared = 0;
@@ -259,7 +260,7 @@ class orbee_overlap {
     this.d = Math.sqrt(this.dx**2 + this.dy**2 + this.dz**2);
   }
   correct(radius) {
-    let acc_ratio = (((radius * 2 - this.d)/(this.d)) || 0) * 0.03125;
+    let acc_ratio = (((radius * 2 - this.d)/(this.d))) * 0.03125;
     let dx = this.dx * acc_ratio;
     let dy = this.dy * acc_ratio;
     let dz = this.dz * acc_ratio;
