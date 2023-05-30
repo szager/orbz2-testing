@@ -57,7 +57,7 @@ class octree_branch {
               ],
               this.orbeez,
             );
-            if(new_branch != null) {
+            if(new_branch) {
               this.branches.push(
                 new_branch
               );
@@ -260,7 +260,7 @@ class orbee_overlap {
     this.d = Math.sqrt(this.dx**2 + this.dy**2 + this.dz**2);
   }
   correct(radius) {
-    let acc_ratio = (((radius * 2 - this.d)/(this.d))) * 0.03125;
+    let acc_ratio = (((radius * 2 - this.d)/(this.d))) * 0.03;
     let dx = this.dx * acc_ratio;
     let dy = this.dy * acc_ratio;
     let dz = this.dz * acc_ratio;
