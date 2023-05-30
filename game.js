@@ -28,7 +28,7 @@ class game {
     this.orbeez = [];
     this.additional_info = document.querySelector("b");
     for(let i = 0; i < constants.orbee_count; i++) {
-      this.orbeez.push(new orbee(-.5, .5, -.5, .5, 10, 100));
+      this.orbeez.push(new orbee(-5, 5, -5, 5, 10, 100));
     }
     this.stopping = false;
     this.paused = false;
@@ -235,9 +235,10 @@ class game {
         if(i == 0) {
           this.additional_info.innerText = String(orbee_overlaps.length);
         }
-        orbee_overlaps.forEach(overlap => {
+        for(let j = 0; j < orbee_overlaps.length; j++) {
+          let overlap = orbee_overlaps[j];
           overlap.correct(radius);
-        });
+        }
       }
       
       

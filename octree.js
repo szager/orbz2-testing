@@ -260,8 +260,7 @@ class orbee_overlap {
     this.d = Math.sqrt(this.dx**2 + this.dy**2 + this.dz**2);
   }
   correct(radius) {
-    if(this.d < radius * 2) {
-      let acc_ratio = (((radius * 2 - this.d)/(this.d))) * 0.1;
+    let acc_ratio = (((radius * 2 - this.d)/(this.d))) * 0.1;
     let dx = this.dx * acc_ratio;
     let dy = this.dy * acc_ratio;
     let dz = this.dz * acc_ratio;
@@ -278,7 +277,6 @@ class orbee_overlap {
     this.orbee_b.x += dx;
     this.orbee_b.y += dy;
     this.orbee_b.z += dz;
-    }
   }
 }
 
