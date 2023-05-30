@@ -236,9 +236,6 @@ class game {
           this.additional_info.innerText = String(orbee_overlaps.length);
         }
         orbee_overlaps.forEach(overlap => {
-          //if(!overlap.dx) {
-            //alert("wtf");
-          //}
           overlap.correct(radius);
         });
       }

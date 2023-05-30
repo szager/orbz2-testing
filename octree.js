@@ -69,8 +69,8 @@ class octree_branch {
     } else {
       for(let i = 0; i < orbeez.length; i++) {
         orbeez[i].parent = this;
+        this.branches.push(orbeez[i]);
       }
-      this.branches = orbeez;
     }
   }
   generate_content(corner_a, corner_b, orbeez_outside) {
@@ -128,14 +128,17 @@ class octree_branch {
   extend_walls(position, radius) {
     let walls_changed = false;
     for(let i = 0; i < 3; i++) {
+      
       if(this.corner_a[i] > position[i] - radius) {
         walls_changed = true;
         this.corner_a[i] = position[i] - radius;
       }
+      
       if(this.corner_b[i] < position[i] + radius) {
         walls_changed = true;
         this.corner_b[i] = position[i] + radius;
       }
+      
     }
     
     if(walls_changed && this.parent) {
