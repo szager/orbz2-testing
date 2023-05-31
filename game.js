@@ -239,6 +239,7 @@ class game {
           let overlap = orbee_overlaps[j];
           overlap.correct(radius);
         }
+        
       }
       
       
