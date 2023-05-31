@@ -274,7 +274,7 @@ class orbee_overlap {
     
     
     
-    let acc_ratio = (((radius * 1.8 - this.d)/(this.d)) || 0) * 0.03;
+    let acc_ratio = (((radius * 2 - this.d)/(this.d)) || 0) * 0.03;
     let dx = this.dx * acc_ratio;
     let dy = this.dy * acc_ratio;
     let dz = this.dz * acc_ratio;
@@ -315,6 +315,8 @@ class octree {
         this.orbeez_inside.push(new orbee_in_octree(orbee));
       }
     }
+    
+    
     this.branch = new octree_branch(this.corner_a, this.corner_b, this.max_depth, this.orbeez_inside);
   }
   

@@ -226,13 +226,16 @@ class game {
       
       
       let some_octree = new octree(this.orbeez);
+      
+      //this.additional_info.innerText = String(some_octree.orbeez_inside.length);
+      
       let radius = constants.orbee_radius;
       let diameter = constants.orbee_radius * 2;
       let radius_squared = constants.orbee_radius**2;
       for(let i = 0; i < 8; i++) {
         some_octree.adjust_walls(constants.orbee_radius);
         let orbee_overlaps = some_octree.self_query(constants.orbee_radius, constants.orbee_radius**2);
-        if(i == 0) {
+        if(i == 4) {
           this.additional_info.innerText = String(orbee_overlaps.length);
         }
 
