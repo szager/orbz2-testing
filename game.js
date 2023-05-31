@@ -229,16 +229,22 @@ class game {
       let radius = constants.orbee_radius;
       let diameter = constants.orbee_radius * 2;
       let radius_squared = constants.orbee_radius**2;
-      for(let i = 0; i < 10; i++) {
+      for(let i = 0; i < 8; i++) {
         some_octree.adjust_walls(constants.orbee_radius);
         let orbee_overlaps = some_octree.self_query(constants.orbee_radius, constants.orbee_radius**2);
         if(i == 0) {
           this.additional_info.innerText = String(orbee_overlaps.length);
         }
+
         for(let j = 0; j < orbee_overlaps.length; j++) {
           let overlap = orbee_overlaps[j];
           overlap.correct(radius);
         }
+        
+        //for(let j = 0; j < this.orbeez.length; j++) {
+          //let orbie = this.orbeez[j];
+          //orbie.collisions = [];
+        //}
         
       }
       

@@ -202,7 +202,7 @@ class octree_branch {
       if(a_is_octree) {
         result.push.apply(result, branch_a.self_query(radius, radius_squared));
       }
-      for(let j = i + 1; j < this.branches.length; j++) {
+      for(let j = i; j < this.branches.length; j++) {
         let branch_b = this.branches[j];
         let b_is_octree = branch_b.is_octree;
         if(a_is_octree && b_is_octree) {
@@ -261,7 +261,20 @@ class orbee_overlap {
   }
   correct(radius) {
     
-    let acc_ratio = (((radius * 2 - this.d)/(this.d))) * 0.03;
+    //if(this.orbee_a.collisions.indexOf(this.orbee_b) != -1) {
+      //alert("duplicate collision!!");
+    //}
+    
+    //if(this.orbee_b.collisions.indexOf(this.orbee_a) != -1) {
+      //alert("duplicate collision!!");
+    //}
+    
+    //this.orbee_a.collisions.push(this.orbee_b);
+    //this.orbee_b.collisions.push(this.orbee_a);
+    
+    
+    
+    let acc_ratio = (((radius * 2 - this.d)/(this.d)) || 0) * 0.03;
     let dx = this.dx * acc_ratio;
     let dy = this.dy * acc_ratio;
     let dz = this.dz * acc_ratio;
