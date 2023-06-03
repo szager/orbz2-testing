@@ -3,8 +3,8 @@ let constants = {
   orbee_radius: .7,
   far_distance: 10000,
   near_distance: 1,
-  traction: 0.4,
-  restitution: 0.25,
+  traction: 0.1,
+  restitution: 0.4,
   sensitivity: 0.003, //radians per pixel
   fov: 1.0,
   frame_timestamps: 45,

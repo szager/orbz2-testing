@@ -147,7 +147,7 @@ class game {
       }
     }
     interactions.forEach(interaction => {
-      let acc_ratio = (diameter - interaction.d)/(interaction.d) * 0.03125;
+      let acc_ratio = (diameter - interaction.d)/(interaction.d) * 0.1;
       let dx = interaction.dx * acc_ratio;
       let dy = interaction.dy * acc_ratio;
       let dz = interaction.dz * acc_ratio;
@@ -229,32 +229,32 @@ class game {
       
       //this.additional_info.innerText = String(some_octree.orbeez_inside.length);
       
-      let radius = constants.orbee_radius;
-      let diameter = constants.orbee_radius * 2;
-      let radius_squared = constants.orbee_radius**2;
-      for(let i = 0; i < 8; i++) {
-        some_octree.adjust_walls(constants.orbee_radius);
-        let orbee_overlaps = some_octree.self_query(constants.orbee_radius, constants.orbee_radius**2);
-        if(i == 4) {
-          this.additional_info.innerText = String(orbee_overlaps.length);
-        }
+      //let radius = constants.orbee_radius;
+      //let diameter = constants.orbee_radius * 2;
+      //let radius_squared = constants.orbee_radius**2;
+      //for(let i = 0; i < 8; i++) {
+        //some_octree.adjust_walls(constants.orbee_radius);
+        //let orbee_overlaps = some_octree.self_query(constants.orbee_radius, constants.orbee_radius**2);
+        //if(i == 4) {
+        //  this.additional_info.innerText = String(orbee_overlaps.length);
+        //}
 
-        for(let j = 0; j < orbee_overlaps.length; j++) {
-          let overlap = orbee_overlaps[j];
-          overlap.correct(radius);
-        }
+        //for(let j = 0; j < orbee_overlaps.length; j++) {
+         // let overlap = orbee_overlaps[j];
+        //  overlap.correct(radius);
+       // }
         
         //for(let j = 0; j < this.orbeez.length; j++) {
           //let orbie = this.orbeez[j];
           //orbie.collisions = [];
         //}
         
-      }
-      
-      
-      //for(let i = 0; i < 8; i++) {
-        //this.orbee_interactions();
       //}
+      
+      
+      for(let i = 0; i < 8; i++) {
+        this.orbee_interactions();
+      }
       
       this.orbeez.forEach(orbie => {
         orbie.update();
