@@ -225,7 +225,7 @@ class game {
       });
       
       
-      let some_octree = new octree(this.orbeez);
+      //let some_octree = new octree(this.orbeez);
       
       //this.additional_info.innerText = String(some_octree.orbeez_inside.length);
       
