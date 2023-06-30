@@ -9,37 +9,62 @@ function modulo(a, b) {
   return a - Math.floor(a / b) * b;
 }
 
-
 class game {
   
   constructor(canvas, perf_canvas, mode) {
     this.mode = mode || "AUTO";
+    const gl = canvas.getContext("webgl2");
+    if (!gl) {
+      alert("Failed to init: No webgl2 support.");
+      return;
+    }
+    this.gl = gl;
+    if (!gl.getExtension("EXT_color_buffer_float")) {
+      alert("Failed to init: No EXT_color_buffer_float support.");
+      return;
+    }
+
+    this.frame_time = 1 / 60;
+    this.time = 0;
     this.frame_timestamps = [];
     this.framerate = -1;
     for(let i = 0; i < constants.frame_timestamps; i++) {
       this.frame_timestamps.push(performance.now());
     }
-    this.fps_counter = document.querySelector("p");
-    this.canvas = canvas;
-    this.perf_canvas = perf_canvas;
-    this.framerate_displayer = new graph_displayer(this.perf_canvas);
-    this.scene = new scene(canvas, 1002);
+    this.fps_counter = document.querySelector("#fps_counter");
+    this.framerate_displayer = new graph_displayer(perf_canvas);
+
     this.mouse_down = false;
-    this.orbeez = [];
-    this.additional_info = document.querySelector("b");
-    for(let i = 0; i < constants.orbee_count; i++) {
-      this.orbeez.push(new orbee(-5, 5, -5, 5, 10, 100));
-    }
     this.stopping = false;
     this.paused = false;
-    this.frame_time = 1 / 60;
-    this.time = 0;
-    this.bound_update_method = this.update_and_stuff.bind(this);
 
     document.addEventListener("mousedown", this.handle_mousedown.bind(this));
     document.addEventListener("mouseup", this.handle_mouseup.bind(this));
     document.addEventListener("mousemove", this.handle_mousemove.bind(this));    
     
+    let between = (n1, n2) => n1 + Math.random() * (n2 - n1);
+    let positions = new Float32Array(constants.orbee_count * 4);
+    let velocities = new Float32Array(constants.orbee_count * 4);
+    for(let i = 0; i < constants.orbee_count; i++) {
+      let idx = i * 4;
+      positions[idx] = between(-5, 5);
+      positions[idx+1] = between(-5, 5);
+      positions[idx+2] = between(10, 100);
+      positions[idx+3] = 0;
+      velocities[idx] = between(-0.05, 0.05);
+      velocities[idx+1] = between(-0.05, 0.05);
+      velocities[idx+2] = between(-0.05, 0.05);
+      velocities[idx+3] = 0;
+    }
+    this.positionBuf = gl.createBuffer();
+    this.velocityBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, positions, gl.DYNAMIC_COPY);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.velocityBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, velocities, gl.DYNAMIC_COPY);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    this.orbeez_physics = new OrbeezPhysics(gl);
+    this.scene = new scene(gl, this.positionBuf);
     this.complete_scene().then(this.schedule_update.bind(this));
   }
   
@@ -57,7 +82,7 @@ class game {
   
   schedule_update() {
     if (this.mode != "MANUAL") {
-      requestAnimationFrame(this.bound_update_method);
+      requestAnimationFrame(this.update_and_stuff.bind(this));
     }
   }
   
@@ -147,7 +172,7 @@ class game {
       }
     }
     interactions.forEach(interaction => {
-      let acc_ratio = (diameter - interaction.d)/(interaction.d) * 0.1;
+      let acc_ratio = (diameter - interaction.d)/(interaction.d) * constants.bounce;
       let dx = interaction.dx * acc_ratio;
       let dy = interaction.dy * acc_ratio;
       let dz = interaction.dz * acc_ratio;

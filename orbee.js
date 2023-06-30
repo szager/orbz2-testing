@@ -7,10 +7,10 @@ console.log();// Ad = .47 * .001 * U^2 * 154 mm^2 * .00124 mg
 //Cd = 0.47
 
 class orbee {
-  constructor(x1, x2, y1, y2, z1, z2) {
-    this.x = x1 + Math.random() * (x2 - x1);
-    this.y = y1 + Math.random() * (y2 - y1);
-    this.z = z1 + Math.random() * (z2 - z1);
+  constructor(x, y, z) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
     this.dx = (Math.random() - 0.5) * .1;
     this.dy = (Math.random() - 0.5) * .1;
     this.dz = (Math.random() - 0.5) * .1;

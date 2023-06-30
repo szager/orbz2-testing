@@ -10,14 +10,13 @@ class object_3d {
 class group_3d {
   constructor(model, count) {
     this.model = model;
-    this.positions = [];
+    //this.positions = [];
     this.colors = [];
     this.count = count;
     for(let i = 0; i < this.count; i++) {
-      //197.0, -147.0, -100;
-      this.positions.push(Math.random() * 48 + 145);
-      this.positions.push(Math.random() * 96 - 195);
-      this.positions.push(Math.random() * 186 - 88);
+      // this.positions.push(Math.random() * 48 + 145);
+      // this.positions.push(Math.random() * 96 - 195);
+      // this.positions.push(Math.random() * 186 - 88);
       
       let orbee_colors = [
         [1, .2, 0],
@@ -30,14 +29,14 @@ class group_3d {
     }
   }
   
-  copy_orbee_positions(orbeez) {
-    let num_positions = Math.min(this.count, orbeez.length); 
-    for(let i = 0; i < num_positions; i++) {
-      this.positions[i * 3] = orbeez[i].x;
-      this.positions[i * 3 + 1] = orbeez[i].y;
-      this.positions[i * 3 + 2] = orbeez[i].z;
-    }
-  }
+  // copy_orbee_positions(orbeez) {
+  //   let num_positions = Math.min(this.count, orbeez.length); 
+  //   for(let i = 0; i < num_positions; i++) {
+  //     this.positions[i * 3] = orbeez[i].x;
+  //     this.positions[i * 3 + 1] = orbeez[i].y;
+  //     this.positions[i * 3 + 2] = orbeez[i].z;
+  //   }
+  // }
 }
 
 export {object_3d, group_3d};

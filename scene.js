@@ -8,18 +8,13 @@ beautiful_image.src = "https://cdn.glitch.global/e7cbcc0a-13a1-4d09-b0ab-538eef5
 console.log(beautiful_image);
 
 class scene {
-  constructor(canvas, object_count) {
-    this.canvas = canvas;
-    this.gl = this.canvas.getContext("webgl2");
+  constructor(gl, postionBuf) {
+    this.gl = gl;
+    this.positionBuf = positionBuf;
     this.fov = constants.fov;
-    this.aspect_ratio = this.canvas.width / this.canvas.height;
+    this.aspect_ratio = gl.drawingBufferWidth / gl.drawingBufferHeight;
     this.min_distance = constants.near_distance;
     this.max_distance = constants.far_distance;
-    
-    //let recipSqrt3 = 1 / Math.sqrt(3);
-    
-    //this.vertex_normals = [
-    //];
     
     this.objects = [
       new object_3d(models.floor, [0.0, 0.0, -100], mat3.create(), "textures/floor_beta.png"), //0
@@ -27,12 +22,8 @@ class scene {
       new object_3d(models.trim, [0.0, 0.0, -100], mat3.create(), "textures/pug.jpg"), //2
       new object_3d(models.ceiling, [0.0, 0.0, -100], mat3.create(), "textures/pug.jpg"), //3
       new object_3d(models.shelf, [197.0, -147.0, -100], mat3.create(), "textures/funny_dog.png"), //4
-      //new object_3d(models.shelf, [197.0, -40.0, -100.0], [0.9, 0.9, 0.9], "textures/scrimbleh.jpg"),
-      //new object_3d(models.shelf, [197.0, 67.0, -100.0], [0.9, 0.9, 0.9], "textures/funny_dog.png"),
       new object_3d(models.picture_frame_stand, [157.1, -121.8, 100], mat3.create(), "textures/pug.jpg"), //5
     ];
-    
-    
     
     this.object_groups = [
       new group_3d(models.orbee_model, constants.orbee_count)
@@ -224,16 +215,16 @@ class scene {
         this.gl.STATIC_DRAW
       );
       
-      object_group.position_buffer = this.gl.createBuffer();
-      this.gl.bindBuffer(
-        this.gl.ARRAY_BUFFER,
-        object_group.position_buffer
-      );
-      this.gl.bufferData(
-        this.gl.ARRAY_BUFFER,
-        new Float32Array(object_group.positions),
-        this.gl.DYNAMIC_DRAW
-      );
+      object_group.position_buffer = this.postionBuf;
+      // this.gl.bindBuffer(
+      //   this.gl.ARRAY_BUFFER,
+      //   object_group.position_buffer
+      // );
+      // this.gl.bufferData(
+      //   this.gl.ARRAY_BUFFER,
+      //   new Float32Array(object_group.positions),
+      //   this.gl.DYNAMIC_DRAW
+      // );
       object_group.color_buffer = this.gl.createBuffer();
       this.gl.bindBuffer(
         this.gl.ARRAY_BUFFER,
@@ -380,7 +371,6 @@ class scene {
     this.gl.activeTexture(this.gl.TEXTURE0);
     this.gl.bindTexture(this.gl.TEXTURE_2D, object.texture);
     
-    
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.vertex_position_buffer);
     this.gl.enableVertexAttribArray(this.textured_object_program_info.attribute_locations.vertex_position);
     this.gl.vertexAttribPointer(
@@ -485,13 +475,13 @@ class scene {
     //alert(String(object_group.positions));
     
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object_group.position_buffer);
-    this.gl.bufferData(
-      this.gl.ARRAY_BUFFER,
-      new Float32Array(object_group.positions),
-      this.gl.DYNAMIC_DRAW
-    );
+    // this.gl.bufferData(
+    //   this.gl.ARRAY_BUFFER,
+    //   new Float32Array(object_group.positions),
+    //   this.gl.DYNAMIC_DRAW
+    // );
     this.gl.enableVertexAttribArray(this.object_group_program_info.attribute_locations.position);
-    this.gl.vertexAttribPointer(this.object_group_program_info.attribute_locations.position, 3, this.gl.FLOAT, false, 0, 0);
+    this.gl.vertexAttribPointer(this.object_group_program_info.attribute_locations.position, 4, this.gl.FLOAT, false, 0, 0);
     this.gl.vertexAttribDivisor(this.object_group_program_info.attribute_locations.position, 1);
     
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object_group.face_buffer);
