@@ -215,7 +215,7 @@ class scene {
         this.gl.STATIC_DRAW
       );
       
-      object_group.position_buffer = this.postionBuf;
+      object_group.position_buffer = this.positionBuf;
       // this.gl.bindBuffer(
       //   this.gl.ARRAY_BUFFER,
       //   object_group.position_buffer
